@@ -3,37 +3,39 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27130.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Converter", "HigLabo.Converter\HigLabo.Converter.csproj", "{7DFEE95C-8A1C-47F1-B432-3A36F031627C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Converter", "HigLabo.Converter\HigLabo.Converter.csproj", "{7DFEE95C-8A1C-47F1-B432-3A36F031627C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Core", "HigLabo.Core\HigLabo.Core.csproj", "{E0DEFD9C-79D9-45F2-BA43-56616C5D13A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Core", "HigLabo.Core\HigLabo.Core.csproj", "{E0DEFD9C-79D9-45F2-BA43-56616C5D13A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Data", "HigLabo.Data\HigLabo.Data.csproj", "{56451A2C-68A2-4DE7-AF7A-EC89D42D4ACD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data", "HigLabo.Data\HigLabo.Data.csproj", "{56451A2C-68A2-4DE7-AF7A-EC89D42D4ACD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Data.SqlServer", "HigLabo.Data.SqlServer\HigLabo.Data.SqlServer.csproj", "{90785264-FF42-45FE-8E5B-CDF2B79794C9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data.SqlServer", "HigLabo.Data.SqlServer\HigLabo.Data.SqlServer.csproj", "{90785264-FF42-45FE-8E5B-CDF2B79794C9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Mime", "HigLabo.Mime\HigLabo.Mime.csproj", "{285A720C-C6A3-4481-97BC-9A0C2CBFA168}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Mime", "HigLabo.Mime\HigLabo.Mime.csproj", "{285A720C-C6A3-4481-97BC-9A0C2CBFA168}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Net", "HigLabo.Net\HigLabo.Net.csproj", "{29840699-B5CC-4CA7-BDC3-FEDFD5BFD990}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Net", "HigLabo.Net\HigLabo.Net.csproj", "{29840699-B5CC-4CA7-BDC3-FEDFD5BFD990}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Rss", "HigLabo.Rss\HigLabo.Rss.csproj", "{9998AE02-ADB1-46CE-9A24-12065504AE3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Rss", "HigLabo.Rss\HigLabo.Rss.csproj", "{9998AE02-ADB1-46CE-9A24-12065504AE3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Net.Ftp", "HigLabo.Net.Ftp\HigLabo.Net.Ftp.csproj", "{2B252A1D-F1CD-4467-B691-029EEB0B2073}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Net.Ftp", "HigLabo.Net.Ftp\HigLabo.Net.Ftp.csproj", "{2B252A1D-F1CD-4467-B691-029EEB0B2073}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Mail", "HigLabo.Mail\HigLabo.Mail.csproj", "{33946F2F-DBD2-4C6E-9EDB-0D0BD67909A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Mail", "HigLabo.Mail\HigLabo.Mail.csproj", "{33946F2F-DBD2-4C6E-9EDB-0D0BD67909A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Bot.Facebook", "HigLabo.Bot.Facebook\HigLabo.Bot.Facebook.csproj", "{BC83793D-F8D5-4980-A024-7F516DB33F5E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Bot.Facebook", "HigLabo.Bot.Facebook\HigLabo.Bot.Facebook.csproj", "{BC83793D-F8D5-4980-A024-7F516DB33F5E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Bot.Line", "HigLabo.Bot.Line\HigLabo.Bot.Line.csproj", "{BBF93D4A-A5C4-44F0-AFCE-52A0D32AA9D7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Bot.Line", "HigLabo.Bot.Line\HigLabo.Bot.Line.csproj", "{BBF93D4A-A5C4-44F0-AFCE-52A0D32AA9D7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Mapper", "HigLabo.Mapper\HigLabo.Mapper.csproj", "{6B211585-23FE-4F61-8521-5EFF332AB4EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Mapper", "HigLabo.Mapper\HigLabo.Mapper.csproj", "{6B211585-23FE-4F61-8521-5EFF332AB4EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Data.Oracle", "HigLabo.Data.Oracle\HigLabo.Data.Oracle.csproj", "{364B423C-342F-4438-8BCC-FD9FA6E2F40E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data.Oracle", "HigLabo.Data.Oracle\HigLabo.Data.Oracle.csproj", "{364B423C-342F-4438-8BCC-FD9FA6E2F40E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Data.MySql", "HigLabo.Data.MySql\HigLabo.Data.MySql.csproj", "{80A6CD16-D111-4F6C-A1A6-71AA16DE8DE4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data.MySql", "HigLabo.Data.MySql\HigLabo.Data.MySql.csproj", "{80A6CD16-D111-4F6C-A1A6-71AA16DE8DE4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Data.PostgreSql", "HigLabo.Data.PostgreSql\HigLabo.Data.PostgreSql.csproj", "{71F09E42-4B78-40BD-ADB8-E84B997A8DCC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data.PostgreSql", "HigLabo.Data.PostgreSql\HigLabo.Data.PostgreSql.csproj", "{71F09E42-4B78-40BD-ADB8-E84B997A8DCC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Data.SQLite", "HigLabo.Data.SQLite\HigLabo.Data.SQLite.csproj", "{4D845DDF-AA37-4C0C-9395-A49F7F20D94F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data.SQLite", "HigLabo.Data.SQLite\HigLabo.Data.SQLite.csproj", "{4D845DDF-AA37-4C0C-9395-A49F7F20D94F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.CodeGenerator", "HigLabo.CodeGenerator\HigLabo.CodeGenerator.csproj", "{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -105,6 +107,10 @@ Global
 		{4D845DDF-AA37-4C0C-9395-A49F7F20D94F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4D845DDF-AA37-4C0C-9395-A49F7F20D94F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4D845DDF-AA37-4C0C-9395-A49F7F20D94F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
