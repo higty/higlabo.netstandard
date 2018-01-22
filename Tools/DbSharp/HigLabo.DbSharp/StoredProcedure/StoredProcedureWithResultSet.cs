@@ -46,6 +46,24 @@ namespace HigLabo.DbSharp
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="databases"></param>
+        /// <returns></returns>
+        public StoredProcedureResultSet GetFirstResultSet(IEnumerable<Database> databases)
+        {
+            var results = this.GetResultSets(databases);
+            return results.FirstOrDefault();
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public async Task<StoredProcedureResultSet> GetFirstResultSetAsync()
+        {
+            return await this.GetFirstResultSetAsync(this.GetDatabase());
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         /// <param name="database"></param>
         /// <returns></returns>
         public async Task<StoredProcedureResultSet> GetFirstResultSetAsync(Database database)

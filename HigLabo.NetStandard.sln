@@ -35,7 +35,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data.PostgreSql", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Data.SQLite", "HigLabo.Data.SQLite\HigLabo.Data.SQLite.csproj", "{4D845DDF-AA37-4C0C-9395-A49F7F20D94F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.CodeGenerator", "HigLabo.CodeGenerator\HigLabo.CodeGenerator.csproj", "{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.CodeGenerator", "HigLabo.CodeGenerator\HigLabo.CodeGenerator.csproj", "{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.NugetManagementApplication", "HigLabo.NugetManagementApplication\HigLabo.NugetManagementApplication.csproj", "{AED6B65C-270F-4380-8486-876EA12B24FE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +113,10 @@ Global
 		{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AED6B65C-270F-4380-8486-876EA12B24FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AED6B65C-270F-4380-8486-876EA12B24FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AED6B65C-270F-4380-8486-876EA12B24FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AED6B65C-270F-4380-8486-876EA12B24FE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
