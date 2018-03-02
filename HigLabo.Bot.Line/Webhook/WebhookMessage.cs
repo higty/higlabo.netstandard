@@ -93,6 +93,7 @@ namespace HigLabo.Bot.Line.Webhook
     }
     public abstract class Event
     {
+        public String ReplyToken { get; set; }
         [JsonConverter(typeof(StringEnumConverter))]
         public abstract EventType Type { get; }
         public String Timestamp { get; set; }
@@ -112,7 +113,6 @@ namespace HigLabo.Bot.Line.Webhook
     public class MessageEvent : Event
     {
         public override EventType Type => EventType.Message;
-        public String ReplyToken { get; set; }
         public Message Message { get; set; }
     }
     public class Message
@@ -128,7 +128,6 @@ namespace HigLabo.Bot.Line.Webhook
     public class FollowEvent : Event
     {
         public override EventType Type => EventType.Follow;
-        public String ReplyToken { get; set; }
     }
     public class UnFollowEvent : Event
     {
@@ -137,7 +136,6 @@ namespace HigLabo.Bot.Line.Webhook
     public class JoinEvent : Event
     {
         public override EventType Type => EventType.Join;
-        public String ReplyToken { get; set; }
     }
     public class LeaveEvent : Event
     {
@@ -146,7 +144,6 @@ namespace HigLabo.Bot.Line.Webhook
     public class PostbackEvent : Event
     {
         public override EventType Type => EventType.Postback;
-        public String ReplyToken { get; set; }
         public PostBackData Postback { get; set; }
     }
     public class PostBackData
@@ -156,7 +153,6 @@ namespace HigLabo.Bot.Line.Webhook
     public class BeaconEvent : Event
     {
         public override EventType Type => EventType.Beacon;
-        public String ReplyToken { get; set; }
         public Beacon Beacon { get; set; }
     }
     public class Beacon

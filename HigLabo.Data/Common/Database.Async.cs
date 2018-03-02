@@ -18,7 +18,7 @@ namespace HigLabo.Data
         {
             if (this.Connection == null)
             {
-                this.Connection = this.CreateConnectionWithEvent();
+                this.Connection = this.CreateConnection();
                 await this.Connection.OpenAsync();
             }
             else
@@ -39,7 +39,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public async Task<DbDataReader> ExecuteReaderAsync(String query, CommandBehavior commandBehavior)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return await ExecuteReaderAsync(cm, commandBehavior);
         }
@@ -110,7 +110,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public async Task<Object> ExecuteScalarAsync(String query)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return await this.ExecuteScalarAsync(cm);
         }
@@ -177,7 +177,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public async Task<Int32> ExecuteCommandAsync(String query)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return await ExecuteCommandAsync(cm);
         }

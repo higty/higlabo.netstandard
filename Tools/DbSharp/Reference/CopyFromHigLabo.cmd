@@ -20,6 +20,6 @@ Copy %path%HigLabo.Net.Ftp\bin\Release\netstandard2.0\HigLabo.Net.Ftp.dll" %targ
 
 Copy %path%HigLabo.Mail\bin\Release\netstandard2.0\HigLabo.Mime.dll" %targetPath%HigLabo.Mime.dll"
 Copy %path%HigLabo.Mail\bin\Release\netstandard2.0\HigLabo.Mail.dll" %targetPath%HigLabo.Mail.dll"
-
+Copy %path%HigLabo.Wpf\bin\Release\HigLabo.Wpf.dll" %targetPath%HigLabo.Wpf.dll"
 
 pause

@@ -53,7 +53,7 @@ namespace HigLabo.Data
         {
             if (this.Connection == null)
             {
-                this.Connection = this.CreateConnectionWithEvent();
+                this.Connection = this.CreateConnection();
                 this.Connection.Open();
             }
             else
@@ -131,26 +131,25 @@ namespace HigLabo.Data
         /// 
         /// </summary>
         /// <returns></returns>
-        public abstract DbConnection CreateConnection();
-        private DbConnection CreateConnectionWithEvent()
+        public DbConnection CreateConnection()
         {
-            var cn = this.CreateConnection();
+            var cn = this.CreateDbConnection();
             cn.ConnectionString = this.ConnectionString;
             this.OnConnectionCreated(new ConnectionCreatedEventArgs(cn));
             return cn;
         }
-        public abstract DbCommand CreateCommand();
+        protected abstract DbConnection CreateDbConnection();
+        public DbCommand CreateCommand()
+        {
+            var cm = this.CreateDbCommand();
+            this.OnCommandCreated(new CommandCreatedEventArgs(cm));
+            return cm;
+        }
+        protected abstract DbCommand CreateDbCommand();
         public DbCommand CreateCommand(String commandText)
         {
             var cm = this.CreateCommand();
             cm.CommandText = commandText;
-            return cm;
-        }
-        private DbCommand CreateCommandWithEvent(String commandText)
-        {
-            var cm = this.CreateCommand();
-            cm.CommandText = commandText;
-            this.OnCommandCreated(new CommandCreatedEventArgs(cm));
             return cm;
         }
         public abstract DbDataAdapter CreateDataAdapter();
@@ -167,7 +166,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public DataSet GetDataSet(String query)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return GetDataSet(cm);
         }
@@ -223,7 +222,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public DataTable GetDataTable(String query)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return GetDataTable(cm);
         }
@@ -289,7 +288,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public DbDataReader ExecuteReader(String query, CommandBehavior commandBehavior)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return ExecuteReader(cm, commandBehavior);
         }
@@ -348,7 +347,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public Object ExecuteScalar(String query)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return this.ExecuteScalar(cm);
         }
@@ -405,7 +404,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public Int32 ExecuteCommand(String query)
         {
-            var cm = this.CreateCommandWithEvent(query);
+            var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return ExecuteCommand(cm);
         }
@@ -467,7 +466,7 @@ namespace HigLabo.Data
             var l = new List<DbCommand>();
             foreach (var item in commands)
             {
-                var cm = this.CreateCommandWithEvent(item);
+                var cm = this.CreateCommand(item);
                 cm.CommandType = CommandType.Text;
             }
             return ExecuteCommand(isolationLevel, l.ToArray());

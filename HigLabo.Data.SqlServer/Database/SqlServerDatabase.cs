@@ -25,11 +25,11 @@ namespace HigLabo.Data
             this.ConnectionString = connectionString.Create();
         }
 
-        public override DbConnection CreateConnection()
+        protected override DbConnection CreateDbConnection()
         {
             return new SqlConnection();
         }
-        public override DbCommand CreateCommand()
+        protected override DbCommand CreateDbCommand()
         {
             return new SqlCommand();
         }

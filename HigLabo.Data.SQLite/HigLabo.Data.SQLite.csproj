@@ -11,6 +11,8 @@
     <Copyright>Copyright © 2011- HigLabo All Rights Reserved</Copyright>
     <RepositoryUrl>https://github.com/higty/higlabo.netstandard</RepositoryUrl>
     <PackageReleaseNotes>HigLabo Library initial publish for .net standard.</PackageReleaseNotes>
+    <FileVersion>2.0.0.1</FileVersion>
+    <AssemblyVersion>2.0.0.1</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>

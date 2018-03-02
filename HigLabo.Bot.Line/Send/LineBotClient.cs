@@ -78,5 +78,20 @@ namespace HigLabo.Bot.Line
             var res = cl.GetResponse(cm);
             return res;
         }
+        public HttpResponse SendReplyMessage<T>(T message)
+            where T : ReplyMessage
+        {
+            var json = message.CreateJson();
+
+            var cl = this;
+            var url = "https://api.line.me/v2/bot/message/reply";
+            var cm = new HttpRequestCommand(url);
+            cm.Headers.Add("Authorization", "Bearer " + this.GetAccessToken());
+            cm.MethodName = HttpMethodName.Post;
+            cm.ContentType = "application/json";
+            cm.SetBodyStream(Encoding.UTF8.GetBytes(json));
+            var res = cl.GetResponse(cm);
+            return res;
+        }
     }
 }

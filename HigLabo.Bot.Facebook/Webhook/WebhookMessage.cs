@@ -66,6 +66,7 @@ namespace HigLabo.Bot.Facebook.Webhook
         public String Mid { get; set; }
         public Int32 Seq { get; set; }
         public String Text { get; set; }
+        public String Sticker_ID { get; set; }
         public ObjectPayload Quick_Reply { get; set; }
         public Attachment[] Attachments { get; set; }
 
@@ -80,16 +81,25 @@ namespace HigLabo.Bot.Facebook.Webhook
     }
     public class Attachment
     {
+        public String Title { get; set; }
+        public String Url { get; set; }
         public String Type { get; set; }
-        public ObjectUrl Payload { get; set; }
+        public AttachmentPayload Payload { get; set; }
     }
-    public class ObjectUrl
+    public class AttachmentPayload
     {
         public String Url { get; set; }
+        public String Sticker_ID { get; set; }
+        public Coordinates Payload { get; set; }
         public override string ToString()
         {
             return this.Url;
         }
+    }
+    public class Coordinates
+    {
+        public Double Lat { get; set; }
+        public Double Long { get; set; }
     }
 
     public class Delivery

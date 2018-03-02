@@ -195,6 +195,7 @@ namespace HigLabo.DbSharp.CodeGenerator
             Method md = new Method(MethodAccessModifier.Public, "CreateCommand");
             md.Modifier.Polymophism = MethodPolymophism.Override;
             md.ReturnTypeName = new TypeName("DbCommand");
+            md.Parameters.Add(new MethodParameter("Database", "database"));
 
             md.Body.AddRange(CreateCreateCommandMethodBody());
 
@@ -205,14 +206,7 @@ namespace HigLabo.DbSharp.CodeGenerator
             var sp = this.StoredProcedure;
             String pName = "";
 
-            switch (this.StoredProcedure.DatabaseServer)
-            {
-                case DatabaseServer.SqlServer: yield return new CodeBlock(SourceCodeLanguage.CSharp, "var db = new SqlServerDatabase(\"\");"); break;
-                case DatabaseServer.MySql: yield return new CodeBlock(SourceCodeLanguage.CSharp, "var db = new MySqlDatabase(\"\");"); break;
-                case DatabaseServer.Oracle: yield return new CodeBlock(SourceCodeLanguage.CSharp, "var db = new OracleDatabase(\"\");"); break;
-                case DatabaseServer.PostgreSql: yield return new CodeBlock(SourceCodeLanguage.CSharp, "var db = new PostgreSqlDatabase(\"\");"); break;
-                default: throw new InvalidOperationException();
-            }
+            yield return new CodeBlock(SourceCodeLanguage.CSharp, "var db = database;");
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "var cm = db.CreateCommand();");
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "cm.CommandType = CommandType.StoredProcedure;");
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "cm.CommandText = this.GetStoredProcedureName();");

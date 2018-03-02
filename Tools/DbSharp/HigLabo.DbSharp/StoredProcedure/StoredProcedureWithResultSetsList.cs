@@ -40,7 +40,7 @@ namespace HigLabo.DbSharp
 
             try
             {
-                var cm = CreateCommand();
+                var cm = CreateCommand(database);
                 dr = database.ExecuteReader(cm);
                 Int32 index = 0;
                 while (true)
@@ -112,7 +112,7 @@ namespace HigLabo.DbSharp
 
             try
             {
-                var cm = CreateCommand();
+                var cm = CreateCommand(database);
                 dr = await database.ExecuteReaderAsync(cm);
                 Int32 index = 0;
                 while (true)

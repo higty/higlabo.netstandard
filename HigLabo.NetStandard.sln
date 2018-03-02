@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+VisualStudioVersion = 15.0.27130.2036
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Converter", "HigLabo.Converter\HigLabo.Converter.csproj", "{7DFEE95C-8A1C-47F1-B432-3A36F031627C}"
 EndProject
@@ -38,6 +38,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.CodeGenerator", "HigLabo.CodeGenerator\HigLabo.CodeGenerator.csproj", "{22969E9A-4C9E-4831-A1B0-FAEDC9A0889B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.NugetManagementApplication", "HigLabo.NugetManagementApplication\HigLabo.NugetManagementApplication.csproj", "{AED6B65C-270F-4380-8486-876EA12B24FE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Wpf", "HigLabo.Wpf\HigLabo.Wpf.csproj", "{99D7770C-277F-4A24-90B9-5EE6535CDE57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,6 +119,10 @@ Global
 		{AED6B65C-270F-4380-8486-876EA12B24FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AED6B65C-270F-4380-8486-876EA12B24FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AED6B65C-270F-4380-8486-876EA12B24FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99D7770C-277F-4A24-90B9-5EE6535CDE57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99D7770C-277F-4A24-90B9-5EE6535CDE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99D7770C-277F-4A24-90B9-5EE6535CDE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99D7770C-277F-4A24-90B9-5EE6535CDE57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

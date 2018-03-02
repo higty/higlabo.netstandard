@@ -51,7 +51,15 @@ namespace HigLabo.DbSharp
         /// 
         /// </summary>
         /// <returns></returns>
-        public abstract DbCommand CreateCommand();
+        public DbCommand CreateCommand()
+        {
+            return this.CreateCommand(this.GetDatabase());
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public abstract DbCommand CreateCommand(Database database);
         /// <summary>
         /// 
         /// </summary>
@@ -73,7 +81,7 @@ namespace HigLabo.DbSharp
 
             try
             {
-                var cm = CreateCommand();
+                var cm = CreateCommand(database);
                 var e = new StoredProcedureExecutingEventArgs(this, cm);
                 StoredProcedure.OnExecuting(e);
                 if (e.Cancel == true) { return affectedRecordCount; }
@@ -130,7 +138,7 @@ namespace HigLabo.DbSharp
 
             try
             {
-                var cm = CreateCommand();
+                var cm = CreateCommand(database);
                 var e = new StoredProcedureExecutingEventArgs(this, cm);
                 StoredProcedure.OnExecuting(e);
                 if (e.Cancel == true) { return affectedRecordCount; }

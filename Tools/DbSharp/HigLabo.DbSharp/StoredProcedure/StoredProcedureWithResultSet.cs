@@ -146,7 +146,7 @@ namespace HigLabo.DbSharp
 
             try
             {
-                var cm = CreateCommand();
+                var cm = CreateCommand(database);
                 var e = new StoredProcedureExecutingEventArgs(this, cm);
                 StoredProcedure.OnExecuting(e);
                 dr = await database.ExecuteReaderAsync(cm);
@@ -208,7 +208,7 @@ namespace HigLabo.DbSharp
 
             try
             {
-                var cm = CreateCommand();
+                var cm = CreateCommand(database);
                 var e = new StoredProcedureExecutingEventArgs(this, cm);
                 StoredProcedure.OnExecuting(e);
                 dr = database.ExecuteReader(cm);
@@ -248,7 +248,7 @@ namespace HigLabo.DbSharp
             var previousState = database.ConnectionState;
             try
             {
-                var cm = CreateCommand();
+                var cm = CreateCommand(database);
                 var dt = database.GetDataTable(cm);
                 return dt;
             }

@@ -34,7 +34,7 @@ namespace HigLabo.Data
         /// 
         /// </summary>
         /// <returns></returns>
-        public override DbConnection CreateConnection()
+        protected override DbConnection CreateDbConnection()
         {
             return new NpgsqlConnection();
         }
@@ -43,7 +43,7 @@ namespace HigLabo.Data
         /// </summary>
         /// <param name="commandText"></param>
         /// <returns></returns>
-        public override DbCommand CreateCommand()
+        protected override DbCommand CreateDbCommand()
         {
             return new NpgsqlCommand();
         }

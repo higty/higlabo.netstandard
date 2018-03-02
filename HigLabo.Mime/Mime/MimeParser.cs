@@ -163,7 +163,7 @@ namespace HigLabo.Mime
             }
             return this.Encoding.GetString(target.ToArray());
         }
-        private unsafe void ReadFromStream(MimeStreamBuffer context)
+        private void ReadFromStream(MimeStreamBuffer context)
         {
             var buffer = this.GetBuffer();
             var stream = _Stream;
@@ -564,7 +564,7 @@ namespace HigLabo.Mime
             }
         }
 
-        private unsafe List<MimeContent> ReadMimeContent(MimeStreamBuffer context, Byte[] boundary)
+        private List<MimeContent> ReadMimeContent(MimeStreamBuffer context, Byte[] boundary)
         {
             List<MimeContent> l = new List<MimeContent>();
             MimeContent mc = null;
