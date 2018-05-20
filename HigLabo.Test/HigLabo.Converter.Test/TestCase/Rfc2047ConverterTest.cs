@@ -48,5 +48,16 @@ namespace HigLabo.Converter.Test
             Assert.AreEqual("2014年4月16日", cv.Decode("2014=?ISO-2022-JP?B?GyRCRy8bKEI=?=" 
                 + "4=?ISO-2022-JP?B?GyRCN24bKEI=?=16=?ISO-2022-JP?B?GyRCRnwbKEI=?="));
         }
+        [TestMethod]
+        public void Rfc2047Converter_Basic5()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            Rfc2047Converter cv = new Rfc2047Converter();
+
+            Assert.AreEqual("Отчёт о движении вагонов с углём АО \"Сибугл"
+                , cv.Decode("=?utf-8?B?0J7RgtGH0ZHRgiDQviDQtNCy0LjQttC10L3QuNC4INCy0LDQ?=\r\n" 
+                + " =?utf-8?B?s9C+0L3QvtCyINGBINGD0LPQu9GR0Lwg0JDQniAi0KHQuNCx0YPQs9C7?=\r\n"));
+        }
     }
 }

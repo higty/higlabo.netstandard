@@ -10,13 +10,70 @@ namespace HigLabo.Converter
     {
         private enum Rfc2047ParsingState
         {
-            NotPasing,
+            NotParsing,
             Start,
             Charset,
             BorQ,
             Value,
             ValueEnd,
             End,
+        }
+        private class ParseContextData
+        {
+            private Base64Converter _Base64Converter = null;
+            private QuotedPrintableConverter _QuotedPrintableHeaderConverter = null;
+            private List<Byte[]> _ByteList = new List<byte[]>();
+
+            public Rfc2047Encoding? Encoding { get; private set; }
+            public Encoding Charset { get; private set; }
+
+            public ParseContextData(Base64Converter base64Converter, QuotedPrintableConverter quotedPrintableConverter)
+            {
+                _Base64Converter = base64Converter;
+                _QuotedPrintableHeaderConverter = quotedPrintableConverter;
+            }
+            public void Add(Rfc2047Encoding encoding, Encoding charset, Byte[] value)
+            {
+                this.Encoding = encoding;
+                this.Charset = charset;
+                _ByteList.Add(value);
+            }
+            public String Decode()
+            {
+                if (this.HasData() == false) { return ""; }
+
+                var bb = this.GetBytes();
+                switch (this.Encoding)
+                {
+                    case Rfc2047Encoding.Base64: return this.Charset.GetString(_Base64Converter.Decode(bb)); 
+                    case Rfc2047Encoding.QuotedPrintable: return this.Charset.GetString(_QuotedPrintableHeaderConverter.Decode(bb)); 
+                    default: throw new InvalidOperationException();
+                }
+            }
+            public Boolean HasData()
+            {
+                return _ByteList.Sum(el => el.Length) > 0;
+            }
+            public void Clear()
+            {
+                this.Encoding = null;
+                this.Charset = null;
+                _ByteList.Clear();
+            }
+            public Byte[] GetBytes()
+            {
+                var bb = new Byte[_ByteList.Sum(el => el.Length)];
+                var index = 0;
+                for (int i = 0; i < _ByteList.Count; i++)
+                {
+                    for (int bIndex = 0; bIndex < _ByteList[i].Length; bIndex++)
+                    {
+                        bb[index] = _ByteList[i][bIndex];
+                        index++;
+                    }
+                }
+                return bb;
+            }
         }
         private Base64Converter _Base64Converter = null;
         private QuotedPrintableConverter _QuotedPrintableHeaderConverter = null;
@@ -44,21 +101,23 @@ namespace HigLabo.Converter
         public unsafe String Decode(Byte* start, Byte* end)
         {
             var current = start;
+            //Used for not encoded text.
             var buffer = new Byte[end - current];
             Int32 index = 0;
             Byte* rfc2047Start = null;
             Byte* rfc2047Current = null;
-            Rfc2047ParsingState state = Rfc2047ParsingState.NotPasing;
+            Rfc2047ParsingState state = Rfc2047ParsingState.NotParsing;
             Encoding charset = null;
             Rfc2047Encoding? encoding = null;
             Int32 whiteSpaceCount = 0;
             StringBuilder sb = new StringBuilder(buffer.Length);
+            var cx = new ParseContextData(_Base64Converter, _QuotedPrintableHeaderConverter);
 
             while (current < end)
             {
                 switch (state)
                 {
-                    case Rfc2047ParsingState.NotPasing:
+                    case Rfc2047ParsingState.NotParsing:
                         #region
                         if (*current == '=')
                         {
@@ -76,7 +135,7 @@ namespace HigLabo.Converter
                         }
                         else
                         {
-                            state = Rfc2047ParsingState.NotPasing;
+                            state = Rfc2047ParsingState.NotParsing;
                         }
                         break;
                         #endregion
@@ -88,7 +147,7 @@ namespace HigLabo.Converter
                             charset = EncodingDictionary.Current.GetEncoding(this.Encoding.GetString(bb));
                             if (charset == null)
                             {
-                                state = Rfc2047ParsingState.NotPasing;
+                                state = Rfc2047ParsingState.NotParsing;
                                 rfc2047Current = null;
                             }
                             else
@@ -118,7 +177,7 @@ namespace HigLabo.Converter
                             }
                             else
                             {
-                                state = Rfc2047ParsingState.NotPasing;
+                                state = Rfc2047ParsingState.NotParsing;
                                 rfc2047Current = null;
                             }
                         }
@@ -136,16 +195,22 @@ namespace HigLabo.Converter
                         #region
                         if (*current == '=')
                         {
-                            sb.Append(this.Encoding.GetString(buffer.Take(index).ToArray()));
-                            index = 0;
+                            if (index > 0)
+                            {
+                                sb.Append(cx.Decode());
+                                cx.Clear();
+                                sb.Append(this.Encoding.GetString(buffer.Take(index).ToArray()));
+                                index = 0;
+                            }
 
                             var bb = CreateNewBytes(new IntPtr(rfc2047Current), current - rfc2047Current - 1);
-                            switch (encoding)
+                            if (cx.Encoding != encoding || cx.Charset != charset)
                             {
-                                case Rfc2047Encoding.Base64: sb.Append(charset.GetString(_Base64Converter.Decode(bb))); break;
-                                case Rfc2047Encoding.QuotedPrintable: sb.Append(charset.GetString(_QuotedPrintableHeaderConverter.Decode(bb))); break;
-                                default: throw new InvalidOperationException();
+                                sb.Append(cx.Decode());
+                                cx.Clear();
                             }
+                            cx.Add(encoding.Value, charset, bb);
+
                             rfc2047Start = null;
                             rfc2047Current = null;
                             whiteSpaceCount = 0;
@@ -153,20 +218,20 @@ namespace HigLabo.Converter
                         }
                         else
                         {
-                            state = Rfc2047ParsingState.NotPasing;
+                            state = Rfc2047ParsingState.NotParsing;
                         }
                         break;
                         #endregion
-                    case Rfc2047ParsingState.End: state = Rfc2047ParsingState.NotPasing; break;
+                    case Rfc2047ParsingState.End: state = Rfc2047ParsingState.NotParsing; break;
                     default: break;
                 }
 
-                if (state == Rfc2047ParsingState.NotPasing)
+                if (state == Rfc2047ParsingState.NotParsing)
                 {
                     #region Add text that is invalid format like "=?Charset?S"
                     if (rfc2047Start != null)
                     {
-                        this.AddChar(buffer, (Byte)' ', ref index, whiteSpaceCount);
+                        this.AddChar(buffer, ref index, whiteSpaceCount);
                         whiteSpaceCount = -1;
                         
                         var length = current - rfc2047Start;
@@ -195,7 +260,7 @@ namespace HigLabo.Converter
                         *current != (Byte)'\n' &&
                         *current != (Byte)'\t')
                     {
-                        this.AddChar(buffer, (Byte)' ', ref index, whiteSpaceCount);
+                        this.AddChar(buffer, ref index, whiteSpaceCount);
                         whiteSpaceCount = -1;
 
                         buffer[index++] = *current;
@@ -204,10 +269,14 @@ namespace HigLabo.Converter
                 }
                 current++;
             }
+            if (cx.HasData())
+            {
+                sb.Append(cx.Decode());
+            }
             sb.Append(this.Encoding.GetString(buffer.Take(index).ToArray()));
             return sb.ToString();
         }
-        private void AddChar(Byte[] buffer, Int32 charCode, ref Int32 index, Int32 count)
+        private void AddChar(Byte[] buffer, ref Int32 index, Int32 count)
         {
             for (int i = 0; i < count; i++)
             {

@@ -52,16 +52,6 @@ namespace HigLabo.Mime.Test
             }
         }
         [TestMethod]
-        public void MimeHeader_Rfc2047_Base64_1()
-        {
-            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
-            String src = "subject: =?utf-8?B?0J7RgtGH0ZHRgiDQviDQtNCy0LjQttC10L3QuNC4INCy0LDQ?=\r\n =?utf-8?B?s9C+0L3QvtCyINGBINGD0LPQu9GR0Lwg0JDQniAi0KHQuNCx0YPQs9C7?=\r\n";
-
-            var h = Parser10.ParseHeader(Encoding.UTF8.GetBytes(src));
-            //Отчёт о движении ва��онов с углём АО "Сибугл
-            Assert.AreEqual(h.Value, "Отчёт о движении вагонов с углём АО \"Сибугл");
-        }
-        [TestMethod]
         public void MimeHeader_Rfc2047_QuotedPrintable()
         {
             Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
