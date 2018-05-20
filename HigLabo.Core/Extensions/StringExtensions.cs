@@ -259,7 +259,11 @@ namespace HigLabo.Core
         }
         public static T? ToEnum<T>(this String value) where T : struct
         {
-            return AppEnvironment.Settings.TypeConverter.ToEnum<T>(value);
+            return AppEnvironment.Settings.TypeConverter.ToEnum<T>(value, true);
+        }
+        public static T? ToEnum<T>(this String value, Boolean ignoreCase) where T : struct
+        {
+            return AppEnvironment.Settings.TypeConverter.ToEnum<T>(value, ignoreCase);
         }
     }
 }

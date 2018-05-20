@@ -121,8 +121,17 @@ namespace HigLabo.Bot.Line.Webhook
         [JsonConverter(typeof(StringEnumConverter))]
         public MessageType Type { get; set; }
         public String Text { get; set; }
+        //Type=File
         public String FileName { get; set; }
-        public Int32 FileSize { get; set; }
+        public Int32? FileSize { get; set; }
+        //Type=Location
+        public String Title { get; set; }
+        public String Address { get; set; }
+        public Double? Latitude { get; set; }
+        public Double? Longitude { get; set; }
+        //Type=Sticker
+        public String PackageID { get; set; }
+        public String StickerID { get; set; }
     }
 
     public class FollowEvent : Event

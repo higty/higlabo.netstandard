@@ -28,14 +28,16 @@ namespace HigLabo.Bot.Facebook.Send
             var sb = new StringBuilder();
             sb.Append("{");
             {
-                sb.Append("\"content_type\":\"").AppendJsonEncoded(this.ContentType.ToStringFromEnum().ToLower()).Append("\",");
+                sb.Append("\"content_type\":\"").AppendJsonEncoded(this.ContentType.ToStringFromEnum().ToLower()).Append("\"");
                 if (this.ContentType == QuickReplyContentType.Text)
                 {
+                    sb.Append(",");
                     sb.Append("\"title\":\"").AppendJsonEncoded(this.Title).Append("\",");
                     sb.Append("\"payload\":\"").AppendJsonEncoded(this.Payload).Append("\"");
                     if (this.ImageUrl.IsNullOrEmpty() == false)
                     {
-                        sb.Append("\"image_url\":\"").AppendJsonEncoded(this.ImageUrl).Append("\",");
+                        sb.Append(",");
+                        sb.Append("\"image_url\":\"").AppendJsonEncoded(this.ImageUrl).Append("\"");
                     }
                 }
             }

@@ -90,7 +90,7 @@ namespace HigLabo.Bot.Facebook.Webhook
     {
         public String Url { get; set; }
         public String Sticker_ID { get; set; }
-        public Coordinates Payload { get; set; }
+        public Coordinates Coordinates { get; set; }
         public override string ToString()
         {
             return this.Url;
