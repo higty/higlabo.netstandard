@@ -209,6 +209,20 @@ namespace HigLabo.Converter
                                 sb.Append(cx.Decode());
                                 cx.Clear();
                             }
+                            else
+                            {
+                                var text = cx.Decode();
+                                if (text[text.Length - 1] == '�')
+                                {
+                                    //Invalid encoding.Maybe encoder devide middle of 2byte char.
+                                    //Concat current line and next line.
+                                }
+                                else
+                                {
+                                    sb.Append(cx.Decode());
+                                    cx.Clear();
+                                }
+                            }
                             cx.Add(encoding.Value, charset, bb);
 
                             rfc2047Start = null;

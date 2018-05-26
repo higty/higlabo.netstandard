@@ -20,12 +20,21 @@ namespace HigLabo.Converter
         {
             Current = new EncodingDictionary();
             var d = Current._Encodings;
-            d["UTF7"] = Encoding.GetEncoding("UTF-7");
             d["UTF8"] = Encoding.UTF8;
-            d["UTF32"] = Encoding.GetEncoding("utf-32");
-            d["CP1252"] = Encoding.GetEncoding("windows-1252");
+            AddEncoding("UTF7", "UTF-7");
+            AddEncoding("UTF32", "utf-32");
+            AddEncoding("CP1252", "windows-1252");
         }
-
+        private static void AddEncoding(String key, String codepage)
+        {
+            try
+            {
+                var en = Encoding.GetEncoding(codepage);
+                if (en == null) { return; }
+                Current._Encodings[key] = en;
+            }
+            catch { }
+        }
         public Encoding GetEncoding(String encoding)
         {
             return GetEncoding(encoding, null);
