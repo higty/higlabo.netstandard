@@ -20,12 +20,27 @@ namespace HigLabo.Mime
         }
         public String GetParameterValue(String key)
         {
-            var p = this.Parameters.Find(el => String.Equals(el.Key, key, StringComparison.OrdinalIgnoreCase));
-            if (p != null)
+            var s = "";
+            var keyFound = false;
+            foreach (var p in this.Parameters)
             {
-                return p.Value;
+                if (keyFound)
+                {
+                    if (p.Key != "")
+                    {
+                        keyFound = false;
+                        continue;
+                    }
+                    s += p.RawText;
+                }
+                else
+                {
+                    if (String.Equals(p.Key, key, StringComparison.OrdinalIgnoreCase) == false) { continue; }
+                    s += p.Value;
+                }
+                keyFound = true;
             }
-            return "";
+            return s;
         }
     }
 }

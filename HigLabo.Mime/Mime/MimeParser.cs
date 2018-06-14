@@ -388,7 +388,7 @@ namespace HigLabo.Mime
                 {
                     if (i - startIndex > 1)
                     {
-                        var rawValue = header.RawValue.Substring(startIndex, i - startIndex).Trim();
+                        var rawValue = header.RawValue.Substring(startIndex, i - startIndex);
                         var p = this.CreateMimeHeaderParameter(rawValue);
                         header.Parameters.Add(p);
                         if (p.Rfc2231Ordinal.HasValue == true)
@@ -409,20 +409,21 @@ namespace HigLabo.Mime
         {
             MimeHeaderParameter p = new MimeHeaderParameter();
 
-            var indexOfEqual = rawText.IndexOf("=", StringComparison.OrdinalIgnoreCase);
-            if (indexOfEqual == -1)
+            var rawValue = rawText.Trim();
+            var indexOfEqual = rawValue.IndexOf("=", StringComparison.OrdinalIgnoreCase);
+            if (indexOfEqual <= 0)
             {
                 p.RawText = rawText;
-                p.RawValue = p.RawText;
-                p.Value = p.RawValue;
+                p.RawValue = rawValue;
+                p.Value = rawValue;
             }
             else if (indexOfEqual > -1)
             {               
                 Int32? startIndexOfOrdinal = null;
                 Int32? lastIndexOfOrdinal = null;
 
-                p.RawText = rawText;
-                p.RawValue = rawText.Substring(indexOfEqual + 1, p.RawText.Length - (indexOfEqual + 1));
+                p.RawText = rawValue;
+                p.RawValue = rawValue.Substring(indexOfEqual + 1, p.RawText.Length - (indexOfEqual + 1));
                 //filename*=value
                 //filename*0=value
                 //filename*0*=value
