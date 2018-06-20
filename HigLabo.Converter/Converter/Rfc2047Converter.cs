@@ -259,6 +259,7 @@ namespace HigLabo.Converter
                     #endregion
 
                     #region
+                    if (*current == (Byte)'=') { continue; }
                     if (*current == (Byte)' ')
                     {
                         if (whiteSpaceCount > -1)

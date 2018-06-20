@@ -88,6 +88,10 @@ namespace HigLabo.Converter.Test
             Assert.AreEqual("Отгрузка на Мыс Астафьева в Мае 2018 ТМСШ 11% 1553 (ЕВРАЗ).xlsx"
                 , cv.Decode("=?koi8-r?B?79TH0tXay8EgzsEg7dnTIOHT1MHG2MXXwSDXIO3BxSAyMDE4IPTt8w==?=\r\n"
                 + "        =?koi8-r?B?+yAxMSUgMTU1MyAo5ffy4fopLnhsc3g=?="));
+            Assert.AreEqual("Повагонная спецификация ЩОФ-Сибуглемет_06.xlsx"
+                , cv.Decode("=?koi8-r?B?8M/XwcfPzs7B0SDT0MXDycbJy8HDydEg/e/mLfPJwtXHzMXNxdRfMDYueGw=?==?koi8-r?B?c3g=?="));
+            Assert.AreEqual("Повагонная спецификация ЩОФ-Сибуглемет_06.xlsx"
+                , cv.Decode("=?koi8-r?B?8M/XwcfPzs7B0SDT0MXDycbJy8HDydEg/e/mLfPJwtXHzMXNxdRfMDYueGw=?=\r\n\t=?koi8-r?B?c3g=?="));
 
         }
     }
