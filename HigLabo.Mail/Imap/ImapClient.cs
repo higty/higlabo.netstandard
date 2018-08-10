@@ -122,6 +122,21 @@ namespace HigLabo.Net.Imap
         /// <summary>
         /// 
         /// </summary>
+        public ImapClient(String userName, String password)
+            : this("")
+        {
+            if (userName.EndsWith("@gmail.com")) { this.SetProperty(EmailServiceProvider.Gmail); }
+            if (userName.EndsWith("@outlook.com") ||
+                userName.EndsWith("@live.com") ||
+                userName.EndsWith("@hotmail.com")) { this.SetProperty(EmailServiceProvider.Outlook); }
+            if (userName.EndsWith("@yahoo.com")) { this.SetProperty(EmailServiceProvider.YahooMail); }
+            if (userName.EndsWith("@aol.com")) { this.SetProperty(EmailServiceProvider.AolMail); }
+            if (userName.EndsWith("@zoho.com")) { this.SetProperty(EmailServiceProvider.ZohoMail); }
+            this.Password = password;
+        }
+        /// <summary>
+        /// 
+        /// </summary>
         public ImapClient(String serverName)
             : this(serverName, Default.Port, Default.UserName, Default.Password)
         {

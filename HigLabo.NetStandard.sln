@@ -41,6 +41,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.NugetManagementAppl
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Wpf", "HigLabo.Wpf\HigLabo.Wpf.csproj", "{99D7770C-277F-4A24-90B9-5EE6535CDE57}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Csv", "HigLabo.Csv\HigLabo.Csv.csproj", "{6C974562-84DA-4A25-AA86-7F94C6389D1E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -123,6 +125,10 @@ Global
 		{99D7770C-277F-4A24-90B9-5EE6535CDE57}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{99D7770C-277F-4A24-90B9-5EE6535CDE57}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{99D7770C-277F-4A24-90B9-5EE6535CDE57}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6C974562-84DA-4A25-AA86-7F94C6389D1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C974562-84DA-4A25-AA86-7F94C6389D1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C974562-84DA-4A25-AA86-7F94C6389D1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C974562-84DA-4A25-AA86-7F94C6389D1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

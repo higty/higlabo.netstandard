@@ -161,6 +161,9 @@ namespace HigLabo.Net
 #if !NETFX_CORE && !DEBUG
             TraceSource.Listeners.Clear();
 #endif
+#if DEBUG
+            TraceSource.Switch.Level = SourceLevels.All;
+#endif
         }
         /// <summary>
         /// 

@@ -85,6 +85,21 @@ namespace HigLabo.Mapper.Test
         }
 
         [TestMethod]
+        public void ObjectMapConfig_Map_NullProperty_None()
+        {
+            var config = new ObjectMapConfig();
+            config.NullPropertyMapMode = NullPropertyMapMode.None;
+            config.MaxCallStackCount = 100;
+
+            var u1 = new User();
+            u1.ParentUser = null;
+            var u2 = new User();
+            u2.ParentUser = null;
+            config.Map(u1, u2);
+
+            Assert.IsNull(u2.ParentUser);
+        }
+        [TestMethod]
         public void ObjectMapConfig_Map_NullProperty_NewObject()
         {
             var config = new ObjectMapConfig();

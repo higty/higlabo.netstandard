@@ -13,6 +13,11 @@ namespace HigLabo.Mapper.Test
 
     public class User : IUser
     {
+        public class InnerClassUser : User
+        {
+
+        }
+
         public String Value { get; set; }
         public String Name { get; set; }
 
