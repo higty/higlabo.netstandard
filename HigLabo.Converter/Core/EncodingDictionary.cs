@@ -37,7 +37,9 @@ namespace HigLabo.Converter
         }
         public Encoding GetEncoding(String encoding)
         {
-            return GetEncoding(encoding, null);
+            var en = TryGetEncoding(encoding);
+            if (en == null) { throw new EncodingNotFoundException(encoding); }
+            return en;
         }
         public Encoding GetEncoding(String encoding, Encoding defaultEncoding)
         {
@@ -52,6 +54,20 @@ namespace HigLabo.Converter
             }
             catch { return defaultEncoding; }
         }
+        public Encoding TryGetEncoding(String encoding)
+        {
+            var en = GetEncoding(encoding, null);
+            if (en == null)
+            {
+                en = GetEncoding(encoding.TrimStart('"').TrimEnd('"'), null);
+            }
+            if (en == null)
+            {
+                en = GetEncoding(encoding.TrimStart('\'').TrimEnd('\''), null);
+            }
+            return en;
+        }
+
         public void Add(String key, Encoding encoding)
         {
             _Encodings.Add(key, encoding);

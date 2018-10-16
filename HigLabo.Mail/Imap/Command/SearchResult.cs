@@ -13,6 +13,8 @@ namespace HigLabo.Net.Imap
     /// </summary>
     public class SearchResult 
     {
+        private static readonly List<String> _EmptyValueList = new List<String>();
+        private static readonly List<Int64> _EmptyMailIndexList = new List<Int64>();
         /// <summary>
         /// 
         /// </summary>
@@ -40,7 +42,8 @@ namespace HigLabo.Net.Imap
             Int32 startIndex = startText.Length + 1;
             if (line.Length < startIndex)
             {
-                this.Values = new ReadOnlyCollection<String>(new List<String>());
+                this.Values = new ReadOnlyCollection<String>(_EmptyValueList);
+                this.MailIndexList = new ReadOnlyCollection<Int64>(_EmptyMailIndexList);
                 return;
             }
             String ss = line.Substring(startIndex, line.Length - startIndex);

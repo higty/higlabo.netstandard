@@ -189,10 +189,19 @@ namespace HigLabo.Converter
                             }
                             else
                             {
-                                throw new FormatException();
+                                //Not encoded text
                             }
                         }
-                        buffer[bufferIndex++] = d;
+                        if (d > 0)
+                        {
+                            buffer[bufferIndex++] = d;
+                        }
+                        else
+                        {
+                            buffer[bufferIndex++] = bbb[0];
+                            buffer[bufferIndex++] = bbb[1];
+                            buffer[bufferIndex++] = bbb[2];
+                        }
                         bbbIndex = 0;
                     }
                 }

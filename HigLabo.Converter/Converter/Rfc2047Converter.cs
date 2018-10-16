@@ -144,7 +144,7 @@ namespace HigLabo.Converter
                         if (*current == '?')
                         {
                             var bb = CreateNewBytes(new IntPtr(rfc2047Current), current - rfc2047Current);
-                            charset = EncodingDictionary.Current.GetEncoding(this.Encoding.GetString(bb));
+                            charset = EncodingDictionary.Current.TryGetEncoding(this.Encoding.GetString(bb));
                             if (charset == null)
                             {
                                 state = Rfc2047ParsingState.NotParsing;

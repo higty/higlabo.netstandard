@@ -7,12 +7,11 @@ namespace HigLabo.Mime
 {
     public class InvalidMimeFormatException : Exception
     {
-        public String RawText { get; private set; }
         public String ParseText { get; private set; }
-        public InvalidMimeFormatException(String rawText, String parseText)
-            : base()
+
+        public InvalidMimeFormatException(String parseText)
+            : base(parseText)
         {
-            this.RawText = rawText;
             this.ParseText = parseText;
         }
     }

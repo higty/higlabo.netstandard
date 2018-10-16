@@ -127,8 +127,7 @@ namespace HigLabo.Mime
             }
             catch (InvalidMimeFormatException ex)
             {
-                var rawText = this.GetRawText(stream);
-                throw new InvalidMimeFormatException(rawText, ex.ParseText);
+                throw new InvalidMimeMessageException(mg, ex.ParseText);
             }
             finally
             {
@@ -297,7 +296,7 @@ namespace HigLabo.Mime
                     if (current == end)
                     {
                         var line = Encoding.UTF8.GetString(headerPointer.ToArray());
-                        throw new InvalidMimeFormatException("", line);
+                        throw new InvalidMimeFormatException(line);
                     }
                 }
                 String key = this.Encoding.GetString(CreateNewBytes(new IntPtr(start), current - start));
@@ -335,7 +334,7 @@ namespace HigLabo.Mime
 
             this.ParseMimeHeaderParameter(header);
 
-            if (header.Parameters.Count == 0) { throw new InvalidMimeFormatException("", this.Encoding.GetString(header.RawData)); }
+            if (header.Parameters.Count == 0) { throw new InvalidMimeFormatException(header.GetRawText()); }
             header.Value = header.Parameters[0].Value;
 
             header.Boundary = header.GetParameterValue("boundary");
@@ -344,7 +343,8 @@ namespace HigLabo.Mime
             header.DeleteSpace = String.Equals(header.GetParameterValue("delsp"), "yes", StringComparison.OrdinalIgnoreCase);
             if (String.IsNullOrEmpty(header.Charset) == false)
             {
-                header.CharsetEncoding = EncodingDictionary.Current.GetEncoding(header.Charset);
+                header.CharsetEncoding = EncodingDictionary.Current.TryGetEncoding(header.Charset);
+                if (header.CharsetEncoding == null) { throw new InvalidMimeFormatException(header.GetRawText()); }
             }
 
             var slashIndex = header.Value.IndexOf("/", StringComparison.OrdinalIgnoreCase);
@@ -362,7 +362,7 @@ namespace HigLabo.Mime
 
             this.ParseMimeHeaderParameter(header);
 
-            if (header.Parameters.Count == 0) { throw new InvalidMimeFormatException("", this.Encoding.GetString(header.RawData)); }
+            if (header.Parameters.Count == 0) { throw new InvalidMimeFormatException(header.GetRawText()); }
             header.Value = header.Parameters[0].Value;
             header.FileName = _Rfc2047Converter.Decode(header.GetParameterValue("filename"));
         }
@@ -609,7 +609,7 @@ namespace HigLabo.Mime
                                         case CheckBoundaryResult.None:
                                             {
                                                 var lineText = this.Encoding.GetString(line);
-                                                throw new InvalidMimeFormatException("", lineText);
+                                                throw new InvalidMimeFormatException(lineText);
                                             }
                                         case CheckBoundaryResult.Boundary:
                                             {

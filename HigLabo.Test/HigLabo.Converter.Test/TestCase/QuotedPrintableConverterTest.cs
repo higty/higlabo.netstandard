@@ -42,5 +42,17 @@ namespace HigLabo.Mime.Test
             var decodedText = Encoding.GetEncoding("iso-2022-JP").GetString(bb);
             Assert.AreEqual(BodyText, decodedText);
         }
+        [TestMethod]
+        public void QuotedPrintableConverter_Decode_1()
+        {
+            Encoding.RegisterProvider(CodePagesEncodingProvider.Instance);
+
+            var qc = new QuotedPrintableConverter(2000, QuotedPrintableConvertMode.Default);
+            qc.InsertNewline = true;
+            var text = "https://join.slack.com/t/team/invite/MjM1ODAzMTM3MDc2LTE1MDQ0OTk3NDItODMzYmU4MWEwOQ?x=x-39652798756-2358031371";
+            var bb = qc.Decode(Encoding.UTF8.GetBytes(text));
+            var decodedText = Encoding.GetEncoding("iso-2022-JP").GetString(bb);
+            Assert.AreEqual("https://join.slack.com/t/team/invite/MjM1ODAzMTM3MDc2LTE1MDQ0OTk3NDItODMzYmU4MWEwOQ?x=x-39652798756-2358031371", decodedText);
+        }
     }
 }

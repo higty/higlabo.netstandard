@@ -53,5 +53,7 @@ namespace HigLabo.Mime
             : base(new MailHeaderCollection())
         {
         }
+        protected MailMessage(MimeHeaderCollection headers)
+            : base(headers) { }
     }
 }

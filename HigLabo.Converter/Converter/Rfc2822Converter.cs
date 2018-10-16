@@ -9,6 +9,12 @@ namespace HigLabo.Converter
     {
         public DateTimeOffset Parse(String input)
         {
+            var d = this.TryParse(input);
+            if (d == null) { throw new FormatException(); }
+            return d.Value;
+        }
+        public DateTimeOffset? TryParse(String input)
+        {
             DateTimeOffset dtime = DateTimeOffset.Now;
             TimeSpan ts = TimeSpan.Zero;
 
@@ -16,11 +22,11 @@ namespace HigLabo.Converter
             if (DateTimeOffset.TryParse(input, out dtime) == true) { return dtime; }
 
             var firstColonIndex = input.IndexOf(":", StringComparison.OrdinalIgnoreCase);
-            if (firstColonIndex == -1) { throw new FormatException(); }
+            if (firstColonIndex == -1) { return null; }
             var timezoneStartIndex = input.IndexOf(" ", firstColonIndex, StringComparison.OrdinalIgnoreCase);
 
             var dateTimePart = input.Substring(0, timezoneStartIndex);//Tue, 25 Oct 2011 20:44:24
-            if (DateTimeOffset.TryParse(dateTimePart, out dtime) == false) { throw new FormatException(); }
+            if (DateTimeOffset.TryParse(dateTimePart, out dtime) == false) { return null; }
             //(CST) or CST or +0600 (Three letter military timezone)
             var timeZonePart = input.Substring(timezoneStartIndex + 1).Trim();//+0600 or GMT (Three letter military timezone)
 

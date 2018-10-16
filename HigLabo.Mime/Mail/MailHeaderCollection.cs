@@ -13,6 +13,8 @@ namespace HigLabo.Mime
         private DateTimeOffset? _Date = null;
         private String _Subject = null;
         private String _MessageID = null;
+        private String _InReplyTo = null;
+        private String _References = null;
 
         private MailAddress _From = null;
         private MailAddress _Sender = null;
@@ -29,7 +31,19 @@ namespace HigLabo.Mime
                 if (_Date == null)
                 {
                     var date = this["Date"];
-                    _Date = MailHeaderCollection.Rfc2822Converter.Parse(date);
+                    if (String.IsNullOrEmpty(date) == false)
+                    {
+                        _Date = MailHeaderCollection.Rfc2822Converter.TryParse(date);
+                    }
+                }
+                if (_Date == null)
+                {
+                    var text = this["Received"];
+                    foreach (var item in text.Split(';'))
+                    {
+                        _Date = MailHeaderCollection.Rfc2822Converter.TryParse(item);
+                        if (_Date.HasValue) { break; }
+                    }
                 }
                 return _Date.Value;
             }
@@ -54,6 +68,28 @@ namespace HigLabo.Mime
                     _MessageID = this["Message-ID"];
                 }
                 return _MessageID;
+            }
+        }
+        public String InReplyTo
+        {
+            get
+            {
+                if (_InReplyTo == null)
+                {
+                    _InReplyTo = this["In-Reply-To"];
+                }
+                return _InReplyTo;
+            }
+        }
+        public String References
+        {
+            get
+            {
+                if (_References == null)
+                {
+                    _References = this["References"];
+                }
+                return _References;
             }
         }
         public MailAddress From

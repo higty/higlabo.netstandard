@@ -59,6 +59,12 @@ namespace HigLabo.Net.Imap
         private ModifiedUtf7Converter _ModifiedUtf7Converter = new ModifiedUtf7Converter(200);
         private Int32 _TagNo = Default.TagNo;
         private ImapConnectionState _State = ImapConnectionState.Disconnected;
+
+        private String Tag
+        {
+            get { return "tag" + this.TagNo; }
+        }
+
         public MimeParser MimeParser { get; set; }
         /// <summary>
         /// Get connection state.
@@ -85,33 +91,20 @@ namespace HigLabo.Net.Imap
         {
             get { return this._State != ImapConnectionState.Disconnected; }
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public Int32 TagNo
         {
             get { return _TagNo; }
             set { _TagNo = value; }
         }
-        private String Tag
-        {
-            get { return "tag" + this.TagNo; }
-        }
-
         /// <summary>
-        /// 
+        /// Throw exception when invalid mime format message received.
         /// </summary>
-        /// <param name="provider"></param>
+        public Boolean ThrowExceptionOnInvalidMailMessage { get; set; } = false;
+
         public ImapClient(EmailServiceProvider provider)
             : this(provider, Default.UserName, Default.Password)
         {
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="provider"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
         public ImapClient(EmailServiceProvider provider, String userName, String password)
             : this("")
         {
@@ -119,12 +112,11 @@ namespace HigLabo.Net.Imap
             this.UserName = userName;
             this.Password = password;
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public ImapClient(String userName, String password)
             : this("")
         {
+            this.UserName = userName;
+            this.Password = password;
             if (userName.EndsWith("@gmail.com")) { this.SetProperty(EmailServiceProvider.Gmail); }
             if (userName.EndsWith("@outlook.com") ||
                 userName.EndsWith("@live.com") ||
@@ -132,32 +124,17 @@ namespace HigLabo.Net.Imap
             if (userName.EndsWith("@yahoo.com")) { this.SetProperty(EmailServiceProvider.YahooMail); }
             if (userName.EndsWith("@aol.com")) { this.SetProperty(EmailServiceProvider.AolMail); }
             if (userName.EndsWith("@zoho.com")) { this.SetProperty(EmailServiceProvider.ZohoMail); }
-            this.Password = password;
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public ImapClient(String serverName)
             : this(serverName, Default.Port, Default.UserName, Default.Password)
         {
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="serverName"></param>
-        /// <param name="port"></param>
-        /// <param name="userName"></param>
-        /// <param name="password"></param>
         public ImapClient(String serverName, Int32 port, String userName, String password)
             : base(serverName, port, userName, password, Default)
         {
             this.MimeParser = new MimeParser();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="provider"></param>
         public void SetProperty(EmailServiceProvider provider)
         {
             String serverName = "";
@@ -1066,22 +1043,12 @@ namespace HigLabo.Net.Imap
             return l;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
         public SearchResult Search(SearchByKeywordCommandKey key)
         {
             var cm = new SearchByKeywordCommand();
             cm.Key = key;
             return this.Search(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
         public SearchResult Search(SearchByValueCommandKey key, String value)
         {
             var cm = new SearchByValueCommand();
@@ -1089,11 +1056,6 @@ namespace HigLabo.Net.Imap
             cm.Value = value;
             return this.Search(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <returns></returns>
         public SearchResult Search(SearchByDateTimeCommandKey key, DateTime value)
         {
             var cm = new SearchByDateTimeCommand();
@@ -1101,12 +1063,6 @@ namespace HigLabo.Net.Imap
             cm.Value = value;
             return this.Search(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="headerFieldName"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
         public SearchResult Search(String headerFieldName, String value)
         {
             var cm = new SearchHeaderCommand();
@@ -1114,11 +1070,6 @@ namespace HigLabo.Net.Imap
             cm.Value = value;
             return this.Search(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         public SearchResult Search(SearchCommand command)
         {
             if (command.IsEncodeValue == true)
@@ -1178,6 +1129,7 @@ namespace HigLabo.Net.Imap
                 commandText = String.Format(this.Tag + " FETCH {0} (BODY.PEEK[])", mailIndex);
             }
             var result = this.Execute(commandText);
+            if (result.Status == ImapCommandResultStatus.Bad) { throw new MailClientException(result.Text); }
             var text = this.GetMessageText(result.Text);
             this.MimeParser.Encoding = this.ResponseEncoding;
             return this.MimeParser.ToMailMessage(text);
@@ -1211,6 +1163,7 @@ namespace HigLabo.Net.Imap
             this.ValidateState(ImapConnectionState.Authenticated, true);
             String commandText = String.Format(this.Tag + " FETCH {0} (BODY.PEEK[])", this.CreateIndexList(mailIndexList));
             var result = this.Execute(commandText);
+            if (result.Status == ImapCommandResultStatus.Bad) { throw new MailClientException(result.Text); }
             var l = this.CreateMailMessages(result.Text);
             return l;
         }
@@ -1237,10 +1190,22 @@ namespace HigLabo.Net.Imap
                     if (line == ")")
                     {
                         sb.Append(".");
-                        var mg = this.MimeParser.ToMailMessage(sb.ToString());
-                        l.Add(mg);
-                        readingHeader = false;
-                        continue;
+                        try
+                        {
+                            var mg = this.MimeParser.ToMailMessage(sb.ToString());
+                            l.Add(mg);
+                            readingHeader = false;
+                            continue;
+                        }
+                        catch (InvalidMimeMessageException ex)
+                        {
+                            if (this.ThrowExceptionOnInvalidMailMessage)
+                            {
+                                throw;
+                            }
+                            var mg = new InvalidMailMessage(ex.MimeMessage, ex.ParseText);
+                            l.Add(mg);
+                        }
                     }
                     else
                     {
@@ -1257,16 +1222,18 @@ namespace HigLabo.Net.Imap
         {
             StringBuilder sb = new StringBuilder(text.Length);
             StringReader sr = new StringReader(text);
-            String endOfLine = String.Format("{0} OK FETCH Completed", this.Tag);
+            String endOfLine = String.Format("{0} OK", this.Tag);
             Boolean isFirstLine = true;
             while (true)
             {
                 var line = sr.ReadLine();
                 if (isFirstLine == true && line.StartsWith("*") == true) { continue; }
                 if (line.StartsWith(")") == true) { continue; }
-                if (String.Equals(line, endOfLine, StringComparison.OrdinalIgnoreCase) == true) { break; }
+                if (sr.Peek() == -1)
+                {
+                    if (line.StartsWith(endOfLine, StringComparison.OrdinalIgnoreCase) == true) { break; }
+                }
                 sb.AppendLine(line);
-                if (sr.Peek() == -1) { break; }
             }
             return sb.ToString();
         }
@@ -1482,6 +1449,8 @@ namespace HigLabo.Net.Imap
                 sb.Append(index);
                 sb.Append(",");
             }
+            if (sb.Length == 0) { return ""; }
+
             return sb.Remove(sb.Length - 1, 1).ToString();
         }
         /// <summary>

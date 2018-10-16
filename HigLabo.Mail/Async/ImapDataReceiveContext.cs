@@ -78,6 +78,10 @@ namespace HigLabo.Net.Internal
                         tagIndex = 0;
                         _State = ParseState.TagValidating;
                     }
+                    else if (bb[i] == AsciiCharCode.CarriageReturn.GetNumber())
+                    {
+                        _State = ParseState.CarriageReturn;
+                    }
                     else { throw new DataTransferContextException(this); }
                 }
                 else if (_State == ParseState.LastLine)
