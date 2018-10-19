@@ -82,7 +82,11 @@ namespace HigLabo.Net.Internal
                     {
                         _State = ParseState.CarriageReturn;
                     }
-                    else { throw new DataTransferContextException(this); }
+                    else
+                    {
+                        tagIndex = 0;
+                        _State = ParseState.TagValidating;
+                    }
                 }
                 else if (_State == ParseState.LastLine)
                 {
