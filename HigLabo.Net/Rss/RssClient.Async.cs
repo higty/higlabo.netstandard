@@ -14,9 +14,10 @@ namespace HigLabo.Net
         /// </summary>
         /// <param name="uri"></param>
         /// <returns></returns>
-        public Task<RssFeed> GetRssFeedAsync(Uri uri)
+        public async Task<RssFeed> GetRssFeedAsync(String url)
         {
-            return AsyncCall<Uri, RssFeed>(this.GetRssFeed, uri);
+            var bodyText = await this.GetBodyTextAsync(url);
+            return RssFeed.Parse(bodyText);
         }
     }
 }

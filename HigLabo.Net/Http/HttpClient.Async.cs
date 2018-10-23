@@ -38,7 +38,7 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpWebResponse> GetHttpWebResponseAsync(String url)
         {
-            return this.GetHttpWebResponseAsync(url);
+            return this.GetHttpWebResponseAsync(new HttpRequestCommand(url));
         }
         /// <summary>
         /// 
@@ -48,7 +48,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpWebResponse> GetHttpWebResponseAsync(String url, HttpBodyFormUrlEncodedData data)
         {
-            return this.GetHttpWebResponseAsync(url, data);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(data);
+            return this.GetHttpWebResponseAsync(cm);
         }
         /// <summary>
         /// 
@@ -58,7 +60,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpWebResponse> GetHttpWebResponseAsync(String url, Byte[] data)
         {
-            return this.GetHttpWebResponseAsync(url, data);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(data);
+            return this.GetHttpWebResponseAsync(cm);
         }
         /// <summary>
         /// 
@@ -68,7 +72,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpWebResponse> GetHttpWebResponseAsync(String url, Stream stream)
         {
-            return this.GetHttpWebResponseAsync(url, stream);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(stream);
+            return this.GetHttpWebResponseAsync(cm);
         }
         /// <summary>
         /// 
@@ -86,7 +92,8 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpResponse> GetResponseAsync(String url)
         {
-            return this.GetResponseAsync(url);
+            var cm = new HttpRequestCommand(url);
+            return this.GetResponseAsync(cm);
         }
         /// <summary>
         /// 
@@ -96,7 +103,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpResponse> GetResponseAsync(String url, HttpBodyFormUrlEncodedData data)
         {
-            return this.GetResponseAsync(url, data);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(data);
+            return this.GetResponseAsync(cm);
         }
         /// <summary>
         /// 
@@ -106,7 +115,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpResponse> GetResponseAsync(String url, Byte[] data)
         {
-            return this.GetResponseAsync(url, data);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(data);
+            return this.GetResponseAsync(cm);
         }
         /// <summary>
         /// 
@@ -116,7 +127,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpResponse> GetResponseAsync(String url, Stream stream)
         {
-            return this.GetResponseAsync(url, stream);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(stream);
+            return this.GetResponseAsync(cm);
         }
         /// <summary>
         /// 
@@ -134,7 +147,8 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<String> GetBodyTextAsync(String url)
         {
-            return this.GetBodyTextAsync(url);
+            var cm = new HttpRequestCommand(url);
+            return this.GetBodyTextAsync(cm);
         }
         /// <summary>
         /// 
@@ -144,7 +158,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<String> GetBodyTextAsync(String url, HttpBodyFormUrlEncodedData data)
         {
-            return this.GetBodyTextAsync(url, data);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(data);
+            return this.GetBodyTextAsync(cm);
         }
         /// <summary>
         /// 
@@ -154,7 +170,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<String> GetBodyTextAsync(String url, Byte[] data)
         {
-            return this.GetBodyTextAsync(url, data);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(data);
+            return this.GetBodyTextAsync(cm);
         }
         /// <summary>
         /// 
@@ -164,7 +182,9 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<String> GetBodyTextAsync(String url, Stream stream)
         {
-            return this.GetBodyTextAsync(url, stream);
+            var cm = new HttpRequestCommand(url);
+            cm.SetBodyStream(stream);
+            return this.GetBodyTextAsync(cm);
         }
         /// <summary>
         /// 
