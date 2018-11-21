@@ -27,32 +27,33 @@ namespace HigLabo.Net
         private Int32 _DequeueRetryCount = 4;
         private Queue<Byte[]> _Buffers;
         private Object _LockObject = new Object();
-        /// <summary>
-        /// 
-        /// </summary>
+
         public Int32 DequeueRetryCount
         {
             get { return _DequeueRetryCount; }
             set { _DequeueRetryCount = value; }
         }
-        /// <summary>
-        /// 
-        /// </summary>
+        public Int32 BufferCount
+        {
+            get
+            {
+                lock (_LockObject)
+                {
+                    return _Buffers.Count;
+                }
+            }
+        }
         public BufferManager()
         {
             this.Initialize();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="poolSize"></param>
-        /// <param name="bufferSize"></param>
         public BufferManager(Int32 poolSize, Int32 bufferSize)
         {
             this._PoolSize = poolSize;
             this._BufferSize = bufferSize;
             this.Initialize();
         }
+
         private void Initialize()
         {
             _Buffers = new Queue<Byte[]>(_PoolSize);

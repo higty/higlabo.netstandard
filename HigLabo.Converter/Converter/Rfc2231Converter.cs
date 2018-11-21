@@ -36,7 +36,7 @@ namespace HigLabo.Converter
         }
         public String Decode(String text, Encoding encoding)
         {
-            Int32 CurrentIndex = 0;
+            Int32 currentIndex = 0;
             Byte[] bb = new Byte[text.Length];
             Int32 ByteArrayIndex = 0;
             Int32? Hex = null;
@@ -44,13 +44,13 @@ namespace HigLabo.Converter
             while (true)
             {
                 //%FF形式かどうかチェック
-                if (CurrentIndex <= text.Length - 3 &&
-                    text[CurrentIndex] == '%')
+                if (currentIndex <= text.Length - 3 &&
+                    text[currentIndex] == '%')
                 {
                     Hex = 0;
                     for (int i = 0; i < 2; i++)
                     {
-                        var c1 = (Byte)text[CurrentIndex + 1 + i];
+                        var c1 = (Byte)text[currentIndex + 1 + i];
 
                         if (c1 >= 48 && c1 <= 57)
                         {
@@ -78,15 +78,15 @@ namespace HigLabo.Converter
                 if (Hex.HasValue == true)
                 {
                     bb[ByteArrayIndex] = (Byte)Hex.Value;
-                    CurrentIndex += 3;
+                    currentIndex += 3;
                 }
                 else
                 {
-                    bb[ByteArrayIndex] = (Byte)text[CurrentIndex];
-                    CurrentIndex += 1;
+                    bb[ByteArrayIndex] = (Byte)text[currentIndex];
+                    currentIndex += 1;
                 }
                 ByteArrayIndex += 1;
-                if (CurrentIndex >= text.Length) { break; }
+                if (currentIndex >= text.Length) { break; }
             }
             //バイト配列を文字列に変換
             Byte[] bb2 = new Byte[ByteArrayIndex];

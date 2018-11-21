@@ -1203,7 +1203,7 @@ namespace HigLabo.Net.Imap
                             {
                                 throw;
                             }
-                            var mg = new InvalidMailMessage(ex.MimeMessage, ex.ParseText);
+                            var mg = new InvalidMailMessage(ex.MimeMessage, text, ex.ParseText);
                             l.Add(mg);
                         }
                     }
@@ -1229,11 +1229,10 @@ namespace HigLabo.Net.Imap
                 var line = sr.ReadLine();
                 if (isFirstLine == true && line.StartsWith("*") == true) { continue; }
                 if (line.StartsWith(")") == true) { continue; }
-                if (sr.Peek() == -1)
-                {
-                    if (line.StartsWith(endOfLine, StringComparison.OrdinalIgnoreCase) == true) { break; }
-                }
+                if (line.StartsWith(endOfLine, StringComparison.OrdinalIgnoreCase) == true) { break; }
                 sb.AppendLine(line);
+
+                if (sr.Peek() == -1) { break; }
             }
             return sb.ToString();
         }

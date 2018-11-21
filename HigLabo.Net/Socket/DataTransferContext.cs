@@ -11,7 +11,7 @@ namespace HigLabo.Net.Internal
     /// </summary>
     public class DataTransferContext : IDisposable
     {
-		private static BufferManager _BufferManager = null;
+		private static BufferManager _BufferManager = new BufferManager(256, 8192);
 		private DateTime _StartTime = DateTime.Now;
 		private Byte[] _Buffer;
         private Stream _Stream = null;
@@ -24,14 +24,7 @@ namespace HigLabo.Net.Internal
 		/// </summary>
 		public static BufferManager BufferManager
 		{
-			get
-			{
-				if (_BufferManager == null)
-				{
-					_BufferManager = new BufferManager(256, 8192);
-				}
-				return _BufferManager;
-			}
+            get { return _BufferManager; }
 			set { _BufferManager = value; }
 		}
         /// <summary>

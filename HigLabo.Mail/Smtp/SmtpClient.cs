@@ -222,7 +222,7 @@ namespace HigLabo.Net.Smtp
         {
             List<SmtpCommandResultLine> l = new List<SmtpCommandResultLine>();
             String lineText = "";
-            SmtpCommandResultLine CurrentLine = null;
+            SmtpCommandResultLine currentLine = null;
             Byte[] bb = this.GetResponseBytes(new SmtpDataReceiveContext(this.ResponseEncoding));
             StringReader sr = new StringReader(this.ResponseEncoding.GetString(bb));
             while (true)
@@ -230,10 +230,10 @@ namespace HigLabo.Net.Smtp
                 lineText = sr.ReadLine();
                 if (lineText.IsNullOrEmpty() == true) { break; }
 
-                CurrentLine = new SmtpCommandResultLine(lineText);
-                l.Add(CurrentLine);
+                currentLine = new SmtpCommandResultLine(lineText);
+                l.Add(currentLine);
                 //次の行があるかチェック
-                if (CurrentLine.HasNextLine == false)
+                if (currentLine.HasNextLine == false)
                 { break; }
             }
             this.SetSmtpCommandState();
