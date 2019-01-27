@@ -941,7 +941,7 @@ namespace HigLabo.Core
                     }
                     #endregion
                 }
-                else if (targetProperty_PropertyType == typeof(String))
+                else if (targetProperty_PropertyType == typeof(String) && targetSetMethod != null)
                 {
                     #region
                     if (sourceProperty.IsIndexedProperty)
@@ -1009,7 +1009,7 @@ namespace HigLabo.Core
                     }
                     #endregion
                 }
-                else if (targetProperty_PropertyType == typeof(Encoding))
+                else if (targetProperty_PropertyType == typeof(Encoding) && targetSetMethod != null)
                 {
                     #region
                     if (sourceProperty.IsIndexedProperty)

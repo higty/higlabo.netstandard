@@ -47,6 +47,31 @@ namespace HigLabo.Mapper.Test
             Assert.AreEqual(u1.X, v1.X);
         }
         [TestMethod]
+        public void ObjectMapConfig_Map_GenericType_Object()
+        {
+            var config = new ObjectMapConfig();
+
+            var u1 = new User();
+            var u2 = Map_GenericType_Object<User>(u1);
+
+            Assert.AreEqual(u1.Name, u2.Name);
+            Assert.AreEqual(u1.Int32, u2.Int32);
+            Assert.AreEqual(u1.Decimal, u2.Decimal);
+            Assert.AreEqual(u1.DateTime, u2.DateTime);
+            Assert.AreEqual(u1.DayOfWeek, u2.DayOfWeek);
+
+            Assert.AreEqual(u1.MapPoint.Latitude, u2.MapPoint.Latitude);
+            Assert.AreEqual(u1.MapPoint.Longitude, u2.MapPoint.Longitude);
+
+            Assert.AreEqual(u1.Vector2.X, u2.Vector2.X);
+            Assert.AreEqual(u1.Vector2.Y, u2.Vector2.Y);
+        }
+        private T Map_GenericType_Object<T>(T value)
+            where T: class, new()
+        {
+            return value.Map(new T());
+        }
+        [TestMethod]
         public void ObjectMapConfig_Map_Object_ValueType()
         {
             var config = new ObjectMapConfig();

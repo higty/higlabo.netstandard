@@ -40,6 +40,11 @@ namespace HigLabo.Mapper.Test
         public Dictionary<String, String> Dictionary { get; set; }
         public Byte[] Timestamp { get; set; }
 
+        public String ReadOnlyProperty
+        {
+            get { return String.Format("{0}={1}", this.Name, this.Value); }
+        }
+
         public User()
             : this("TestUser")
         {
