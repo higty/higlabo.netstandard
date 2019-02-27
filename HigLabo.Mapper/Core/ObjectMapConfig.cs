@@ -691,6 +691,7 @@ namespace HigLabo.Core
                 {
                     if (p.GetGetMethod() == null) { continue; }
                     if (p.Name == "SyncRoot" && p.PropertyType == typeof(Object)) { continue; }
+                    if (sourceProperties.Exists(el => el.Name == p.Name)) { continue; }
 
                     sourceProperties.Add(p);
                 }
@@ -703,6 +704,7 @@ namespace HigLabo.Core
                     .Where(el => el.GetIndexParameters().Length == 0))
                 {
                     if (p.Name == "SyncRoot" && p.PropertyType == typeof(Object)) { continue; }
+                    if (targetProperties.Exists(el => el.Name == p.Name)) { continue; }
                     if (p.GetGetMethod() == null)
                     {
                         var targetInterfaceType = p.PropertyType.GetInterfaces()
@@ -1203,7 +1205,7 @@ namespace HigLabo.Core
                 else if (targetProperty_PropertyType.IsClass || targetProperty_PropertyType.IsInterface)
                 {
                     #region
-                    if (this.NullPropertyMapMode != NullPropertyMapMode.None && targetSetMethod != null)
+                    if (targetSetMethod != null && this.NullPropertyMapMode != NullPropertyMapMode.None)
                     {
                         #region if (target.P1 == null) { target.P1 = new TTarget(); }
                         il.Emit(OpCodes.Ldarg_2);

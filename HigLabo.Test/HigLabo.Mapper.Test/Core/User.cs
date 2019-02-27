@@ -105,7 +105,7 @@ namespace HigLabo.Mapper.Test
             this.Name = name;
         }
     }
-    public class UserListInfo
+    public class UserListInfo 
     {
         public String GroupName { get; set; }
         public List<User> Users { get; set; }
@@ -118,11 +118,18 @@ namespace HigLabo.Mapper.Test
     public class VipUserListInfo
     {
         public String GroupName { get; set; }
-        public List<VipUser> Users { get; set; }
+        public List<VipUser> Users { get; set; } = new List<VipUser>();
+    }
+    public interface IUsers
+    {
+        List<User> Users { get; }
+    }
+    public class UserListInfoWithInterface: IUsers
+    {
+        public List<User> Users { get; set; } = new List<User>();
+    }
+    public class UserListInfoWithInterface_SubClass : UserListInfoWithInterface
+    {
 
-        public VipUserListInfo()
-        {
-            this.Users = new List<VipUser>();
-        }
     }
 }

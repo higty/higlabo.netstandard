@@ -456,6 +456,24 @@ namespace HigLabo.Mapper.Test
             Assert.AreEqual("Test20", u2.Users[0].Name);
         }
         [TestMethod]
+        public void ObjectMapConfig_MapCollection_Implement_Interface()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.DeepCopy;
+
+            var u1 = new UserListInfoWithInterface();
+            var u2 = new UserListInfoWithInterface_SubClass();
+            for (int i = 0; i < 3; i++)
+            {
+                u1.Users.Add(new VipUser("TestUser" + i.ToString()));
+            }
+            config.Map(u1, u2);
+            u1.Users[0].Name = "Test20";
+
+            Assert.AreEqual(3, u2.Users.Count);
+            Assert.AreEqual("Test20", u2.Users[0].Name);
+        }
+        [TestMethod]
         public void ObjectMapConfig_Map_NullListProperty_NewObject()
         {
             var config = new ObjectMapConfig();
@@ -501,6 +519,19 @@ namespace HigLabo.Mapper.Test
             Assert.AreEqual(u1.MapPoint.Latitude, u2.Latitude);
             Assert.AreEqual(u1.MapPoint.Longitude, u2.Longitude);
             Assert.AreEqual(u1.Vector2.X, u2.X);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_SubClass_UserProperty()
+        {
+            var config = new ObjectMapConfig();
+            config.NullPropertyMapMode = NullPropertyMapMode.None;
+
+            var s1 = new Schedule();
+            s1.CreateUser = new User("Test1");
+            var s2 = config.Map(s1, new AllDaySchedule());
+
+            Assert.IsNotNull(s2.CreateUser);
+            Assert.AreEqual(s1.CreateUser.Name, s2.CreateUser.Name);
         }
         [TestMethod]
         public void ObjectMapConfig_Map_SubClass_ListProperty()
