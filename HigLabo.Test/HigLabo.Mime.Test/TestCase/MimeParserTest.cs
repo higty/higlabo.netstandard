@@ -101,6 +101,14 @@ Is test result green?
                 , mg.Contents[1].FileName);
 
         }
+        [TestMethod]
+        public void Mail_TextBeforeMimeContent()
+        {
+            RegisterProvider();
+
+            var mg = GetMailMessage(Environment.CurrentDirectory + "\\TestData\\Mail_TextBeforeMimeContent.txt");
+
+        }
 
         private MailMessage GetMailMessage(String filePath)
         {
