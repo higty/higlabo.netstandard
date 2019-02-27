@@ -47,7 +47,7 @@ namespace HigLabo.DbSharpApplication.Properties {
         }
         
         /// <summary>
-        ///   厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
+        ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -642,6 +642,24 @@ namespace HigLabo.DbSharpApplication.Properties {
         public static string UserDefinedTableType {
             get {
                 return ResourceManager.GetString("UserDefinedTableType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Use Table feature に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UseTableFeature {
+            get {
+                return ResourceManager.GetString("UseTableFeature", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Table feature is unable. に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string UseTableFeatureUnableText {
+            get {
+                return ResourceManager.GetString("UseTableFeatureUnableText", resourceCulture);
             }
         }
         

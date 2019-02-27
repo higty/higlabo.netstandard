@@ -44,6 +44,20 @@ namespace HigLabo.DbSharpApplication
             {
                 this.ConnectionStringComboBox.SelectedItem = AValue.ConfigData.ConnectionStrings[0];
             }
+
+            if (AValue.ConfigData.UseTableFeature)
+            {
+                this.TableSelectAllCheckBox.Visibility = Visibility.Visible;
+                this.TableListBox.Visibility = Visibility.Visible;
+                this.UseTableFeatureUnableText.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this.TableSelectAllCheckBox.Visibility = Visibility.Collapsed;
+                this.TableListBox.Visibility = Visibility.Collapsed;
+                this.UseTableFeatureUnableText.Visibility = Visibility.Visible;
+            }
+
             AValue.ConfigData.ImportObjectWindow.Initialize(this);
         }
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
@@ -55,7 +69,10 @@ namespace HigLabo.DbSharpApplication
             }
             var ci = this.GetSelectedConnectionStringInfo();
             var offsetHour = ci.TimeZone;
-            this.ImportTable(ci.ConnectionString, offsetHour);
+            if (AValue.ConfigData.UseTableFeature)
+            {
+                this.ImportTable(ci.ConnectionString, offsetHour);
+            }
             this.ImportStoredProcedure(ci.ConnectionString, offsetHour);
             this.ImportUserDefinedTableType(ci.ConnectionString, offsetHour);
 

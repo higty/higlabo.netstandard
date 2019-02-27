@@ -312,7 +312,13 @@
   <data name="UserDefinedTableType" xml:space="preserve">
     <value>UserDefinedTableType</value>
   </data>
+  <data name="UseTableFeature" xml:space="preserve">
+    <value>Use Table feature</value>
+  </data>
   <data name="ValueForTest" xml:space="preserve">
     <value>Value for test</value>
+  </data>
+  <data name="UseTableFeatureUnableText" xml:space="preserve">
+    <value>Table feature is unable.</value>
   </data>
 </root>

@@ -19,7 +19,7 @@
             <Label Content="RootNamespaceName" HorizontalAlignment="Left" Margin="10,35,0,0" Padding="0" VerticalAlignment="Top" Width="139" Height="20"/>
             <TextBox Name="NamespaceNameTextBox" Text="{Binding Path=NamespaceName}" Padding="0" Height="20" Margin="154,35,10,0" 
                      AcceptsReturn="False" TextWrapping="NoWrap" VerticalAlignment="Top" />
-            
+
             <Label Content="DatabaseKey" HorizontalAlignment="Left" Margin="10,60,0,0" VerticalAlignment="Top" Padding="0" Height="20"/>
             <TextBox Name="DatabaseKeyTextBox" Text="{Binding Path=DatabaseKey}" VerticalContentAlignment="Center" HorizontalAlignment="Left" Height="20" Margin="154,60,0,0" 
                      AcceptsReturn="False" TextWrapping="NoWrap" VerticalAlignment="Top" Width="170"/>
@@ -37,6 +37,8 @@
                 <ListBox Name="TableListBox" SelectionMode="Extended" Margin="0,24,0,0"
                          ItemTemplate="{StaticResource ResourceKey=DatabaseObjectDataTemplate}">
                 </ListBox>
+                <Label Name="UseTableFeatureUnableText" Content="{x:Static p:Resources.UseTableFeatureUnableText}" Visibility="Hidden"
+                       Background="#f0f0f0"></Label>
             </Grid>
             <Grid Grid.Column="1">
                 <CheckBox Name="StoredProcedureSelectAllCheckBox" Content="{x:Static p:Resources.SelectAll}" IsChecked="True" VerticalContentAlignment="Center"

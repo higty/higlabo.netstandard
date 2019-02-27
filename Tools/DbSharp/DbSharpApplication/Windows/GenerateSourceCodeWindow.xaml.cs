@@ -40,9 +40,25 @@ namespace HigLabo.DbSharpApplication
             this.StoredProcedureListBox.ItemsSource = _StoredProcedures;
             this.UserDefinedTableTypeListBox.ItemsSource = _UserDefinedTableTypes;
 
-            _Tables.AddRange(AValue.SchemaData.Tables.Select(el => CheckedItem.Create(el, true)).OrderBy(el => el.Item.Name));
+            if (AValue.ConfigData.UseTableFeature)
+            {
+                _Tables.AddRange(AValue.SchemaData.Tables.Select(el => CheckedItem.Create(el, true)).OrderBy(el => el.Item.Name));
+            }
             _StoredProcedures.AddRange(AValue.SchemaData.StoredProcedures.Select(el => CheckedItem.Create(el, true)).OrderBy(el => el.Item.Name));
             _UserDefinedTableTypes.AddRange(AValue.SchemaData.UserDefinedTableTypes.Select(el => CheckedItem.Create(el, true)).OrderBy(el => el.Item.Name));
+
+            if (AValue.ConfigData.UseTableFeature)
+            {
+                this.TableSelectAllCheckBox.Visibility = Visibility.Visible;
+                this.TableListBox.Visibility = Visibility.Visible;
+                this.UseTableFeatureUnableText.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                this.TableSelectAllCheckBox.Visibility = Visibility.Collapsed;
+                this.TableListBox.Visibility = Visibility.Collapsed;
+                this.UseTableFeatureUnableText.Visibility = Visibility.Visible;
+            }
 
             AValue.ConfigData.GenerateSourceCodeWindow.Initialize(this);
         }
@@ -84,7 +100,10 @@ namespace HigLabo.DbSharpApplication
 
             var sv = new CommandService();
             var cm = new GenerateSourceCodeCommand(AValue.ConfigData.GetOutputDirectoryPath(), AValue.SchemaData);
-            cm.Tables.AddRange(_Tables.Where(el => el.IsChecked).Select(el => el.Item));
+            if (AValue.ConfigData.UseTableFeature)
+            {
+                cm.Tables.AddRange(_Tables.Where(el => el.IsChecked).Select(el => el.Item));
+            }
             cm.StoredProcedures.AddRange(_StoredProcedures.Where(el => el.IsChecked).Select(el => el.Item));
             cm.UserDefinedTableTypes.AddRange(_UserDefinedTableTypes.Where(el => el.IsChecked).Select(el => el.Item));
             sv.Commands.Add(cm);

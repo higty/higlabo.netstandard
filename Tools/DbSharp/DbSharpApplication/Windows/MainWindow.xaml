@@ -4,7 +4,8 @@
         xmlns:p="clr-namespace:HigLabo.DbSharpApplication.Properties"
         Title="HigLabo.DbSharpApplication" Width="800" Height="600" 
         MinWidth="700" MinHeight="400" 
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        Icon="/Icon/DbSharp.ico">
     <Window.Resources>
         <ResourceDictionary>
             <Style TargetType="MenuItem">

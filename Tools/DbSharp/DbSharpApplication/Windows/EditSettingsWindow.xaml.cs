@@ -27,6 +27,7 @@ namespace HigLabo.DbSharpApplication
             this.LanguageComboBox.SelectedValuePath = "CultureName";
             this.LanguageComboBox.ItemsSource = this.CreateLanguageViewModelList();
             this.LanguageComboBox.SelectedValue = AValue.ConfigData.CultureName;
+            this.UseTableFeatureCheckBox.DataContext = AValue.ConfigData;
         }
         private List<LanguageViewModel> CreateLanguageViewModelList()
         {

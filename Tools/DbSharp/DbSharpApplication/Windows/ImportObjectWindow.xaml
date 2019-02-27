@@ -38,6 +38,8 @@
                          KeyDown="ToggleListBoxItemChecked"
                          ItemTemplate="{StaticResource ResourceKey=DatabaseObjectDataTemplate}">
                 </ListBox>
+                <Label Name="UseTableFeatureUnableText" Content="{x:Static p:Resources.UseTableFeatureUnableText}" Visibility="Hidden"
+                       Background="#f0f0f0"></Label>
             </Grid>
             <Grid Grid.Column="1">
                 <CheckBox Name="StoredProcedureSelectAllCheckBox" Content="{x:Static p:Resources.SelectAll}" VerticalContentAlignment="Center"

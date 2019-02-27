@@ -210,7 +210,41 @@ namespace HigLabo.DbSharpApplication
         {
             var w = new ImportObjectWindow();
             this.ShowDialog(w);
-            this.MainTabTable.IsSelected = true;
+            this.SetItemsSource();
+            this.SortStoredProcedure();
+            if (AValue.ConfigData.UseTableFeature)
+            {
+                this.MainTabTable.IsSelected = true;
+            }
+            else
+            {
+                this.MainTabStoredProcedure.IsSelected = true;
+            }
+        }
+        private void m0104_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new DeleteObjectWindow();
+            this.ShowDialog(w);
+        }
+        private void m0105_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new GenerateSourceCodeWindow();
+            this.ShowDialog(w);
+        }
+        private void m0106_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new GenerateSqlScriptWindow();
+            this.ShowDialog(w);
+        }
+        private void m0107_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new ManageIgnoreObjectWindow(new DatabaseObject[0]);
+            this.ShowDialog(w);
+        }
+        private void m0110_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new ImportObjectGenerateFileWindow();
+            this.ShowDialog(w);
         }
         private void m0191_Click(object sender, RoutedEventArgs e)
         {
@@ -245,31 +279,6 @@ namespace HigLabo.DbSharpApplication
                     AValue.SchemaData.IgnoreObjects.Add(o);
                 }
             }
-        }
-        private void m0104_Click(object sender, RoutedEventArgs e)
-        {
-            var w = new DeleteObjectWindow();
-            this.ShowDialog(w);
-        }
-        private void m0105_Click(object sender, RoutedEventArgs e)
-        {
-            var w = new GenerateSourceCodeWindow();
-            this.ShowDialog(w);
-        }
-        private void m0106_Click(object sender, RoutedEventArgs e)
-        {
-            var w = new GenerateSqlScriptWindow();
-            this.ShowDialog(w);
-        }
-        private void m0107_Click(object sender, RoutedEventArgs e)
-        {
-            var w = new ManageIgnoreObjectWindow(new DatabaseObject[0]);
-            this.ShowDialog(w);
-        }
-        private void m0110_Click(object sender, RoutedEventArgs e)
-        {
-            var w = new ImportObjectGenerateFileWindow();
-            this.ShowDialog(w);
         }
 
         private void m0201_Click(object sender, RoutedEventArgs e)
@@ -400,6 +409,10 @@ namespace HigLabo.DbSharpApplication
 
         private void FilterStoredProcedureTypeListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            this.SortStoredProcedure();
+        }
+        private void SortStoredProcedure()
+        {
             var src = _StoredProcedureListViewSource;
             src.SortDescriptions.Clear();
             var mode = (StoredProcedureFilter)this.FilterStoredProcedureTypeListBox.SelectedValue;
@@ -484,6 +497,18 @@ namespace HigLabo.DbSharpApplication
                     }
                     break;
                 default: throw new InvalidOperationException();
+            }
+            if (AValue.ConfigData.UseTableFeature)
+            {
+                this.MainTabTable.Visibility = Visibility.Visible;
+                this.MainTabTable.IsSelected = true;
+                this.m0201.Visibility = Visibility.Visible;
+            }
+            else
+            {
+                this.MainTabTable.Visibility = Visibility.Collapsed;
+                this.MainTabStoredProcedure.IsSelected = true;
+                this.m0201.Visibility = Visibility.Collapsed;
             }
 
         }

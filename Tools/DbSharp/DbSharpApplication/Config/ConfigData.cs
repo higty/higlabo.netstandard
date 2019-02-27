@@ -31,6 +31,8 @@ namespace HigLabo.DbSharpApplication.Core
             get { return this._SchemaFilePath; }
             set { this.SetPropertyValue(ref _SchemaFilePath, value, this.PropertyChanged); }
         }
+        public Boolean UseTableFeature { get; set; } = false;
+
         public ObservableCollection<SchemaFileInfo> RecentSchemaFiles { get; private set; }
         public ObservableCollection<ConnectionStringInfo> ConnectionStrings { get; private set; }
         public MainWindowStateInfo MainWindow { get; set; }
