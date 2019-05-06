@@ -18,7 +18,7 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_Object_Object()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.NewObject;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
 
             var u1 = new User();
 
@@ -113,7 +113,7 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_NullProperty_None()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.None;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.None;
             config.MaxCallStackCount = 100;
 
             var u1 = new User();
@@ -128,11 +128,11 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_NullProperty_NewObject()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.NewObject;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
             config.MaxCallStackCount = 100;
 
             var u1 = new User();
-            u1.ParentUser = new User("ParentUser");
+            u1.ParentUser = new User("ParentUser1");
             u1.Dictionary = new Dictionary<string, string>();
             var u2 = new User();
             u2.ParentUser = null;
@@ -141,16 +141,17 @@ namespace HigLabo.Mapper.Test
 
             Assert.IsNotNull(u2.ParentUser);
             Assert.IsNotNull(u2.Dictionary);
+            Assert.AreEqual("ParentUser1", u2.ParentUser.Name);
 
             u1.ParentUser.Name = "ParentUserChanged";
             //Difference object
-            Assert.AreEqual("ParentUser", u2.ParentUser.Name);
+            Assert.AreNotEqual("ParentUserChanged", u2.ParentUser.Name);
         }
         [TestMethod]
         public void ObjectMapConfig_Map_NullProperty_DeepCopy()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.DeepCopy;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.DeepCopy;
             var u1 = new User();
             u1.ParentUser = new User("ParentUser");
             var u2 = new User();
@@ -234,7 +235,7 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_ByteArrayProperty()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.NewObject;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
 
             var u1 = new User();
             u1.Timestamp = new Byte[] { 1, 3, 6 };
@@ -258,10 +259,10 @@ namespace HigLabo.Mapper.Test
             Assert.AreEqual(Encoding.UTF8, p2.Encoding);
         }
         [TestMethod]
-        public void ObjectMapConfig_Map_Dictionary_NullPropertyMapMode_NewObject()
+        public void ObjectMapConfig_Map_Dictionary_ClassPropertyMapMode_NewObject()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.NewObject;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
 
             var d = new Dictionary<String, String>();
             d["Int32Nullable"] = "abc";
@@ -275,7 +276,7 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_DynamicObject_Object()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.NewObject;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
 
             dynamic u1 = new User();
             u1.Name = "TestUser";
@@ -477,7 +478,7 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_NullListProperty_NewObject()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.NewObject;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
             var u1 = new User();
             var u2 = new User();
             u2.Users = null;
@@ -489,7 +490,7 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_NullListProperty_DeepCopy_AddElement()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.DeepCopy;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.DeepCopy;
             var u1 = new User();
             var u2 = new User();
             u2.Users = null;
@@ -524,14 +525,13 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_SubClass_UserProperty()
         {
             var config = new ObjectMapConfig();
-            config.NullPropertyMapMode = NullPropertyMapMode.None;
+            config.ClassPropertyMapMode = ClassPropertyMapMode.None;
 
             var s1 = new Schedule();
             s1.CreateUser = new User("Test1");
             var s2 = config.Map(s1, new AllDaySchedule());
 
-            Assert.IsNotNull(s2.CreateUser);
-            Assert.AreEqual(s1.CreateUser.Name, s2.CreateUser.Name);
+            Assert.IsNull(s2.CreateUser);
         }
         [TestMethod]
         public void ObjectMapConfig_Map_SubClass_ListProperty()

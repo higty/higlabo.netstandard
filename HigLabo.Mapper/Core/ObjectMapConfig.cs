@@ -70,7 +70,7 @@ namespace HigLabo.Core
             get { return _PostActions.Count > 0; }
         }
         public StringComparer DictionaryKeyStringComparer { get; set; }
-        public NullPropertyMapMode NullPropertyMapMode { get; set; }
+        public ClassPropertyMapMode ClassPropertyMapMode { get; set; }
         public CollectionElementMapMode CollectionElementMapMode { get; set; }
 
         static ObjectMapConfig()
@@ -168,7 +168,7 @@ namespace HigLabo.Core
 
             this.MaxCallStackCount = 10;
             this.DictionaryKeyStringComparer = StringComparer.OrdinalIgnoreCase;
-            this.NullPropertyMapMode = NullPropertyMapMode.NewObject;
+            this.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
             this.CollectionElementMapMode = CollectionElementMapMode.NewObject;
         }
         private static MethodInfo GetMethodInfo(String name)
@@ -1205,30 +1205,25 @@ namespace HigLabo.Core
                 else if (targetProperty_PropertyType.IsClass || targetProperty_PropertyType.IsInterface)
                 {
                     #region
-                    if (targetSetMethod != null && this.NullPropertyMapMode != NullPropertyMapMode.None)
+                    if (targetSetMethod != null)
                     {
-                        #region if (target.P1 == null) { target.P1 = new TTarget(); }
-                        il.Emit(OpCodes.Ldarg_2);
-                        il.Emit(OpCodes.Callvirt, targetGetMethod);
-                        il.Emit(OpCodes.Ldnull);
-                        il.Emit(OpCodes.Ceq);
-                        var sourceIsNullLabel = il.DefineLabel();
-                        il.Emit(OpCodes.Brfalse_S, sourceIsNullLabel);
+                        switch (this.ClassPropertyMapMode)
                         {
-                            if (this.NullPropertyMapMode == NullPropertyMapMode.NewObject &&
-                                targetProperty_PropertyType.IsClass)
-                            {
-                                var defaultConstructor = targetProperty_PropertyType.GetConstructor(Type.EmptyTypes);
-                                if (defaultConstructor != null)
+                            case ClassPropertyMapMode.None: break;
+                            case ClassPropertyMapMode.NewObject:
+                                if (targetProperty_PropertyType.IsClass)
                                 {
-                                    targetCreated = true;
-                                    il.Emit(OpCodes.Ldarg_2);
-                                    il.Emit(OpCodes.Newobj, defaultConstructor);
-                                    il.Emit(OpCodes.Callvirt, targetSetMethod);
+                                    var defaultConstructor = targetProperty_PropertyType.GetConstructor(Type.EmptyTypes);
+                                    if (defaultConstructor != null)
+                                    {
+                                        targetCreated = true;
+                                        il.Emit(OpCodes.Ldarg_2);
+                                        il.Emit(OpCodes.Newobj, defaultConstructor);
+                                        il.Emit(OpCodes.Callvirt, targetSetMethod);
+                                    }
                                 }
-                            }
-                            else if (this.NullPropertyMapMode == NullPropertyMapMode.DeepCopy)
-                            {
+                                break;
+                            case ClassPropertyMapMode.DeepCopy:
                                 if (targetProperty_PropertyType.IsAssignableFrom(sourceProperty_PropertyType))
                                 {
                                     targetCreated = true;
@@ -1238,10 +1233,9 @@ namespace HigLabo.Core
                                     il.Emit(OpCodes.Callvirt, sourceGetMethod);
                                     il.Emit(OpCodes.Callvirt, targetSetMethod);
                                 }
-                            }
+                                break;
+                            default: throw new InvalidOperationException();
                         }
-                        il.MarkLabel(sourceIsNullLabel);
-                        #endregion
                     }
 
                     if (this.CollectionElementMapMode != CollectionElementMapMode.None &&

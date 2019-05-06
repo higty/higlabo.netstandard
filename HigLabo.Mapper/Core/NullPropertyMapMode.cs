@@ -2,7 +2,7 @@
 
 namespace HigLabo.Core
 {
-    public enum NullPropertyMapMode
+    public enum ClassPropertyMapMode
     {
         None,
         NewObject,
