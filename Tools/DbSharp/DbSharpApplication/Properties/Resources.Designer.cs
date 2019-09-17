@@ -232,6 +232,15 @@ namespace HigLabo.DbSharpApplication.Properties {
         }
         
         /// <summary>
+        ///   Copy ResultSet に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string Menu_CopyResultSet {
+            get {
+                return ResourceManager.GetString("Menu_CopyResultSet", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   _Delete に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Menu_Delete {

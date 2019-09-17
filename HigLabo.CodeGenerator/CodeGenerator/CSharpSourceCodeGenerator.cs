@@ -170,12 +170,14 @@ namespace HigLabo.CodeGenerator
         {
             var writer = this.TextWriter;
 
-            this.Write(modifier.AccessModifier);
-            writer.Write(" ");
-
             if (modifier.Static == true)
             {
                 writer.Write("static ");
+            }
+            else
+            {
+                this.Write(modifier.AccessModifier);
+                writer.Write(" ");
             }
         }
         public override void Write(Constructor constructor)
@@ -592,12 +594,21 @@ namespace HigLabo.CodeGenerator
             this.WriteElementName(@namespace.Name);
             this.WriteLineAndIndent();
             writer.WriteLine("{");
+
+            this.CurrentIndentLevel += 1;
+            foreach (var item in @namespace.Enums)
+            {
+                this.Write(item);
+            }
+            this.CurrentIndentLevel -= 1;
+
             this.CurrentIndentLevel += 1;
             foreach (var item in @namespace.Classes)
             {
                 this.Write(item);
             }
             this.CurrentIndentLevel -= 1;
+
             writer.WriteLine("}");
         }
 

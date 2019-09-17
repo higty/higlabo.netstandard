@@ -241,6 +241,11 @@ namespace HigLabo.DbSharpApplication
             var w = new ManageIgnoreObjectWindow(new DatabaseObject[0]);
             this.ShowDialog(w);
         }
+        private void m0108_Click(object sender, RoutedEventArgs e)
+        {
+            var w = new CopyResultSetWindow(this.StoredProcedureListBox.SelectedItem as StoredProcedure);
+            this.ShowDialog(w);
+        }
         private void m0110_Click(object sender, RoutedEventArgs e)
         {
             var w = new ImportObjectGenerateFileWindow();

@@ -10,6 +10,7 @@ namespace HigLabo.Core
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public static class Enum<T>
+            where T : struct
     {
         /// <summary>
         /// 
@@ -71,6 +72,17 @@ namespace HigLabo.Core
         {
             var tp = CheckEnumType();
             return (T[])Enum.GetValues(tp);
+        }
+        public static String[] GetStringValues()
+        {
+            var tp = CheckEnumType();
+            var tt = (T[])Enum.GetValues(tp);
+            var ss = new String[tt.Length];
+            for (int i = 0; i < tt.Length; i++)
+            {
+                ss[i] = tt[i].ToStringFromEnum();
+            }
+            return ss;
         }
 #endif
         private static Type CheckEnumType()

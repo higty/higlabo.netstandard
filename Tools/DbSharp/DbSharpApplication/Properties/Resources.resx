@@ -321,4 +321,7 @@
   <data name="UseTableFeatureUnableText" xml:space="preserve">
     <value>Table feature is unable.</value>
   </data>
+  <data name="Menu_CopyResultSet" xml:space="preserve">
+    <value>Copy ResultSet</value>
+  </data>
 </root>

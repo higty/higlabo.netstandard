@@ -41,6 +41,7 @@ namespace HigLabo.DbSharpApplication.Core
         public WindowStateInfo EditConnectionStringWindow { get; set; }
         public WindowStateInfo ImportObjectWindow { get; set; }
         public WindowStateInfo DeleteObjectWindow { get; set; }
+        public WindowStateInfo CopyResultSetWindow { get; set; }
         public WindowStateInfo ImportObjectGenerateFileWindow { get; set; }
         public WindowStateInfo ProgressWindow { get; set; }
         public WindowStateInfo MessageWindow { get; set; }
@@ -57,6 +58,7 @@ namespace HigLabo.DbSharpApplication.Core
             this.EditConnectionStringWindow = new WindowStateInfo(500, 160);
             this.ImportObjectWindow = new WindowStateInfo(900, 700);
             this.DeleteObjectWindow = new WindowStateInfo(800, 500);
+            this.CopyResultSetWindow = new WindowStateInfo(800, 600);
             this.ImportObjectGenerateFileWindow = new WindowStateInfo(600, 300);
             this.GenerateSourceCodeWindow = new WindowStateInfo(800, 600);
             this.ProgressWindow = new WindowStateInfo(900, 700);

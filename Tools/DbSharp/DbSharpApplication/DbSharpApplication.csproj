@@ -113,6 +113,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Windows\CopyResultSetWindow.xaml.cs">
+      <DependentUpon>CopyResultSetWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\DeleteObjectWindow.xaml.cs">
       <DependentUpon>DeleteObjectWindow.xaml</DependentUpon>
     </Compile>
@@ -216,6 +219,10 @@
     <Page Include="Styles\ListBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Windows\CopyResultSetWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\DeleteObjectWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

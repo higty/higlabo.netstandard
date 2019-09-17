@@ -61,7 +61,7 @@ namespace HigLabo.Bot.Facebook
             var json = message.CreateJson();
 
             var cl = this;
-            var url = "https://graph.facebook.com/v2.9/me/messages?access_token=" + this.GetAccessToken();
+            var url = "https://graph.facebook.com/v4.0/me/messages?access_token=" + this.GetAccessToken();
             var cm = new HttpRequestCommand(url);
             cm.MethodName = HttpMethodName.Post;
             cm.ContentType = "application/json";

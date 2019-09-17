@@ -24,13 +24,19 @@ namespace HigLabo.DbSharp
         }
         public override string ToString()
         {
-            var values = "";
+            var sb = new StringBuilder();
             if (this.Values != null && this.Values.Length > 0)
             {
-                values = String.Join(",", this.Values);
-                return String.Format("{0} ({1})", this.TableName, values);
+                var values = String.Join(",", this.Values);
+                sb.AppendFormat("{0} ({1})", this.TableName, values);
+                sb.AppendLine();
             }
-            return this.TableName;
+            else
+            {
+                sb.AppendLine(this.TableName);
+            }
+            sb.AppendLine(this.StackTrace);
+            return sb.ToString();
         }
     }
 }

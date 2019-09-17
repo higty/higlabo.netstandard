@@ -318,4 +318,7 @@
   <data name="UseTableFeatureUnableText" xml:space="preserve">
     <value>テーブル機能は無効になっています。</value>
   </data>
+  <data name="Menu_CopyResultSet" xml:space="preserve">
+    <value>結果セットのコピー</value>
+  </data>
 </root>
