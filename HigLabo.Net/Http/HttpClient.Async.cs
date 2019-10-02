@@ -10,23 +10,11 @@ namespace HigLabo.Net
 {
     public partial class HttpClient
     {
-        protected Task<TResult> AsyncCall<TResult>(Action<Action<TResult>> action)
-        {
-            var source = new TaskCompletionSource<TResult>();
-            action(res => source.SetResult(res));
-            return source.Task;
-        }
-        protected Task<TResult> AsyncCall<T, TResult>(Action<T, Action<TResult>> action, T command)
-        {
-            var source = new TaskCompletionSource<TResult>();
-            action(command, res => source.SetResult(res));
-            return source.Task;
-        }
-        protected Task<TResult> AsyncCall<TResult>(HttpRequestCommand command, Func<HttpResponse, TResult> func)
+        protected Task<TResult> AsyncCall<TResult>(HttpRequestCommand command, Func<HttpWebResponse, TResult> func)
         {
             var source = new TaskCompletionSource<TResult>();
             this.GetHttpWebResponse(command
-                , res => source.SetResult(func(new HttpResponse(res, this.ResponseEncoding)))
+                , res => source.SetResult(func(res))
                 , e => source.SetException(e.Exception));
             return source.Task;
         }
@@ -81,7 +69,7 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpWebResponse> GetHttpWebResponseAsync(HttpRequestCommand command)
         {
-            return AsyncCall<HttpRequestCommand, HttpWebResponse>(this.GetHttpWebResponse, command);
+            return AsyncCall<HttpWebResponse>(command, res => res);
         }
         /// <summary>
         /// 
@@ -133,7 +121,7 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<HttpResponse> GetResponseAsync(HttpRequestCommand command)
         {
-            return AsyncCall<HttpRequestCommand, HttpResponse>(this.GetResponse, command);
+            return AsyncCall<HttpResponse>(command, res => new HttpResponse(res, this.ResponseEncoding));
         }
         /// <summary>
         /// 
@@ -185,7 +173,7 @@ namespace HigLabo.Net
         /// <returns></returns>
         public Task<String> GetBodyTextAsync(HttpRequestCommand command)
         {
-            return AsyncCall<HttpRequestCommand, String>(this.GetBodyText, command);
+            return AsyncCall<String>(command, res => new HttpResponse(res, this.ResponseEncoding).BodyText);
         }
     }
 }
