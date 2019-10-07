@@ -73,21 +73,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public TResultSetList GetResultSetsList(IEnumerable<Database> databases)
         {
-            var tt = new List<Task<TResultSetList>>();
-            foreach (var db in databases)
-            {
-                var task = Task.Factory.StartNew<TResultSetList>(() =>
-                {
-                    return this.GetResultSetsList(db);
-                });
-                tt.Add(task);
-            }
-            var result = new TResultSetList();
-            foreach (var item in Task.WhenAll(tt).Result)
-            {
-                _MergeMethod(item, result);
-            }
-            return result;
+            return this.GetResultSetsListAsync(databases).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -149,11 +135,7 @@ namespace HigLabo.DbSharp
             var tt = new List<Task<TResultSetList>>();
             foreach (var db in databases)
             {
-                var task = Task.Factory.StartNew<TResultSetList>(() =>
-                {
-                    return this.GetResultSetsList(db);
-                });
-                tt.Add(task);
+                tt.Add(this.GetResultSetsListAsync(db));
             }
             var result = new TResultSetList();
             foreach (var item in await Task.WhenAll(tt))

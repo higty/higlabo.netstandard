@@ -105,24 +105,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public List<StoredProcedureResultSet> GetResultSets(IEnumerable<Database> databases)
         {
-            var tt = new List<Task<List<StoredProcedureResultSet>>>();
-            foreach (var db in databases)
-            {
-                var task = Task.Factory.StartNew<List<StoredProcedureResultSet>>(() =>
-                {
-                    return this.GetResultSets(db);
-                });
-                tt.Add(task);
-            }
-            var l = new List<StoredProcedureResultSet>();
-            foreach (var item in Task.WhenAll(tt).Result)
-            {
-                foreach (var rs in item)
-                {
-                    l.Add(rs);
-                }
-            }
-            return l;
+            return this.GetResultSetsAsync(databases).GetAwaiter().GetResult().ToList();
         }
         /// <summary>
         /// 
@@ -177,11 +160,7 @@ namespace HigLabo.DbSharp
             var tt = new List<Task<List<StoredProcedureResultSet>>>();
             foreach (var db in databases)
             {
-                var task = Task.Factory.StartNew<List<StoredProcedureResultSet>>(() =>
-                {
-                    return this.GetResultSets(db);
-                });
-                tt.Add(task);
+                tt.Add(this.GetResultSetsAsync(db));
             }
             var results = await Task.WhenAll(tt);
             return results.SelectMany(el => el);
