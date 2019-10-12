@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27703.2000
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29326.143
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Core.Test", "HigLabo.Core.Test\HigLabo.Core.Test.csproj", "{C9D66651-8076-49DE-BAF6-32F8566952A8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Core.Test", "HigLabo.Core.Test\HigLabo.Core.Test.csproj", "{C9D66651-8076-49DE-BAF6-32F8566952A8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Core", "..\HigLabo.Core\HigLabo.Core.csproj", "{A7B5FC1A-C201-40B9-BA5A-D31A88705483}"
 EndProject
@@ -17,13 +17,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Net", "..\HigLabo.N
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Rss", "..\HigLabo.Rss\HigLabo.Rss.csproj", "{315D83B5-23A5-4AC2-957A-81090F1B7030}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Converter.Test", "HigLabo.Converter.Test\HigLabo.Converter.Test.csproj", "{38354E66-D162-424F-8875-569EEBB23715}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Converter.Test", "HigLabo.Converter.Test\HigLabo.Converter.Test.csproj", "{38354E66-D162-424F-8875-569EEBB23715}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Mime.Test", "HigLabo.Mime.Test\HigLabo.Mime.Test.csproj", "{2D2C3ED1-5583-4BAA-83F2-0625FC65E5BF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Mime.Test", "HigLabo.Mime.Test\HigLabo.Mime.Test.csproj", "{2D2C3ED1-5583-4BAA-83F2-0625FC65E5BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Mapper.Test", "HigLabo.Mapper.Test\HigLabo.Mapper.Test.csproj", "{DF864A1F-E23F-4691-826B-7674365228F4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Mapper.Test", "HigLabo.Mapper.Test\HigLabo.Mapper.Test.csproj", "{DF864A1F-E23F-4691-826B-7674365228F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.Rss.Test", "HigLabo.Rss.Test\HigLabo.Rss.Test.csproj", "{FF9FEA41-6CFA-4452-9536-2AC6E27BDB7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.Rss.Test", "HigLabo.Rss.Test\HigLabo.Rss.Test.csproj", "{FF9FEA41-6CFA-4452-9536-2AC6E27BDB7F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.CodeGenerator", "..\HigLabo.CodeGenerator\HigLabo.CodeGenerator.csproj", "{FA1B9D6B-3AE1-4CBE-9AFB-CAD6B6437027}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.CodeGenerator.Test", "HigLabo.CodeGenerator.Test\HigLabo.CodeGenerator.Test.csproj", "{C30F7F9C-0EDD-4024-9751-80CAE83FF577}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +79,14 @@ Global
 		{FF9FEA41-6CFA-4452-9536-2AC6E27BDB7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FF9FEA41-6CFA-4452-9536-2AC6E27BDB7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FF9FEA41-6CFA-4452-9536-2AC6E27BDB7F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FA1B9D6B-3AE1-4CBE-9AFB-CAD6B6437027}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FA1B9D6B-3AE1-4CBE-9AFB-CAD6B6437027}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FA1B9D6B-3AE1-4CBE-9AFB-CAD6B6437027}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FA1B9D6B-3AE1-4CBE-9AFB-CAD6B6437027}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C30F7F9C-0EDD-4024-9751-80CAE83FF577}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C30F7F9C-0EDD-4024-9751-80CAE83FF577}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C30F7F9C-0EDD-4024-9751-80CAE83FF577}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C30F7F9C-0EDD-4024-9751-80CAE83FF577}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

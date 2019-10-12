@@ -17,9 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Reference Include="HigLabo.Converter">
-      <HintPath>..\Reference\HigLabo.Converter.dll</HintPath>
-    </Reference>
     <Reference Include="HigLabo.Core">
       <HintPath>..\Reference\HigLabo.Core.dll</HintPath>
     </Reference>
