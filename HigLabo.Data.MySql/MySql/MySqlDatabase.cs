@@ -137,6 +137,8 @@ namespace HigLabo.Data
         protected override Exception CreateException(Exception exception)
         {
             var ex = exception as MySql.Data.MySqlClient.MySqlException;
+            if (ex == null) { return new DatabaseException(exception); }
+
             switch (ex.ErrorCode)
             {
                 case 1022: return new UniqueConstraintException(ex);

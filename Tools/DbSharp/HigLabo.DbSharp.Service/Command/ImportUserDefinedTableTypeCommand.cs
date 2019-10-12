@@ -19,6 +19,8 @@ namespace HigLabo.DbSharp.Service
         protected override void Execute()
         {
             var r = this.DatabaseSchemaReader;
+            if (r.SupportUserDefinedTableType == false) { return; }
+
             var names = this.Names;
             var totalCount = names.Count;
             var uu = new List<UserDefinedTableType>();

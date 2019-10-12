@@ -19,6 +19,10 @@ namespace HigLabo.DbSharp.MetaData
         {
             get { return DatabaseServer.SqlServer; }
         }
+        public override bool SupportUserDefinedTableType
+        {
+            get { return true; }
+        }
         public SqlServerDatabaseSchemaReader(String connectionString)
         {
             this.QueryBuilder = new SqlServerDatabaseSchemaQueryBuilder();

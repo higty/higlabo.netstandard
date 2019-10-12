@@ -106,15 +106,10 @@ namespace HigLabo.DbSharp
             var tt = new List<Task<ExecuteNonQueryResult>>();
             foreach (var db in databases)
             {
-                var task = Task.Factory.StartNew<ExecuteNonQueryResult>(() =>
-                {
-                    var result = this.ExecuteNonQuery(db);
-                    return new ExecuteNonQueryResult(db, result);
-                });
-                tt.Add(task);
+                tt.Add(this.GetExecuteNonQueryResultAsync(db));
             }
             var l = new List<ExecuteNonQueryResult>();
-            return Task.WhenAll(tt).Result;
+            return Task.WhenAll(tt).GetAwaiter().GetResult();
         }
 
         /// <summary>
@@ -123,12 +118,12 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public async Task<Int32> ExecuteNonQueryAsync()
         {
-            var rs = await this.GetExecuteNonQueryResultAsync();
+            var rs = await this.GetExecuteNonQueryResultAsync().ConfigureAwait(false);
             return rs.AffectedRecordCount;
         }
         private async Task<ExecuteNonQueryResult> GetExecuteNonQueryResultAsync()
         {
-            return await this.GetExecuteNonQueryResultAsync(this.GetDatabase());
+            return await this.GetExecuteNonQueryResultAsync(this.GetDatabase()).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -137,7 +132,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public async Task<Int32> ExecuteNonQueryAsync(Database database)
         {
-            var rs = await this.GetExecuteNonQueryResultAsync(database);
+            var rs = await this.GetExecuteNonQueryResultAsync(database).ConfigureAwait(false);
             return rs.AffectedRecordCount;
         }
         private async Task<ExecuteNonQueryResult> GetExecuteNonQueryResultAsync(Database database)
@@ -152,7 +147,7 @@ namespace HigLabo.DbSharp
                 var e = new StoredProcedureExecutingEventArgs(this, cm);
                 StoredProcedure.OnExecuting(e);
                 if (e.Cancel == true) { return new ExecuteNonQueryResult(database, affectedRecordCount); }
-                affectedRecordCount = await database.ExecuteCommandAsync(cm);
+                affectedRecordCount = await database.ExecuteCommandAsync(cm).ConfigureAwait(false);
                 this.SetOutputParameterValue(cm);
             }
             finally
@@ -175,7 +170,7 @@ namespace HigLabo.DbSharp
             {
                 tt.Add(this.GetExecuteNonQueryResultAsync(db));
             }
-            var results = await Task.WhenAll(tt);
+            var results = await Task.WhenAll(tt).ConfigureAwait(false);
             return results;
         }
 

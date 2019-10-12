@@ -15,6 +15,8 @@ namespace HigLabo.DbSharp.MetaData
         public DatabaseSchemaQueryBuilder QueryBuilder { get; protected set; }
         public abstract DatabaseServer DatabaseServer { get; }
         public String ConnectionString { get; protected set; }
+        public abstract Boolean SupportUserDefinedTableType { get; }
+
         public static DatabaseSchemaReader Create(DatabaseServer databaseServer, String connectionString)
         {
             switch (databaseServer)

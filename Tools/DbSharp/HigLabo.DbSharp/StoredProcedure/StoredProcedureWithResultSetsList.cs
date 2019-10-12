@@ -82,7 +82,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public async Task<TResultSetList> GetResultSetsListAsync()
         {
-            return await this.GetResultSetsListAsync(this.GetDatabase());
+            return await this.GetResultSetsListAsync(this.GetDatabase()).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -99,7 +99,7 @@ namespace HigLabo.DbSharp
             try
             {
                 var cm = CreateCommand(database);
-                dr = await database.ExecuteReaderAsync(cm);
+                dr = await database.ExecuteReaderAsync(cm).ConfigureAwait(false);
                 Int32 index = 0;
                 while (true)
                 {
@@ -138,7 +138,7 @@ namespace HigLabo.DbSharp
                 tt.Add(this.GetResultSetsListAsync(db));
             }
             var result = new TResultSetList();
-            foreach (var item in await Task.WhenAll(tt))
+            foreach (var item in await Task.WhenAll(tt).ConfigureAwait(false))
             {
                 _MergeMethod(item, result);
             }

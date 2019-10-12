@@ -57,7 +57,10 @@ namespace HigLabo.DbSharpApplication
                 this.TableListBox.Visibility = Visibility.Collapsed;
                 this.UseTableFeatureUnableText.Visibility = Visibility.Visible;
             }
-
+            if (AValue.SchemaData.DatabaseServer == DatabaseServer.SqlServer)
+            {
+                this.ForeignKeyCheckBox.IsChecked = true;
+            }
             AValue.ConfigData.ImportObjectWindow.Initialize(this);
         }
         private void ConnectButton_Click(object sender, RoutedEventArgs e)
@@ -142,7 +145,9 @@ namespace HigLabo.DbSharpApplication
         {
             var l = new List<DatabaseObject>();
             DatabaseSchemaReader db = DatabaseSchemaReader.Create(AValue.SchemaData.DatabaseServer, connectionString);
-            
+
+            if (db.SupportUserDefinedTableType == false) { return; }
+
             foreach (var item in db.GetUserDefinedTableTypes())
             {
                 if (this.ImportAllCheckBox.IsChecked == false &&
@@ -207,6 +212,7 @@ namespace HigLabo.DbSharpApplication
                 return;
             }
             var sv = new ImportObjectCommandService(AValue.SchemaData, ci.ConnectionString
+                , this.ForeignKeyCheckBox.IsChecked == true
                 , _Tables.Where(el => el.IsChecked).Select(el => el.Item.Name)
                 , _StoredProcedures.Where(el => el.IsChecked).Select(el => el.Item.Name)
                 , _UserDefinedTableTypes.Where(el => el.IsChecked).Select(el => el.Item.Name)

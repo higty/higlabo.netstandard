@@ -321,4 +321,10 @@
   <data name="Menu_CopyResultSet" xml:space="preserve">
     <value>結果セットのコピー</value>
   </data>
+  <data name="String1" xml:space="preserve">
+    <value>一時的に外部キーを無効にする</value>
+  </data>
+  <data name="DisableForeignKey" xml:space="preserve">
+    <value>外部キーを無効にする</value>
+  </data>
 </root>

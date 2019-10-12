@@ -82,27 +82,27 @@ namespace HigLabo.DbSharp.CodeGenerator
             sb.AppendLine();
 
             sb.AppendLine("Begin");
+            if (timestampColumn != null)
+            {
+                sb.AppendFormat("set {0} = CURRENT_TIMESTAMP();", timestampColumn.Name);
+                sb.AppendLine();
+            }
             sb.AppendFormat("insert into {0}", table.Name);
             sb.AppendLine();
 
             sb.Append("(");
-            sb.Append(CreateText(table.GetColumns(null, false), column => column.Name, ",", true));
+            sb.Append(CreateText(table.GetColumns(null, null, false, false), column => column.Name, ",", true));
             sb.AppendLine(")");
 
             sb.AppendLine("values");
 
             sb.Append("(");
-            sb.Append(CreateText(table.GetColumns(null, false), column => column.Name, ",", true));
+            sb.Append(CreateText(table.GetColumns(null, null, false, false), column => column.Name, ",", true));
             sb.AppendLine(");");
 
             if (isIdentityColumn != null)
             {
                 sb.AppendFormat("set {0} = LAST_INSERT_ID();", isIdentityColumn.Name);
-                sb.AppendLine();
-            }
-            if (timestampColumn != null)
-            {
-                sb.AppendFormat("set {0} = CURRENT_TIMESTAMP();", timestampColumn.Name);
                 sb.AppendLine();
             }
 
@@ -143,11 +143,16 @@ namespace HigLabo.DbSharp.CodeGenerator
             sb.AppendLine();
 
             sb.AppendLine("Begin");
+            if (timestampColumn != null)
+            {
+                sb.AppendFormat("set {0} = CURRENT_TIMESTAMP();", timestampColumn.Name);
+                sb.AppendLine();
+            }
             sb.AppendLine("if(");
             sb.Append(CreateText(table.GetPrimaryKeyColumns(), column => String.Format("{0} = PK_{0}", column.Name), "and ", true));
             sb.AppendLine(") Then");
 
-            columns = table.GetColumns(false, false).ToList();
+            columns = table.GetColumns(false, null, false, false).ToList();
             if (columns.Count == 0)
             {
                 sb.AppendFormat("Set {0} = {0};", table.Columns[0].Name);
@@ -169,18 +174,13 @@ namespace HigLabo.DbSharp.CodeGenerator
             sb.AppendFormat("update {0} As T01 set ", table.Name);
             sb.AppendLine();
 
-            sb.Append(CreateText(table.Columns.Where(column => column.CanUpdateValueColumn()), column => String.Format("T01.{0} = {0}", column.Name), ",", true));
+            sb.Append(CreateText(table.Columns.Where(column => column.IsIdentity == false), column => String.Format("T01.{0} = {0}", column.Name), ",", true));
             sb.AppendLine();
             sb.Append(whereQuery);
             sb.AppendLine(";");
 
             sb.AppendLine("end if;");
 
-            if (timestampColumn != null)
-            {
-                sb.AppendFormat("set {0} = CURRENT_TIMESTAMP();", timestampColumn.Name);
-                sb.AppendLine();
-            }
 
             sb.AppendLine("End;");
             sb.AppendLine("//");

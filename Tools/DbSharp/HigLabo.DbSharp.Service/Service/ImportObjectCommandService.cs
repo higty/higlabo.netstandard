@@ -12,17 +12,20 @@ namespace HigLabo.DbSharp.Service
         public String ConnectionString { get; private set; }
 
         private SchemaData _SchemaData = null;
+        private Boolean _DisableForeignKey = false;
         private List<String> _TableNames = new List<String>();
         private List<String> _StoredProcedureNames = new List<String>();
         private List<String> _UserDefinedTableTypeNames = new List<String>();
 
         public ImportObjectCommandService(SchemaData schemaData
             , String connectionString
+            , Boolean disableForeignKey
             , IEnumerable<String> tableNames
             , IEnumerable<String> storedProcedureNames
             , IEnumerable<String> userDefinedTableTypeNames)
         {
             this._SchemaData = schemaData;
+            this._DisableForeignKey = disableForeignKey;
             this.ConnectionString = connectionString;
             this._TableNames.AddRange(tableNames);
             this._StoredProcedureNames.AddRange(storedProcedureNames);
@@ -40,6 +43,7 @@ namespace HigLabo.DbSharp.Service
             }
             {
                 var cm = new ImportStoredProcedureCommand(this._SchemaData, this.ConnectionString);
+                cm.DisableForeignKey = this._DisableForeignKey;
                 cm.Names.AddRange(_StoredProcedureNames);
                 sv.Commands.Add(cm);
             }

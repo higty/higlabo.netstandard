@@ -34,10 +34,8 @@ namespace HigLabo.DbSharp.MetaData
         TimeStampTZ = 125,
         Varchar2 = 126,
         XmlType = 127,
-        Array = 128,
-        Object = 129,
-        Ref = 130,
         BinaryDouble = 132,
-        BinaryFloat = 133
+        BinaryFloat = 133,
+        Boolean = 134
     }
 }

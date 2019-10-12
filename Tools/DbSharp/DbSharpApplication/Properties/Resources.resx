@@ -324,4 +324,7 @@
   <data name="Menu_CopyResultSet" xml:space="preserve">
     <value>Copy ResultSet</value>
   </data>
+  <data name="DisableForeignKey" xml:space="preserve">
+    <value>Disable ForeignKey</value>
+  </data>
 </root>

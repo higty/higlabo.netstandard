@@ -25,6 +25,7 @@ namespace HigLabo.DbSharp.MetaData
         Newdate = 14,
         VarString = 15,
         Bit = 16,
+        JSON = 245,
         NewDecimal = 246,
         Enum = 247,
         Set = 248,
@@ -40,12 +41,12 @@ namespace HigLabo.DbSharp.MetaData
         UInt32 = 503,
         UInt64 = 508,
         UInt24 = 509,
-        Binary = 600,
-        VarBinary = 601,
         TinyText = 749,
         MediumText = 750,
         LongText = 751,
         Text = 752,
-        Guid = 800
+        VarBinary = 753,
+        Binary = 754,
+        Guid = 854,
     }
 }

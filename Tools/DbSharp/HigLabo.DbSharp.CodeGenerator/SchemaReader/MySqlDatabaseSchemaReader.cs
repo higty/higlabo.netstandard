@@ -18,6 +18,10 @@ namespace HigLabo.DbSharp.MetaData
         {
             get { return DatabaseServer.MySql; }
         }
+        public override bool SupportUserDefinedTableType
+        {
+            get { return false; }
+        }
         public MySqlDatabaseSchemaReader(String connectionString)
         {
             this.QueryBuilder = new MySqlDatabaseSchemaQueryBuilder();

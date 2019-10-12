@@ -10,6 +10,7 @@ namespace HigLabo.DbSharp.Service
     public class ImportStoredProcedureCommand : ImportSchemaCommand
     {
         public List<String> Names { get; private set; }
+        public Boolean DisableForeignKey { get; set; } = false;
 
         public ImportStoredProcedureCommand(SchemaData schemaData, String connectionString)
             : base(schemaData, connectionString)
@@ -21,15 +22,21 @@ namespace HigLabo.DbSharp.Service
             var db = this.DatabaseSchemaReader.CreateDatabase();
             try
             {
-                this.OnProcessProgress(new ProcessProgressEventArgs("Disable ForeignKey...", 0));
-                db.ExecuteCommand("EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'");
+                if (this.DisableForeignKey)
+                {
+                    this.OnProcessProgress(new ProcessProgressEventArgs("Disable ForeignKey...", 0));
+                    db.ExecuteCommand("EXEC sp_MSforeachtable 'ALTER TABLE ? NOCHECK CONSTRAINT all'");
+                }
                 this.Import();
             }
             finally
             {
-                this.OnProcessProgress(new ProcessProgressEventArgs("Enable ForeignKey...", 100));
-                db.ExecuteCommand("EXEC sp_MSforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'");
-                this.OnProcessProgress(new ProcessProgressEventArgs("Enable ForeignKey completed", 100));
+                if (this.DisableForeignKey)
+                {
+                    this.OnProcessProgress(new ProcessProgressEventArgs("Enable ForeignKey...", 100));
+                    db.ExecuteCommand("EXEC sp_MSforeachtable 'ALTER TABLE ? WITH CHECK CHECK CONSTRAINT all'");
+                    this.OnProcessProgress(new ProcessProgressEventArgs("Enable ForeignKey completed", 100));
+                }
             }
 
         }

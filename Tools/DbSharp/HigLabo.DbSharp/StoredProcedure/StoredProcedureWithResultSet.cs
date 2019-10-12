@@ -59,7 +59,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public async Task<StoredProcedureResultSet> GetFirstResultSetAsync()
         {
-            return await this.GetFirstResultSetAsync(this.GetDatabase());
+            return await this.GetFirstResultSetAsync(this.GetDatabase()).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -77,7 +77,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public async Task<StoredProcedureResultSet> GetFirstResultSetAsync(IEnumerable<Database> databases)
         {
-            var results = await this.GetResultSetsAsync(databases);
+            var results = await this.GetResultSetsAsync(databases).ConfigureAwait(false);
             return results.FirstOrDefault();
         }
 
@@ -113,7 +113,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public async Task<List<StoredProcedureResultSet>> GetResultSetsAsync()
         {
-            return await this.GetResultSetsAsync(this.GetDatabase());
+            return await this.GetResultSetsAsync(this.GetDatabase()).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -132,7 +132,7 @@ namespace HigLabo.DbSharp
                 var cm = CreateCommand(database);
                 var e = new StoredProcedureExecutingEventArgs(this, cm);
                 StoredProcedure.OnExecuting(e);
-                dr = await database.ExecuteReaderAsync(cm);
+                dr = await database.ExecuteReaderAsync(cm).ConfigureAwait(false);
                 while (dr.Read())
                 {
                     var rs = CreateResultSets(dr);
@@ -162,7 +162,7 @@ namespace HigLabo.DbSharp
             {
                 tt.Add(this.GetResultSetsAsync(db));
             }
-            var results = await Task.WhenAll(tt);
+            var results = await Task.WhenAll(tt).ConfigureAwait(false);
             return results.SelectMany(el => el);
         }
 

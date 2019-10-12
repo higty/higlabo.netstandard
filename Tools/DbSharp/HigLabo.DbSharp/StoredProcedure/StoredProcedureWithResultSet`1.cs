@@ -70,7 +70,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public new async Task<T> GetFirstResultSetAsync()
         {
-            return await this.GetFirstResultSetAsync(this.GetDatabase());
+            return await this.GetFirstResultSetAsync(this.GetDatabase()).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -88,7 +88,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public new async Task<T> GetFirstResultSetAsync(IEnumerable<Database> databases)
         {
-            var results = await this.GetResultSetsAsync(databases);
+            var results = await this.GetResultSetsAsync(databases).ConfigureAwait(false);
             return results.FirstOrDefault() as T;
         }
 
@@ -124,7 +124,7 @@ namespace HigLabo.DbSharp
         /// <returns></returns>
         public new async Task<List<T>> GetResultSetsAsync()
         {
-            return await GetResultSetsAsync(this.GetDatabase());
+            return await GetResultSetsAsync(this.GetDatabase()).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -134,7 +134,7 @@ namespace HigLabo.DbSharp
         public new async Task<List<T>> GetResultSetsAsync(Database database)
         {
             var l = new List<T>();
-            foreach (var item in await base.GetResultSetsAsync(database))
+            foreach (var item in await base.GetResultSetsAsync(database).ConfigureAwait(false))
             {
                 l.Add(item as T);
             }
@@ -148,7 +148,7 @@ namespace HigLabo.DbSharp
         public new async Task<IEnumerable<T>> GetResultSetsAsync(IEnumerable<Database> databases)
         {
             var l = new List<T>();
-            foreach (var item in await base.GetResultSetsAsync(databases))
+            foreach (var item in await base.GetResultSetsAsync(databases).ConfigureAwait(false))
             {
                 l.Add(item as T);
             }
