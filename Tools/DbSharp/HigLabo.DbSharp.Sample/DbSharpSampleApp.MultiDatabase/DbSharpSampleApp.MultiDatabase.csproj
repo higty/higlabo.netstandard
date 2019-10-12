@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DbSharpSample.Data.MySql.CSharp\DbSharpSample.Data.MySql.CSharp.csproj" />
-    <ProjectReference Include="..\DbSharpSample.Data.SqlServer.CSharp\DbSharpSample.Data.SqlServer.CSharp.csproj" />
+    <ProjectReference Include="..\DbSharpSample.MySql.CSharp\DbSharpSample.MySql.CSharp.csproj" />
+    <ProjectReference Include="..\DbSharpSample.SqlServer.CSharp\DbSharpSample.SqlServer.CSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
