@@ -62,16 +62,16 @@ namespace HigLaboSampleApp.MultiDatabase
             var deleted = db.ExecuteCommand("Delete AllDataTypeTable");
             OutputTestResult("Query: Delete AllDataTypeTable", true);
 
-            using (DatabaseContext dc = new DatabaseContext(DatabaseFactory.Current.CreateDatabase(DatabaseKey_SqlServer)))
+            using (TransactionContext tx = new TransactionContext(DatabaseFactory.Current.CreateDatabase(DatabaseKey_SqlServer)))
             {
-                dc.BeginTransaction(IsolationLevel.ReadCommitted);
+                tx.BeginTransaction(IsolationLevel.ReadCommitted);
                 for (int i = 0; i < 3; i++)
                 {
-                    var sp = new AllDataTypeTableInsert();
-                    var inserted = InsertRecord_SqlServer(i);
+                    var sp = InsertRecord_SqlServer(i);
+                    var inserted = sp.ExecuteNonQuery(tx);
                     OutputTestResult("AllDataTypeTableInsert with transaction", inserted == 1);
                 }
-                dc.CommitTransaction();
+                tx.CommitTransaction();
             }
             var t = new AllDataTypeTable();
             var r = t.SelectByPrimaryKey(1);
@@ -87,7 +87,7 @@ namespace HigLaboSampleApp.MultiDatabase
             var x3 = t.Delete(12, r.TimestampColumn);
             OutputTestResult("AllDataTypeTable.Delete", x3 == 1);
         }
-        private static Int32 InsertRecord_SqlServer(Int32 primaryKeyColumnValue)
+        private static StoredProcedure InsertRecord_SqlServer(Int32 primaryKeyColumnValue)
         {
             var sp = new AllDataTypeTableInsert();
             sp.PrimaryKeyColumn = primaryKeyColumnValue;
@@ -175,8 +175,7 @@ namespace HigLaboSampleApp.MultiDatabase
 
             sp.NotNullEnumColumn = HigLabo.DbSharpSample.SqlServer.MyEnum.Value1;
 
-            var x = sp.ExecuteNonQuery();
-            return x;
+            return sp;
         }
         private static void CrudOperationTest_SqlServer_Azure()
         {
@@ -184,15 +183,16 @@ namespace HigLaboSampleApp.MultiDatabase
             var deleted = db.ExecuteCommand("Delete AllDataTypeTable_Azure");
             OutputTestResult("Query: Delete AllDataTypeTable_Azure", true);
 
-            using (DatabaseContext dc = new DatabaseContext(DatabaseFactory.Current.CreateDatabase(DatabaseKey_SqlServer)))
+            using (TransactionContext tx = new TransactionContext(DatabaseFactory.Current.CreateDatabase(DatabaseKey_SqlServer)))
             {
-                dc.BeginTransaction(IsolationLevel.ReadCommitted);
+                tx.BeginTransaction(IsolationLevel.ReadCommitted);
                 for (int i = 0; i < 3; i++)
                 {
-                    var inserted = InsertRecord_SqlServer_Azure(i);
+                    var sp = InsertRecord_SqlServer_Azure(i);
+                    var inserted = sp.ExecuteNonQuery(tx);
                     OutputTestResult("AllDataTypeTable_AzureInsert with transaction", inserted == 1);
                 }
-                dc.CommitTransaction();
+                tx.CommitTransaction();
             }
             var t = new AllDataTypeTable_Azure();
             var r = t.SelectByPrimaryKey(1);
@@ -208,7 +208,7 @@ namespace HigLaboSampleApp.MultiDatabase
             var x3 = t.Delete(12, r.TimestampColumn);
             OutputTestResult("AllDataTypeTable_Azure.Delete", x3 == 1);
         }
-        private static Int32 InsertRecord_SqlServer_Azure(Int32 primaryKeyColumnValue)
+        private static StoredProcedure InsertRecord_SqlServer_Azure(Int32 primaryKeyColumnValue)
         {
             var sp = new AllDataTypeTable_AzureInsert();
             sp.PrimaryKeyColumn = primaryKeyColumnValue;
@@ -288,8 +288,7 @@ namespace HigLaboSampleApp.MultiDatabase
 
             sp.NotNullEnumColumn = HigLabo.DbSharpSample.SqlServer.MyEnum.Value1;
 
-            var x = sp.ExecuteNonQuery();
-            return x;
+            return sp;
         }
 
         private static void CrudOperationTest_MySql()
@@ -299,15 +298,16 @@ namespace HigLaboSampleApp.MultiDatabase
             var deleted = db.ExecuteCommand("Delete From AllDataTypeTable");
             OutputTestResult("Query: Delete AllDataTypeTable", true);
 
-            using (DatabaseContext dc = new DatabaseContext(DatabaseFactory.Current.CreateDatabase(DatabaseKey_MySql)))
+            using (TransactionContext tx = new TransactionContext(DatabaseFactory.Current.CreateDatabase(DatabaseKey_MySql)))
             {
-                dc.BeginTransaction(IsolationLevel.ReadCommitted);
+                tx.BeginTransaction(IsolationLevel.ReadCommitted);
                 for (int i = 0; i < 3; i++)
                 {
-                    var inserted = InsertRecord_MySql(i);
+                    var sp = InsertRecord_MySql(i);
+                    var inserted = sp.ExecuteNonQuery(tx);
                     OutputTestResult("AllDataTypeTableInsert with transaction", inserted == 1);
                 }
-                dc.CommitTransaction();
+                tx.CommitTransaction();
             }
             var t = new alldatatypetable();
             var r = t.SelectByPrimaryKey(1);
@@ -323,7 +323,7 @@ namespace HigLaboSampleApp.MultiDatabase
             var x3 = t.Delete(12, r.TimestampColumn);
             OutputTestResult("AllDataTypeTable.Delete", x3 == 1);
         }
-        private static Int32 InsertRecord_MySql(Int32 primaryKeyColumnValue)
+        private static StoredProcedure InsertRecord_MySql(Int32 primaryKeyColumnValue)
         {
             var sp = new alldatatypetableInsert();
             sp.PrimaryKeyColumn = primaryKeyColumnValue;
@@ -399,8 +399,7 @@ namespace HigLaboSampleApp.MultiDatabase
             sp.NotNullEnumColumn = HigLabo.DbSharpSample.MySql.MyEnum.Value1;
             sp.NotNullSetColumn = MySet.Value0;
 
-            var x = sp.ExecuteNonQuery();
-            return x;
+            return sp;
         }
         private static Byte[] CreateBytes(Int32 length)
         {

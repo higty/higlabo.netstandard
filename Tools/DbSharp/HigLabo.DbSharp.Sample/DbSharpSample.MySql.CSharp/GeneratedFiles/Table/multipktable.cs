@@ -81,7 +81,6 @@ namespace HigLabo.DbSharpSample.MySql
         public Int32 Delete(Database database, Int64 bigIntColumn, Int32 intColumn, Single floatColumn, DateTime? timestampColumn)
         {
             var sp = new multipktableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             sp.PK_BigIntColumn = bigIntColumn;
             sp.PK_IntColumn = intColumn;
             sp.PK_FloatColumn = floatColumn;
@@ -114,7 +113,6 @@ namespace HigLabo.DbSharpSample.MySql
         public multipktableSelectByPrimaryKey CreateSelectByPrimaryKeyStoredProcedure(Record record)
         {
             var sp = new multipktableSelectByPrimaryKey();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_BigIntColumn = record.OldRecord.BigIntColumn;
@@ -125,7 +123,6 @@ namespace HigLabo.DbSharpSample.MySql
         public multipktableInsert CreateInsertStoredProcedure(Record record)
         {
             var sp = new multipktableInsert();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             sp.BigIntColumn = record.BigIntColumn;
             sp.IntColumn = record.IntColumn;
@@ -141,7 +138,6 @@ namespace HigLabo.DbSharpSample.MySql
         public multipktableUpdate CreateUpdateStoredProcedure(Record record)
         {
             var sp = new multipktableUpdate();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.BigIntColumn = record.BigIntColumn;
@@ -162,7 +158,6 @@ namespace HigLabo.DbSharpSample.MySql
         public multipktableDelete CreateDeleteStoredProcedure(Record record)
         {
             var sp = new multipktableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_BigIntColumn = record.OldRecord.BigIntColumn;

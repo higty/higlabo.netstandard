@@ -79,7 +79,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public Int32 Delete(Database database, Guid rowGuidColumn)
         {
             var sp = new RowGuidColTableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             sp.PK_RowGuidColumn = rowGuidColumn;
             return sp.ExecuteNonQuery(database);
         }
@@ -109,7 +108,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public RowGuidColTableSelectByPrimaryKey CreateSelectByPrimaryKeyStoredProcedure(Record record)
         {
             var sp = new RowGuidColTableSelectByPrimaryKey();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_RowGuidColumn = record.OldRecord.RowGuidColumn;
@@ -118,7 +116,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public RowGuidColTableInsert CreateInsertStoredProcedure(Record record)
         {
             var sp = new RowGuidColTableInsert();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             sp.RowGuidColumn = record.RowGuidColumn;
             sp.NVarCharColumn = record.NVarCharColumn;
@@ -127,7 +124,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public RowGuidColTableUpdate CreateUpdateStoredProcedure(Record record)
         {
             var sp = new RowGuidColTableUpdate();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.RowGuidColumn = record.RowGuidColumn;
@@ -138,7 +134,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public RowGuidColTableDelete CreateDeleteStoredProcedure(Record record)
         {
             var sp = new RowGuidColTableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_RowGuidColumn = record.OldRecord.RowGuidColumn;

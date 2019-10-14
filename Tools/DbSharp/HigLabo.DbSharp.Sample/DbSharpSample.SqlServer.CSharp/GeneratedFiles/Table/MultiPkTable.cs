@@ -81,7 +81,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public Int32 Delete(Database database, Int64 bigIntColumn, Int32 intColumn, Double floatColumn, Byte[] timestampColumn)
         {
             var sp = new MultiPkTableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             sp.PK_BigIntColumn = bigIntColumn;
             sp.PK_IntColumn = intColumn;
             sp.PK_FloatColumn = floatColumn;
@@ -114,7 +113,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public MultiPkTableSelectByPrimaryKey CreateSelectByPrimaryKeyStoredProcedure(Record record)
         {
             var sp = new MultiPkTableSelectByPrimaryKey();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_BigIntColumn = record.OldRecord.BigIntColumn;
@@ -125,7 +123,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public MultiPkTableInsert CreateInsertStoredProcedure(Record record)
         {
             var sp = new MultiPkTableInsert();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             sp.BigIntColumn = record.BigIntColumn;
             sp.IntColumn = record.IntColumn;
@@ -142,7 +139,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public MultiPkTableUpdate CreateUpdateStoredProcedure(Record record)
         {
             var sp = new MultiPkTableUpdate();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.BigIntColumn = record.BigIntColumn;
@@ -164,7 +160,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public MultiPkTableDelete CreateDeleteStoredProcedure(Record record)
         {
             var sp = new MultiPkTableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_BigIntColumn = record.OldRecord.BigIntColumn;

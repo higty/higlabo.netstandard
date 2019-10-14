@@ -79,7 +79,6 @@ namespace HigLabo.DbSharpSample.MySql
         public Int32 Delete(Database database, Int64 primaryKeyColumn, DateTime? timestampColumn)
         {
             var sp = new alldatatypetableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             sp.PK_PrimaryKeyColumn = primaryKeyColumn;
             sp.PK_TimestampColumn = timestampColumn;
             return sp.ExecuteNonQuery(database);
@@ -110,7 +109,6 @@ namespace HigLabo.DbSharpSample.MySql
         public alldatatypetableSelectByPrimaryKey CreateSelectByPrimaryKeyStoredProcedure(Record record)
         {
             var sp = new alldatatypetableSelectByPrimaryKey();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_PrimaryKeyColumn = record.OldRecord.PrimaryKeyColumn;
@@ -119,7 +117,6 @@ namespace HigLabo.DbSharpSample.MySql
         public alldatatypetableInsert CreateInsertStoredProcedure(Record record)
         {
             var sp = new alldatatypetableInsert();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             sp.PrimaryKeyColumn = record.PrimaryKeyColumn;
             sp.TimestampColumn = record.TimestampColumn;
@@ -196,7 +193,6 @@ namespace HigLabo.DbSharpSample.MySql
         public alldatatypetableUpdate CreateUpdateStoredProcedure(Record record)
         {
             var sp = new alldatatypetableUpdate();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PrimaryKeyColumn = record.PrimaryKeyColumn;
@@ -276,7 +272,6 @@ namespace HigLabo.DbSharpSample.MySql
         public alldatatypetableDelete CreateDeleteStoredProcedure(Record record)
         {
             var sp = new alldatatypetableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_PrimaryKeyColumn = record.OldRecord.PrimaryKeyColumn;

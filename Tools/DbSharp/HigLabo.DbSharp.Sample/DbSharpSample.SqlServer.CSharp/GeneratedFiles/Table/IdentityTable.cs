@@ -79,7 +79,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public Int32 Delete(Database database, Int32 intColumn)
         {
             var sp = new IdentityTableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             sp.PK_IntColumn = intColumn;
             return sp.ExecuteNonQuery(database);
         }
@@ -109,7 +108,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public IdentityTableSelectByPrimaryKey CreateSelectByPrimaryKeyStoredProcedure(Record record)
         {
             var sp = new IdentityTableSelectByPrimaryKey();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_IntColumn = record.OldRecord.IntColumn;
@@ -118,7 +116,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public IdentityTableInsert CreateInsertStoredProcedure(Record record)
         {
             var sp = new IdentityTableInsert();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             sp.IntColumn = record.IntColumn;
             sp.NVarCharColumn = record.NVarCharColumn;
@@ -127,7 +124,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public IdentityTableUpdate CreateUpdateStoredProcedure(Record record)
         {
             var sp = new IdentityTableUpdate();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.IntColumn = record.IntColumn;
@@ -138,7 +134,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public IdentityTableDelete CreateDeleteStoredProcedure(Record record)
         {
             var sp = new IdentityTableDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_IntColumn = record.OldRecord.IntColumn;

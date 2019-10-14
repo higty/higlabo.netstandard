@@ -99,17 +99,6 @@ namespace HigLabo.DbSharpSample.MySql
                 ((IDatabaseContext)this).DatabaseKey = value;
             }
         }
-        public String TransactionKey
-        {
-            get
-            {
-                return ((IDatabaseContext)this).TransactionKey;
-            }
-            set
-            {
-                ((IDatabaseContext)this).TransactionKey = value;
-            }
-        }
         public Int64 PrimaryKeyColumn
         {
             get

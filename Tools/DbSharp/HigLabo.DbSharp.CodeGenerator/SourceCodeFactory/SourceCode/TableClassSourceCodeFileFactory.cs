@@ -268,7 +268,6 @@ namespace HigLabo.DbSharp.CodeGenerator
             md.Parameters.Add(new MethodParameter("Database", "database"));
 
             md.Body.Add(SourceCodeLanguage.CSharp, "var sp = new {0}Delete();", t.Name);
-            md.Body.Add(SourceCodeLanguage.CSharp, "((IDatabaseContext)sp).TransactionKey = this.TransactionKey;");
             foreach (var column in t.GetPrimaryKeyOrTimestampColumns())
             {
                 var pName = this.ToCamelCase(column.Name);
@@ -398,7 +397,6 @@ namespace HigLabo.DbSharp.CodeGenerator
             var t = this.Table;
 
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "var sp = new {0}SelectByPrimaryKey();", t.Name);
-            yield return new CodeBlock(SourceCodeLanguage.CSharp, "((IDatabaseContext)sp).TransactionKey = this.TransactionKey;");
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "if (record == null) return sp;");
 
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "if (record.OldRecord == null) throw new OldRecordIsNullException();");
@@ -424,7 +422,6 @@ namespace HigLabo.DbSharp.CodeGenerator
         {
             var t = this.Table;
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "var sp = new {0}Insert();", t.Name);
-            yield return new CodeBlock(SourceCodeLanguage.CSharp, "((IDatabaseContext)sp).TransactionKey = this.TransactionKey;");
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "if (record == null) return sp;");
        
             foreach (var column in t.Columns)
@@ -449,7 +446,6 @@ namespace HigLabo.DbSharp.CodeGenerator
             var t = this.Table;
 
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "var sp = new {0}Update();", t.Name);
-            yield return new CodeBlock(SourceCodeLanguage.CSharp, "((IDatabaseContext)sp).TransactionKey = this.TransactionKey;");
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "if (record == null) return sp;");
 
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "if (record.OldRecord == null) throw new OldRecordIsNullException();");
@@ -480,7 +476,6 @@ namespace HigLabo.DbSharp.CodeGenerator
             var t = this.Table;
 
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "var sp = new {0}Delete();", t.Name);
-            yield return new CodeBlock(SourceCodeLanguage.CSharp, "((IDatabaseContext)sp).TransactionKey = this.TransactionKey;");
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "if (record == null) return sp;");
 
             yield return new CodeBlock(SourceCodeLanguage.CSharp, "if (record.OldRecord == null) throw new OldRecordIsNullException();");

@@ -79,7 +79,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public Int32 Delete(Database database, Int64 primaryKeyColumn, Byte[] timestampColumn)
         {
             var sp = new AllDataTypeTable_AzureDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             sp.PK_PrimaryKeyColumn = primaryKeyColumn;
             sp.PK_TimestampColumn = timestampColumn;
             return sp.ExecuteNonQuery(database);
@@ -110,7 +109,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public AllDataTypeTable_AzureSelectByPrimaryKey CreateSelectByPrimaryKeyStoredProcedure(Record record)
         {
             var sp = new AllDataTypeTable_AzureSelectByPrimaryKey();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_PrimaryKeyColumn = record.OldRecord.PrimaryKeyColumn;
@@ -119,7 +117,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public AllDataTypeTable_AzureInsert CreateInsertStoredProcedure(Record record)
         {
             var sp = new AllDataTypeTable_AzureInsert();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             sp.PrimaryKeyColumn = record.PrimaryKeyColumn;
             sp.TimestampColumn = record.TimestampColumn;
@@ -186,7 +183,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public AllDataTypeTable_AzureUpdate CreateUpdateStoredProcedure(Record record)
         {
             var sp = new AllDataTypeTable_AzureUpdate();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PrimaryKeyColumn = record.PrimaryKeyColumn;
@@ -256,7 +252,6 @@ namespace HigLabo.DbSharpSample.SqlServer
         public AllDataTypeTable_AzureDelete CreateDeleteStoredProcedure(Record record)
         {
             var sp = new AllDataTypeTable_AzureDelete();
-            ((IDatabaseContext)sp).TransactionKey = this.TransactionKey;
             if (record == null) return sp;
             if (record.OldRecord == null) throw new OldRecordIsNullException();
             sp.PK_PrimaryKeyColumn = record.OldRecord.PrimaryKeyColumn;
