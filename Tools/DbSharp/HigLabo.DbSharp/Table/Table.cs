@@ -16,13 +16,10 @@ namespace HigLabo.DbSharp
     {
         public abstract String TableName { get; }
         public String DatabaseKey { get; set; }
-        public String TransactionKey { get; set; }
 
         public Table()
         {
-            this.TransactionKey = "";
         }
-
         public abstract T CreateRecord();
         protected abstract void SetRecordProperty(StoredProcedureResultSet source, T target);
         protected abstract void SetOutputParameterValue(T record, StoredProcedure storedProcedure);
@@ -44,6 +41,10 @@ namespace HigLabo.DbSharp
             }
             return l;
         }
+        public List<T> SelectAll(TransactionContext context)
+        {
+            return this.SelectAll(context.Database);
+        }
         public T SelectByPrimaryKey(T record)
         {
             return this.SelectByPrimaryKey(this.GetDatabase(), record);
@@ -53,6 +54,10 @@ namespace HigLabo.DbSharp
             var r = this.SelectByPrimaryKeyOrNull(database, record);
             if (r == null) throw new TableRecordNotFoundException(this.TableName);
             return r;
+        }
+        public T SelectByPrimaryKey(TransactionContext context, T record)
+        {
+            return this.SelectByPrimaryKey(context.Database, record);
         }
         public T SelectByPrimaryKeyOrNull(T record)
         {
@@ -67,6 +72,10 @@ namespace HigLabo.DbSharp
             SetRecordProperty(rs, r);
             r.SetOldRecordProperty();
             return r;
+        }
+        public T SelectByPrimaryKeyOrNull(TransactionContext context, T record)
+        {
+            return this.SelectByPrimaryKeyOrNull(context.Database, record);
         }
         public Int32 Insert(T record)
         {
@@ -89,6 +98,10 @@ namespace HigLabo.DbSharp
             record.SetOldRecordProperty();
             return x;
         }
+        public Int32 Insert(TransactionContext context, T record)
+        {
+            return this.Insert(context.Database, record);
+        }
         public Int32 Update(Database database, T record)
         {
             if (record == null) throw new ArgumentNullException("record");
@@ -99,6 +112,10 @@ namespace HigLabo.DbSharp
             record.SetOldRecordProperty();
             return x;
         }
+        public Int32 Update(TransactionContext context, T record)
+        {
+            return this.Update(context.Database, record);
+        }
         public Int32 Delete(Database database, T record)
         {
             if (record == null) throw new ArgumentNullException("record");
@@ -107,6 +124,10 @@ namespace HigLabo.DbSharp
             var x = sp.ExecuteNonQuery(database);
             record.SetOldRecordProperty();
             return x;
+        }
+        public Int32 Delete(TransactionContext context, T record)
+        {
+            return this.Delete(context.Database, record);
         }
         public Int32 Insert(IEnumerable<T> records)
         {
@@ -135,6 +156,10 @@ namespace HigLabo.DbSharp
             da.InsertCommand.UpdatedRowSource = UpdateRowSource.None;
             return db.Save(da, dt);
         }
+        public Int32 Insert(TransactionContext context, IEnumerable<T> records)
+        {
+            return this.Insert(context.Database, records);
+        }
         public Int32 Update(Database database, IEnumerable<T> records)
         {
             var table = this;
@@ -152,6 +177,10 @@ namespace HigLabo.DbSharp
             da.UpdateCommand = CreateUpdateCommand();
             da.UpdateCommand.UpdatedRowSource = UpdateRowSource.None;
             return db.Save(da, dt);
+        }
+        public Int32 Update(TransactionContext context, IEnumerable<T> records)
+        {
+            return this.Update(context.Database, records);
         }
         public Int32 Delete(Database database, IEnumerable<T> records)
         {
@@ -171,6 +200,10 @@ namespace HigLabo.DbSharp
             da.DeleteCommand.UpdatedRowSource = UpdateRowSource.None;
             return db.Save(da, dt);
         }
+        public Int32 Delete(TransactionContext context, IEnumerable<T> records)
+        {
+            return this.Delete(context.Database, records);
+        }
         public Int32 Save(T record)
         {
             return this.Save(this.GetDatabase(), record);
@@ -186,6 +219,10 @@ namespace HigLabo.DbSharp
                 case SaveMode.Delete: return this.Delete(database, record);
                 default: throw new InvalidOperationException();
             }
+        }
+        public Int32 Save(TransactionContext context, T record)
+        {
+            return this.Save(context.Database, record);
         }
         public Int32 Save(IEnumerable<T> records)
         {
@@ -226,6 +263,10 @@ namespace HigLabo.DbSharp
             da.DeleteCommand.UpdatedRowSource = UpdateRowSource.None;
             return db.Save(da, dt);
         }
+        public Int32 Save(TransactionContext context, IEnumerable<T> records)
+        {
+            return this.Save(context.Database, records);
+        }
 
         TableRecord ITable.CreateRecord()
         {
@@ -239,6 +280,10 @@ namespace HigLabo.DbSharp
         {
             return this.SelectAll(database).Select(el => (TableRecord)el).ToList();
         }
+        List<TableRecord> ITable.SelectAllRecords(TransactionContext context)
+        {
+            return (this as ITable).SelectAllRecords(context.Database);
+        }
         TableRecord ITable.SelectByPrimaryKey(TableRecord record)
         {
             return this.SelectByPrimaryKey((T)record);
@@ -246,6 +291,10 @@ namespace HigLabo.DbSharp
         TableRecord ITable.SelectByPrimaryKey(Database database, TableRecord record)
         {
             return this.SelectByPrimaryKey(database, (T)record);
+        }
+        TableRecord ITable.SelectByPrimaryKey(TransactionContext context, TableRecord record)
+        {
+            return (this as ITable).SelectByPrimaryKey(context.Database, record);
         }
         Int32 ITable.Insert(TableRecord record)
         {
@@ -263,13 +312,25 @@ namespace HigLabo.DbSharp
         {
             return this.Insert(database, (T)record);
         }
+        Int32 ITable.Insert(TransactionContext context, TableRecord record)
+        {
+            return (this as ITable).Insert(context.Database, record);
+        }
         Int32 ITable.Update(Database database, TableRecord record)
         {
             return this.Update(database, (T)record);
         }
+        Int32 ITable.Update(TransactionContext context, TableRecord record)
+        {
+            return (this as ITable).Update(context.Database, record);
+        }
         Int32 ITable.Delete(Database database, TableRecord record)
         {
             return this.Delete(database, (T)record);
+        }
+        Int32 ITable.Delete(TransactionContext context, TableRecord record)
+        {
+            return (this as ITable).Delete(context.Database, record);
         }
         Int32 ITable.Insert(IEnumerable<TableRecord> records)
         {
@@ -287,13 +348,25 @@ namespace HigLabo.DbSharp
         {
             return this.Insert(database, records.Select(el => (T)el));
         }
+        Int32 ITable.Insert(TransactionContext context, IEnumerable<TableRecord> records)
+        {
+            return (this as ITable).Insert(context.Database, records);
+        }
         Int32 ITable.Update(Database database, IEnumerable<TableRecord> records)
         {
             return this.Update(database, records.Select(el => (T)el));
         }
+        Int32 ITable.Update(TransactionContext context, IEnumerable<TableRecord> records)
+        {
+            return (this as ITable).Update(context.Database, records);
+        }
         Int32 ITable.Delete(Database database, IEnumerable<TableRecord> records)
         {
             return this.Delete(database, records.Select(el => (T)el));
+        }
+        Int32 ITable.Delete(TransactionContext context, IEnumerable<TableRecord> records)
+        {
+            return (this as ITable).Delete(context.Database, records);
         }
 
         public StoredProcedureWithResultSet CreateStoredProcedureWithResultSet()

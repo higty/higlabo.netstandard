@@ -67,6 +67,7 @@ namespace HigLaboSampleApp.MultiDatabase
                 dc.BeginTransaction(IsolationLevel.ReadCommitted);
                 for (int i = 0; i < 3; i++)
                 {
+                    var sp = new AllDataTypeTableInsert();
                     var inserted = InsertRecord_SqlServer(i);
                     OutputTestResult("AllDataTypeTableInsert with transaction", inserted == 1);
                 }

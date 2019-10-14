@@ -23,56 +23,23 @@ namespace HigLabo.DbSharp
         {
             TypeConverter = new HigLabo.Core.TypeConverter();
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public event PropertyChangedEventHandler PropertyChanged;
 
-        /// <summary>
-        /// 
-        /// </summary>
         String IDatabaseContext.DatabaseKey { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
-        String IDatabaseContext.TransactionKey { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
+
         protected StoredProcedure()
         {
-            ((IDatabaseContext)this).TransactionKey = "";
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public abstract string GetStoredProcedureName();
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public DbCommand CreateCommand()
         {
             return this.CreateCommand(this.GetDatabase());
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public abstract DbCommand CreateCommand(Database database);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public Int32 ExecuteNonQuery()
         {
             return this.ExecuteNonQuery(this.GetDatabase());
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="database"></param>
-        /// <returns></returns>
         public Int32 ExecuteNonQuery(Database database)
         {
             if (database == null) throw new ArgumentNullException("database");
@@ -96,11 +63,10 @@ namespace HigLabo.DbSharp
             StoredProcedure.OnExecuted(new StoredProcedureExecutedEventArgs(this));
             return affectedRecordCount;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="databases"></param>
-        /// <returns></returns>
+        public Int32 ExecuteNonQuery(TransactionContext context)
+        {
+            return this.ExecuteNonQuery(context.Database);
+        }
         public IEnumerable<ExecuteNonQueryResult> ExecuteNonQuery(IEnumerable<Database> databases)
         {
             var tt = new List<Task<ExecuteNonQueryResult>>();
@@ -112,10 +78,6 @@ namespace HigLabo.DbSharp
             return Task.WhenAll(tt).GetAwaiter().GetResult();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public async Task<Int32> ExecuteNonQueryAsync()
         {
             var rs = await this.GetExecuteNonQueryResultAsync().ConfigureAwait(false);
@@ -125,15 +87,14 @@ namespace HigLabo.DbSharp
         {
             return await this.GetExecuteNonQueryResultAsync(this.GetDatabase()).ConfigureAwait(false);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="database"></param>
-        /// <returns></returns>
         public async Task<Int32> ExecuteNonQueryAsync(Database database)
         {
             var rs = await this.GetExecuteNonQueryResultAsync(database).ConfigureAwait(false);
             return rs.AffectedRecordCount;
+        }
+        public async Task<Int32> ExecuteNonQueryAsync(TransactionContext context)
+        {
+            return await this.ExecuteNonQueryAsync(context.Database);
         }
         private async Task<ExecuteNonQueryResult> GetExecuteNonQueryResultAsync(Database database)
         {
@@ -158,11 +119,6 @@ namespace HigLabo.DbSharp
             StoredProcedure.OnExecuted(new StoredProcedureExecutedEventArgs(this));
             return new ExecuteNonQueryResult(database, affectedRecordCount);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="databases"></param>
-        /// <returns></returns>
         public async Task<IEnumerable<ExecuteNonQueryResult>> ExecuteNonQueryAsync(IEnumerable<Database> databases)
         {
             var tt = new List<Task<ExecuteNonQueryResult>>();
@@ -174,26 +130,11 @@ namespace HigLabo.DbSharp
             return results;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
         protected abstract void SetOutputParameterValue(DbCommand command);
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
         protected static object ToDBValue(object value)
         {
             return value ?? DBNull.Value;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="value"></param>
-        /// <returns></returns>
         protected static T? ToEnum<T>(Object value)
             where T : struct
         {

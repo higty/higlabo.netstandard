@@ -19,13 +19,13 @@ namespace HigLabo.Data
             if (this.Connection == null)
             {
                 this.Connection = this.CreateConnection();
-                await this.Connection.OpenAsync();
+                await this.Connection.OpenAsync().ConfigureAwait(false);
             }
             else
             {
                 if (this.Connection.State == ConnectionState.Closed)
                 {
-                    await this.Connection.OpenAsync();
+                    await this.Connection.OpenAsync().ConfigureAwait(false);
                 }
             }
             return 0;
@@ -41,7 +41,7 @@ namespace HigLabo.Data
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
-            return await ExecuteReaderAsync(cm, commandBehavior);
+            return await ExecuteReaderAsync(cm, commandBehavior).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -50,7 +50,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public async Task<DbDataReader> ExecuteReaderAsync(DbCommand command)
         {
-            return await ExecuteReaderAsync(command, CommandBehavior.Default, CancellationToken.None);
+            return await ExecuteReaderAsync(command, CommandBehavior.Default, CancellationToken.None).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -60,7 +60,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public async Task<DbDataReader> ExecuteReaderAsync(DbCommand command, CommandBehavior commandBehavior)
         {
-            return await ExecuteReaderAsync(command, commandBehavior, CancellationToken.None);
+            return await ExecuteReaderAsync(command, commandBehavior, CancellationToken.None).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -87,7 +87,7 @@ namespace HigLabo.Data
                 cm.Connection = this.Connection;
                 cm.Transaction = this.Transaction;
                 startTime = DateTimeOffset.Now;
-                dr = await cm.ExecuteReaderAsync(commandBehavior, cancellationToken);
+                dr = await cm.ExecuteReaderAsync(commandBehavior, cancellationToken).ConfigureAwait(false);
                 endTime = DateTimeOffset.Now;
             }
             catch (Exception ex)
@@ -112,7 +112,7 @@ namespace HigLabo.Data
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
-            return await this.ExecuteScalarAsync(cm);
+            return await this.ExecuteScalarAsync(cm).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -121,7 +121,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public async Task<Object> ExecuteScalarAsync(DbCommand command)
         {
-            return await ExecuteScalarAsync(command, CancellationToken.None);
+            return await ExecuteScalarAsync(command, CancellationToken.None).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -144,11 +144,11 @@ namespace HigLabo.Data
                 if (e != null && e.Cancel == true) { return null; }
                 ec = e.ExecutionContext;
 
-                await this.OpenAsync();
+                await this.OpenAsync().ConfigureAwait(false);
                 cm.Connection = this.Connection;
                 cm.Transaction = this.Transaction;
                 startTime = DateTimeOffset.Now;
-                o = await cm.ExecuteScalarAsync(cancellationToken);
+                o = await cm.ExecuteScalarAsync(cancellationToken).ConfigureAwait(false);
                 endTime = DateTimeOffset.Now;
             }
             catch (Exception ex)
@@ -179,7 +179,7 @@ namespace HigLabo.Data
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
-            return await ExecuteCommandAsync(cm);
+            return await ExecuteCommandAsync(cm).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -188,7 +188,7 @@ namespace HigLabo.Data
         /// <returns></returns>
         public async Task<Int32> ExecuteCommandAsync(DbCommand command)
         {
-            return await ExecuteCommandAsync(command, CancellationToken.None);
+            return await ExecuteCommandAsync(command, CancellationToken.None).ConfigureAwait(false);
         }
         /// <summary>
         /// 
@@ -215,7 +215,7 @@ namespace HigLabo.Data
                 cm.Connection = this.Connection;
                 cm.Transaction = this.Transaction;
                 startTime = DateTimeOffset.Now;
-                affectRecordNumber = await cm.ExecuteNonQueryAsync(cancellationToken);
+                affectRecordNumber = await cm.ExecuteNonQueryAsync(cancellationToken).ConfigureAwait(false);
                 endTime = DateTimeOffset.Now;
             }
             catch (Exception ex)

@@ -88,10 +88,6 @@ namespace HigLabo.DbSharp.CodeGenerator
             {
                 c.Properties.Add(CreateDatabaseKeyProperty());
             }
-            if (sp.Parameters.Exists(el => el.Name == "TransactionKey") == false)
-            {
-                c.Properties.Add(CreateTransactionKeyProperty());
-            }
 
             ClassSourceCodeFileFactory.AddPropertyAndField(c, sp.Parameters);
 

@@ -33,13 +33,9 @@ namespace HigLabo.DbSharp
             + "Please call SetCreateDatabaseMethod method of HigLabo.DbSharp.DatabaseFactory class." + Environment.NewLine
             + "DatabaseKey=" + databaseKey);
         }
-        public DatabaseContext CreateDatabaseContext(String databaseKey)
+        public TransactionContext CreateDatabaseContext(String databaseKey)
         {
-            return new DatabaseContext(CreateDatabase(databaseKey));
-        }
-        public DatabaseContext CreateDatabaseContext(String databaseKey, String transactionKey)
-        {
-            return new DatabaseContext(CreateDatabase(databaseKey), transactionKey);
+            return new TransactionContext(CreateDatabase(databaseKey));
         }
     }
 }
