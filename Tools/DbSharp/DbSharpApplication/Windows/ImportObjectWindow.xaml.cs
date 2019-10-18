@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HigLabo.Core;
 using System.Threading;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -200,6 +201,8 @@ namespace HigLabo.DbSharpApplication
         }
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("ImportObject Execute");
+
             if (this.ConnectionStringComboBox.SelectedIndex == -1)
             {
                 MessageBox.Show(Properties.Resources.PleaseSelectConnectionString);

@@ -16,6 +16,7 @@ using HigLabo.DbSharp.CodeGenerator;
 using System.IO;
 using System.Windows.Threading;
 using HigLabo.Wpf;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -32,6 +33,8 @@ namespace HigLabo.DbSharpApplication
 
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("GenerateSqlScript Execute");
+
             AValue.ConfigData.SetSqlScriptOutputDirectoryPath(this.OutputDirectoryPathTextBox.Text);
             String path = this.OutputDirectoryPathTextBox.Text;
           

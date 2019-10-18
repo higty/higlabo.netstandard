@@ -2,6 +2,7 @@
 using HigLabo.DbSharp.MetaData;
 using HigLabo.DbSharpApplication.Core;
 using HigLabo.Wpf;
+using Microsoft.AppCenter.Analytics;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -48,6 +49,8 @@ namespace HigLabo.DbSharpApplication
         }
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("CopyResultSet Execute");
+
             if (this.SourceStoredProcedureResultSetComboBox.SelectedItem == null ||
                 this.TargetStoredProcedureResultSetComboBox.SelectedItem == null)
             {
@@ -64,8 +67,8 @@ namespace HigLabo.DbSharpApplication
                 c.AllowNull = sColumn.AllowNull;
                 c.EnumName = sColumn.EnumName;
             }
-            this.Hide();
-            this.Close();
+            //this.Hide();
+            //this.Close();
         }
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {

@@ -16,6 +16,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HigLabo.Core;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -58,6 +59,8 @@ namespace HigLabo.DbSharpApplication
         }
         private void RemoveButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("ManageIgnoreObject Remove");
+
             var l = _IgnoreObjects.Where(el => el.IsChecked).ToList();
             foreach (var item in l)
             {

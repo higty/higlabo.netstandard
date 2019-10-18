@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HigLabo.DbSharpApplication.Core;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -45,6 +46,8 @@ namespace HigLabo.DbSharpApplication
 
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("EditConnectionString Execute");
+
             if (AValue.CanConnectToDatabase(AValue.SchemaData.DatabaseServer, this.ConnectionStringTextBox.Text) == false)
             {
                 MessageBox.Show(Properties.Resources.ConnectionStringInvalid);

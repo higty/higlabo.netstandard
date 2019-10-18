@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using HigLabo.Wpf;
 using HigLabo.DbSharp.MetaData;
 using HigLabo.DbSharp.Service;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -144,6 +145,8 @@ namespace HigLabo.DbSharpApplication
         }
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("DeleteObject Execute");
+
             var tNames = _Tables.Where(el => el.IsChecked).Select(el => el.Item.Name).ToList();
             var sNames = _StoredProcedures.Where(el => el.IsChecked).Select(el => el.Item.Name).ToList();
             var uNames = _UserDefinedTableTypes.Where(el => el.IsChecked).Select(el => el.Item.Name).ToList();

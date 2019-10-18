@@ -11,6 +11,9 @@ using HigLabo.Wpf.Converter;
 using System.Windows.Media;
 using HigLabo.DbSharp.Service;
 using HigLabo.DbSharp.MetaData;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -29,6 +32,8 @@ namespace HigLabo.DbSharpApplication
         }
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            AppCenter.Start("3e041512-b1c3-4a20-950f-e157db4e7f24", typeof(Analytics), typeof(Crashes));
+
             AValue.Initialize();
             this.InitializeConverter();
         }

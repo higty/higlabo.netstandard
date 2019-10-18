@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.ComponentModel;
 using HigLabo.DbSharpApplication.Core;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -40,11 +41,17 @@ namespace HigLabo.DbSharpApplication
         }
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
+            var d = new Dictionary<String, String>();
+
             var language = this.LanguageComboBox.SelectedItem as LanguageViewModel;
             if (language != null)
             {
+                d.Add("Language", language.ToString());
                 AValue.ConfigData.ChangeCultureInfo(language.CultureName);
             }
+            d.Add("UseTableFeature", this.UseTableFeatureCheckBox.IsChecked.ToString());
+            Analytics.TrackEvent("EditSettings Execute", d);
+
             this.Close();
 
             var w = new MainWindow();

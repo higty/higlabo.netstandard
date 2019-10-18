@@ -19,6 +19,7 @@ using HigLabo.DbSharp.MetaData;
 using HigLabo.Wpf;
 using HigLabo.Core;
 using HigLabo.DbSharp.Service;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -86,6 +87,8 @@ namespace HigLabo.DbSharpApplication
 
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("GenerateSourceCode Execute");
+
             var path = this.OutputDirectoryPathTextBox.Text;
             if (path.EndsWith("\\") == false)
             {

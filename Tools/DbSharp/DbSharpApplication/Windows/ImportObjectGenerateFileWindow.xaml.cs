@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using HigLabo.Wpf;
 using HigLabo.DbSharp.Service;
 using HigLabo.DbSharp.MetaData;
+using Microsoft.AppCenter.Analytics;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -47,6 +48,8 @@ namespace HigLabo.DbSharpApplication
 
         private void ExecuteButton_Click(object sender, RoutedEventArgs e)
         {
+            Analytics.TrackEvent("ImportObjectGenerateFile Execute");
+
             var ci = this.ConnectionStringComboBox.SelectedValue as ConnectionStringInfo;
             if (ci == null)
             {
