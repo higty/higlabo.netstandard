@@ -10,7 +10,7 @@ namespace HigLabo.NugetManagementApplication
     class Program
     {
         private static String ApiKey = "";
-        private static readonly String NugetPackageFolderPath = "C:\\GitHub\\higty\\HigLabo.NetStandard\\NugetPackage\\";
+        private static readonly String NugetPackageFolderPath = "C:\\GitHub\\higty\\NugetPackage\\";
 
         static void Main(string[] args)
         {
