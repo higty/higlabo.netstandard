@@ -54,7 +54,8 @@ namespace HigLabo.DbSharp.MetaData
                 var oo = new Object[udt.Columns.Count];
                 for (int i = 0; i < udt.Columns.Count; i++)
                 {
-                    oo[i] = udt.Columns[i].CreateParameter().Value;
+                    c = udt.Columns[i];
+                    oo[i] = this.GetParameterValue(c, c.DbType.SqlServerDbType.Value);
                 }
                 dt.Rows.Add(oo);
             }
@@ -214,6 +215,90 @@ namespace HigLabo.DbSharp.MetaData
             var tp = AppEnvironment.Settings.TypeConverter.ToEnum<SqlServer2012DbType>(value);
             if (tp.HasValue == false) throw new InvalidCastException();
             return new MetaData.DbType(tp.Value);
+        }
+        protected override IDbDataParameter CreateParameter(String name, DataType dataType)
+        {
+            var p = new System.Data.SqlClient.SqlParameter(name, dataType.DbType.SqlServerDbType.Value);
+            if (dataType is SqlInputParameter dType)
+            {
+                p.Direction = dType.ParameterDirection;
+            }
+            if (p.Direction != ParameterDirection.Output)
+            {
+                p.Value = this.GetParameterValue(dataType, dataType.DbType.SqlServerDbType.Value);
+            }
+            return p;
+        }
+        protected override Object GetParameterValue(DataType dataType, Object sqlDbType)
+        {
+            switch ((SqlServer2012DbType)sqlDbType)
+            {
+                case SqlServer2012DbType.BigInt:
+                    return 1;
+
+                case SqlServer2012DbType.Binary:
+                case SqlServer2012DbType.Image:
+                case SqlServer2012DbType.Timestamp:
+                case SqlServer2012DbType.VarBinary:
+                    return new Byte[0];
+
+                case SqlServer2012DbType.Bit:
+                    return true;
+
+                case SqlServer2012DbType.Char:
+                case SqlServer2012DbType.NChar:
+                case SqlServer2012DbType.NText:
+                case SqlServer2012DbType.NVarChar:
+                case SqlServer2012DbType.Text:
+                case SqlServer2012DbType.VarChar:
+                    return "a";
+                case SqlServer2012DbType.Xml:
+                    return "<xml></xml>";
+
+                case SqlServer2012DbType.DateTime:
+                case SqlServer2012DbType.SmallDateTime:
+                case SqlServer2012DbType.Date:
+                case SqlServer2012DbType.DateTime2:
+                    return new DateTime(2000, 1, 1);
+
+                case SqlServer2012DbType.Time:
+                    return new TimeSpan(2, 0, 0);
+
+                case SqlServer2012DbType.Decimal:
+                case SqlServer2012DbType.Money:
+                case SqlServer2012DbType.SmallMoney:
+                    return 1;
+
+                case SqlServer2012DbType.Float:
+                    return 1;
+
+                case SqlServer2012DbType.Int:
+                    return 1;
+
+                case SqlServer2012DbType.Real:
+                    return 1;
+
+                case SqlServer2012DbType.UniqueIdentifier:
+                    return Guid.NewGuid();
+
+                case SqlServer2012DbType.SmallInt:
+                    return 1;
+
+                case SqlServer2012DbType.TinyInt:
+                    return 1;
+
+                case SqlServer2012DbType.Variant:
+                case SqlServer2012DbType.Udt:
+                    return new Object();
+
+                case SqlServer2012DbType.Structured:
+                    return new DataTable();
+
+                case SqlServer2012DbType.DateTimeOffset:
+                    return new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.FromHours(9));
+
+                default: throw new ArgumentException();
+            }
         }
 
         private class SqlServerDatabaseSchemaQueryBuilder : DatabaseSchemaQueryBuilder

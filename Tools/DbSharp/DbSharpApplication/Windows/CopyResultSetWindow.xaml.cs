@@ -57,6 +57,8 @@ namespace HigLabo.DbSharpApplication
                 MessageBox.Show(Properties.Resources.PleaseSelectItem);
                 return;
             }
+            var sSP = this.SourceStoredProcedureComboBox.SelectedItem as StoredProcedure;
+            var tSP = this.TargetStoredProcedureComboBox.SelectedItem as StoredProcedure;
             var sResultSet = (this.SourceStoredProcedureResultSetComboBox.SelectedItem as StoredProcedureResultSetColumn);
             var tResultSet = (this.TargetStoredProcedureResultSetComboBox.SelectedItem as StoredProcedureResultSetColumn);
 
@@ -67,8 +69,10 @@ namespace HigLabo.DbSharpApplication
                 c.AllowNull = sColumn.AllowNull;
                 c.EnumName = sColumn.EnumName;
             }
-            //this.Hide();
-            //this.Close();
+            this.StatusMessage.Content = String.Format("{0} Copy executed! [{1}.{2} --> {3}.{4}]"
+                , DateTime.Now.ToString("HH:mm:ss")
+                , sSP.Name, sResultSet.Name
+                , tSP.Name, tResultSet.Name);
         }
         private void QuitButton_Click(object sender, RoutedEventArgs e)
         {

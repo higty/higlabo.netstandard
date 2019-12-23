@@ -3,23 +3,24 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Version>2.1.0.0</Version>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <FileVersion>2.0.1.0</FileVersion>
-    <AssemblyVersion>2.0.1.0</AssemblyVersion>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Data.Common" Version="4.3.0" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.4.2" />
+    <PackageReference Include="MySql.Data" Version="8.0.18" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\HigLabo.DbSharp.CodeGenerator\HigLabo.DbSharp.CodeGenerator.csproj" />
     <ProjectReference Include="..\HigLabo.DbSharp.SchemaData\HigLabo.DbSharp.SchemaData.csproj" />
+    <ProjectReference Include="..\HigLabo.DbSharp\HigLabo.DbSharp.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="HigLabo.CodeGenerator">
       <HintPath>..\Reference\HigLabo.CodeGenerator.dll</HintPath>
+    </Reference>
+    <Reference Include="HigLabo.Converter">
+      <HintPath>..\Reference\HigLabo.Converter.dll</HintPath>
     </Reference>
     <Reference Include="HigLabo.Core">
       <HintPath>..\Reference\HigLabo.Core.dll</HintPath>
@@ -27,8 +28,8 @@
     <Reference Include="HigLabo.Data">
       <HintPath>..\Reference\HigLabo.Data.dll</HintPath>
     </Reference>
-    <Reference Include="HigLabo.Data.SqlServer">
-      <HintPath>..\Reference\HigLabo.Data.SqlServer.dll</HintPath>
+    <Reference Include="HigLabo.Data.MySql">
+      <HintPath>..\Reference\HigLabo.Data.MySql.dll</HintPath>
     </Reference>
   </ItemGroup>
 

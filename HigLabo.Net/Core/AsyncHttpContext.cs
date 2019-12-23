@@ -71,7 +71,7 @@ namespace HigLabo.Net
 
             if (this._Command.BodyStream == null || this._Command.IsSendBodyStream == false)
             {
-                req.BeginGetResponse(this.GetResponse, request);
+                req.BeginGetResponse(this.GetResponse, req);
             }
             else
             {

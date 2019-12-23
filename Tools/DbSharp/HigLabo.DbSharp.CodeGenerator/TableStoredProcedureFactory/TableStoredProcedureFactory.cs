@@ -130,23 +130,5 @@ namespace HigLabo.DbSharp.CodeGenerator
             }
             return sb.ToString();
         }
-
-        public static TableStoredProcedureFactory Create(DatabaseSchemaReader reader)
-        {
-            var r = reader;
-            switch (reader.DatabaseServer)
-            {
-                case DatabaseServer.SqlServer: return new SqlServerTableStoredProcedureFactory(r);
-                case DatabaseServer.MySql: return new MySqlTableStoredProcedureFactory(r);
-                case DatabaseServer.Oracle:
-                case DatabaseServer.PostgreSql: throw new NotSupportedException();
-                default: throw new InvalidOperationException();
-            }
-        }
-        public static TableStoredProcedureFactory Create(DatabaseServer server, String connectionString)
-        {
-            var r = DatabaseSchemaReader.Create(server, connectionString);
-            return Create(r);
-        }
     }
 }

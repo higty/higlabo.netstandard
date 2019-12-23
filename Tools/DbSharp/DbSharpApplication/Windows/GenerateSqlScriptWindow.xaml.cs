@@ -17,6 +17,7 @@ using System.IO;
 using System.Windows.Threading;
 using HigLabo.Wpf;
 using Microsoft.AppCenter.Analytics;
+using HigLabo.DbSharp.Service;
 
 namespace HigLabo.DbSharpApplication
 {
@@ -38,7 +39,7 @@ namespace HigLabo.DbSharpApplication
             AValue.ConfigData.SetSqlScriptOutputDirectoryPath(this.OutputDirectoryPathTextBox.Text);
             String path = this.OutputDirectoryPathTextBox.Text;
           
-            var gen = new SqlScriptFileGenerator(TableStoredProcedureFactory.Create(AValue.SchemaData.DatabaseServer, ""));
+            var gen = new SqlScriptFileGenerator(ImportSchemaCommand.CreateTableStoredProcedureFactory(AValue.SchemaData.DatabaseServer, ""));
             gen.Tables.AddRange(AValue.SchemaData.Tables);
             gen.FolderPath = path;
             gen.FileGenerated += this.Dispatcher.CreateEventHander<SqlScriptFileGeneratedEventArgs>(SqlScriptFile_FileGenerated);

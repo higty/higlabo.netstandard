@@ -4,32 +4,34 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HigLabo.Data;
-using MySql.Data.MySqlClient;
+using Oracle.ManagedDataAccess;
 using System.Data.Common;
 using System.Data;
 using System.Reflection;
 using HigLabo.Core;
+using Oracle.ManagedDataAccess.Types;
+using Oracle.ManagedDataAccess.Client;
 
 namespace HigLabo.DbSharp.MetaData
 {
-    public class MySqlDatabaseSchemaReader : DatabaseSchemaReader
+    public class OracleDatabaseSchemaReader : DatabaseSchemaReader
     {
         public override DatabaseServer DatabaseServer
         {
-            get { return DatabaseServer.MySql; }
+            get { return DatabaseServer.Oracle; }
         }
         public override bool SupportUserDefinedTableType
         {
             get { return false; }
         }
-        public MySqlDatabaseSchemaReader(String connectionString)
+        public OracleDatabaseSchemaReader(String connectionString)
         {
-            this.QueryBuilder = new MySqlDatabaseSchemaQueryBuilder();
+            this.QueryBuilder = new OracleDatabaseSchemaQueryBuilder();
             this.ConnectionString = connectionString;
         }
         public override Database CreateDatabase()
         {
-            return new MySqlDatabase(this.ConnectionString);
+            return new OracleDatabase(this.ConnectionString);
         }
 
         public override void SetResultSetsList(StoredProcedure sp, Dictionary<String, Object> values)
@@ -38,7 +40,7 @@ namespace HigLabo.DbSharp.MetaData
             StoredProcedureResultSetColumn resultSets = null;
             List<DataTable> schemaDataTableList = new List<DataTable>();
             DataType c = null;
-            var cm = CreateTestSqlCommand<MySqlCommand>(sp, values);
+            var cm = CreateTestSqlCommand<OracleCommand>(sp, values);
 
             //処理の実行によってデータの変更などの副作用が起きないようにRollBackする。
             using (var db = this.CreateDatabase())
@@ -131,22 +133,93 @@ namespace HigLabo.DbSharp.MetaData
         }
         private DbCommand GetTestExecutingSqlCommand(String storedProcedureName, IEnumerable<SqlInputParameter> parameters)
         {
-            var cm = new MySqlCommand(storedProcedureName) { CommandType = CommandType.StoredProcedure };
+            var cm = new OracleCommand(storedProcedureName) { CommandType = CommandType.StoredProcedure };
             foreach (var p in parameters)
             {
-                cm.Parameters.Add(p.CreateParameter());
+                cm.Parameters.Add(this.CreateParameter(p.Name, p));
             }
             return cm;
         }
 
         protected override MetaData.DbType CreateDbType(Object value)
         {
-            var tp = AppEnvironment.Settings.TypeConverter.ToEnum<MySqlDbType>(value);
+            var tp = AppEnvironment.Settings.TypeConverter.ToEnum<OracleDbType>(value);
             if (tp.HasValue == false) throw new InvalidCastException();
             return new MetaData.DbType(tp.Value);
         }
+        protected override IDbDataParameter CreateParameter(String name, DataType dataType)
+        {
+            var p = new Oracle.ManagedDataAccess.Client.OracleParameter(name, dataType.DbType.OracleServerDbType.Value);
+            if (dataType is SqlInputParameter dType)
+            {
+                p.Direction = dType.ParameterDirection;
+            }
+            if (p.Direction != ParameterDirection.Output)
+            {
+                p.Value = this.GetParameterValue(dataType, dataType.DbType.OracleServerDbType.Value);
+            }
+            return p;
+        }
+        protected override Object GetParameterValue(DataType dataType, Object sqlDbType)
+        {
+            switch ((OracleDbType)sqlDbType)
+            {
+                case OracleDbType.BFile:
+                case OracleDbType.Blob:
+                    return new Byte[0];
+                case OracleDbType.Byte:
+                    return 1;
+                case OracleDbType.Char:
+                    return "a";
+                case OracleDbType.Clob:
+                    return 1;
+                case OracleDbType.Date:
+                    return new DateTime(2000, 1, 1);
+                case OracleDbType.Decimal:
+                    return 1.0m;
+                case OracleDbType.Double:
+                    return 1;
+                case OracleDbType.Long:
+                    return 1;
+                case OracleDbType.LongRaw:
+                    return new Byte[0];
+                case OracleDbType.Int16:
+                case OracleDbType.Int32:
+                case OracleDbType.Int64:
+                    return 1;
+                case OracleDbType.IntervalDS:
+                    return TimeSpan.FromHours(1);
+                case OracleDbType.IntervalYM:
+                    return 1;
+                case OracleDbType.NClob:
+                    return 1;
+                case OracleDbType.NChar:
+                case OracleDbType.NVarchar2:
+                    return "a";
+                case OracleDbType.Raw:
+                    return new Byte[0];
+                case OracleDbType.RefCursor:
+                    throw new NotSupportedException();
+                case OracleDbType.Single:
+                    return 1;
+                case OracleDbType.TimeStamp:
+                case OracleDbType.TimeStampLTZ:
+                case OracleDbType.TimeStampTZ:
+                    return new DateTime(2000, 1, 1);
+                case OracleDbType.Varchar2:
+                    return "a";
+                case OracleDbType.XmlType:
+                    return "<xml></xml>";
+                case OracleDbType.BinaryDouble:
+                case OracleDbType.BinaryFloat:
+                    return 1;
+                case OracleDbType.Boolean:
+                    return true;
+                default: throw new InvalidOperationException();
+            }
+        }
 
-        private class MySqlDatabaseSchemaQueryBuilder : DatabaseSchemaQueryBuilder
+        private class OracleDatabaseSchemaQueryBuilder : DatabaseSchemaQueryBuilder
         {
             public override String GetDatabases()
             {

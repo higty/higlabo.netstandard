@@ -29,7 +29,7 @@ namespace HigLabo.DbSharp.Service
             sc.NamespaceName = namespaceName;
             sc.DatabaseKey = databaseKey;
 
-            DatabaseSchemaReader db = DatabaseSchemaReader.Create(sc.DatabaseServer, connectionString);
+            var db = ImportSchemaCommand.CreateDatabaseSchemaReader(sc.DatabaseServer, connectionString);
 
             var tt = db.GetTables();
             var ss = db.GetStoredProcedures();

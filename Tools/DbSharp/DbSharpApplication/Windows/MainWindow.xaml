@@ -180,7 +180,7 @@
                                         </ComboBox>
                                         <Grid DataContext="{Binding ElementName=ResultSetListBox, Path=SelectedItem}">
                                             <TextBox Name="ResultSetNameTextBox" 
-                                         Text="{Binding Path=Name}" 
+                                         Text="{Binding Path=Name}"  PreviewKeyDown="ResultSetNameTextBox_PreviewKeyDown"
                                          VerticalContentAlignment="Center" Height="21" TextWrapping="Wrap" 
                                          VerticalAlignment="Top" HorizontalAlignment="Left" Width="241" Margin="200,0,0,0"/>
                                             <ComboBox Name="StoredProcedureTableListBox" 
@@ -198,9 +198,12 @@
                                          Text="{Binding Path=TableName}" 
                                          VerticalContentAlignment="Center" Height="21" TextWrapping="Wrap" 
                                          VerticalAlignment="Top" HorizontalAlignment="Left" Width="191" Margin="250,21,0,0"/>
+                                            <CheckBox Name="AllAllowNullCheckBox" IsChecked="True"
+                                                      Checked="AllAllowNullCheckBox_Changed" Unchecked="AllAllowNullCheckBox_Changed" 
+                                                      Width="131" Content="AllowNull ON/OFF" Margin="0,48,0,0" Height="16" VerticalAlignment="Top" HorizontalAlignment="Left"></CheckBox>
                                             <DataGrid Name="ResultSetParameterListBox" 
                                           ItemsSource="{Binding Path=Columns}"
-                                          AutoGenerateColumns="False" FrozenColumnCount="2" Margin="0,47,0,0">
+                                          AutoGenerateColumns="False" FrozenColumnCount="2" Margin="0,70,0,0">
                                                 <DataGrid.Columns>
                                                     <StaticResource ResourceKey="DataTypeOrdinal"/>
                                                     <StaticResource ResourceKey="DataTypeColumnName"/>

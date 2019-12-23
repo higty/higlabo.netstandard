@@ -217,7 +217,7 @@
     <value>Import _UserDefinedTableType</value>
   </data>
   <data name="Menu_ManageConnection" xml:space="preserve">
-    <value>Manage _Connection</value>
+    <value>_Manage Connection</value>
   </data>
   <data name="Menu_ManageIgnoreList" xml:space="preserve">
     <value>Manage Ignore list</value>
@@ -322,7 +322,7 @@
     <value>Table feature is unable.</value>
   </data>
   <data name="Menu_CopyResultSet" xml:space="preserve">
-    <value>Copy ResultSet</value>
+    <value>_Copy ResultSet</value>
   </data>
   <data name="DisableForeignKey" xml:space="preserve">
     <value>Disable ForeignKey</value>

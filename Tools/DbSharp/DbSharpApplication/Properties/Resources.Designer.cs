@@ -241,7 +241,7 @@ namespace HigLabo.DbSharpApplication.Properties {
         }
         
         /// <summary>
-        ///   Copy ResultSet に類似しているローカライズされた文字列を検索します。
+        ///   _Copy ResultSet に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Menu_CopyResultSet {
             get {
@@ -376,7 +376,7 @@ namespace HigLabo.DbSharpApplication.Properties {
         }
         
         /// <summary>
-        ///   Manage _Connection に類似しているローカライズされた文字列を検索します。
+        ///   _Manage Connection に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string Menu_ManageConnection {
             get {

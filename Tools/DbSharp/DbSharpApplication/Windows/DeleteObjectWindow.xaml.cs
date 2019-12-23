@@ -78,7 +78,7 @@ namespace HigLabo.DbSharpApplication
         }
         private void ImportTable()
         {
-            DatabaseSchemaReader db = DatabaseSchemaReader.Create(AValue.SchemaData.DatabaseServer, this.GetSelectedConnectionString());
+            DatabaseSchemaReader db = ImportSchemaCommand.CreateDatabaseSchemaReader(AValue.SchemaData.DatabaseServer, this.GetSelectedConnectionString());
             var l = db.GetTables().ToList();
 
             _Tables.Clear();
@@ -90,7 +90,7 @@ namespace HigLabo.DbSharpApplication
         }
         private void ImportStoredProcedure()
         {
-            DatabaseSchemaReader db = DatabaseSchemaReader.Create(AValue.SchemaData.DatabaseServer, this.GetSelectedConnectionString());
+            DatabaseSchemaReader db = ImportSchemaCommand.CreateDatabaseSchemaReader(AValue.SchemaData.DatabaseServer, this.GetSelectedConnectionString());
             var l = db.GetStoredProcedures().ToList();
 
             _StoredProcedures.Clear();
@@ -102,7 +102,7 @@ namespace HigLabo.DbSharpApplication
         }
         private void ImportUserDefinedTableType()
         {
-            DatabaseSchemaReader db = DatabaseSchemaReader.Create(AValue.SchemaData.DatabaseServer, this.GetSelectedConnectionString());
+            var db = ImportSchemaCommand.CreateDatabaseSchemaReader(AValue.SchemaData.DatabaseServer, this.GetSelectedConnectionString());
             var l = db.GetUserDefinedTableTypes().ToList();
 
             _UserDefinedTableTypes.Clear();

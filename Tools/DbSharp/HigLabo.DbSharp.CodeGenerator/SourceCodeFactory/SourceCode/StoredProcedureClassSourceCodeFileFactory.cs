@@ -7,7 +7,6 @@ using HigLabo.DbSharp;
 using HigLabo.CodeGenerator;
 using System.Data;
 using System.IO;
-using MySql.Data.MySqlClient;
 using HigLabo.DbSharp.MetaData;
 
 namespace HigLabo.DbSharp.CodeGenerator

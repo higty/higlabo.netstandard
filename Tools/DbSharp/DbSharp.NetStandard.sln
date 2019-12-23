@@ -1,19 +1,25 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.DbSharp", "HigLabo.DbSharp\HigLabo.DbSharp.csproj", "{75E30348-FACA-4A80-9AC6-2CC14C0D9639}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.DbSharp.CodeGenerator", "HigLabo.DbSharp.CodeGenerator\HigLabo.DbSharp.CodeGenerator.csproj", "{738B195F-6F65-4FDA-B539-5810E32AB2FE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.DbSharp.CodeGenerator", "HigLabo.DbSharp.CodeGenerator\HigLabo.DbSharp.CodeGenerator.csproj", "{738B195F-6F65-4FDA-B539-5810E32AB2FE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.DbSharp.SchemaData", "HigLabo.DbSharp.SchemaData\HigLabo.DbSharp.SchemaData.csproj", "{8EB1375B-3970-4FC0-BAD9-E57949D35241}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.DbSharp.SchemaData", "HigLabo.DbSharp.SchemaData\HigLabo.DbSharp.SchemaData.csproj", "{8EB1375B-3970-4FC0-BAD9-E57949D35241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.DbSharp.Service", "HigLabo.DbSharp.Service\HigLabo.DbSharp.Service.csproj", "{0FA9E5EE-50DB-4672-926E-D51759167751}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.DbSharp.Service", "HigLabo.DbSharp.Service\HigLabo.DbSharp.Service.csproj", "{0FA9E5EE-50DB-4672-926E-D51759167751}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.DbSharp.SqlServer", "HigLabo.DbSharp.SqlServer\HigLabo.DbSharp.SqlServer.csproj", "{37DFF87D-4254-400E-AE4C-4821F1962F68}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HigLabo.DbSharp.SqlServer", "HigLabo.DbSharp.SqlServer\HigLabo.DbSharp.SqlServer.csproj", "{37DFF87D-4254-400E-AE4C-4821F1962F68}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSharpApplication", "DbSharpApplication\DbSharpApplication.csproj", "{DDB69714-7F52-4C77-8F79-415E2D3C2E9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.DbSharp.CodeGenerator.MySql", "HigLabo.DbSharp.CodeGenerator.MySql\HigLabo.DbSharp.CodeGenerator.MySql.csproj", "{1DFEA6E5-C8FB-492E-9915-2D917FED6D53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.DbSharp.CodeGenerator.Oracle", "HigLabo.DbSharp.CodeGenerator.Oracle\HigLabo.DbSharp.CodeGenerator.Oracle.csproj", "{3C143285-0100-4A1A-B031-EB524C65DCC3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HigLabo.DbSharp.CodeGenerator.PostgreSql", "HigLabo.DbSharp.CodeGenerator.PostgreSql\HigLabo.DbSharp.CodeGenerator.PostgreSql.csproj", "{20672B28-1040-42D1-B5DB-27EE2D79B744}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +51,18 @@ Global
 		{DDB69714-7F52-4C77-8F79-415E2D3C2E9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DDB69714-7F52-4C77-8F79-415E2D3C2E9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DDB69714-7F52-4C77-8F79-415E2D3C2E9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1DFEA6E5-C8FB-492E-9915-2D917FED6D53}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1DFEA6E5-C8FB-492E-9915-2D917FED6D53}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1DFEA6E5-C8FB-492E-9915-2D917FED6D53}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1DFEA6E5-C8FB-492E-9915-2D917FED6D53}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C143285-0100-4A1A-B031-EB524C65DCC3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C143285-0100-4A1A-B031-EB524C65DCC3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C143285-0100-4A1A-B031-EB524C65DCC3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C143285-0100-4A1A-B031-EB524C65DCC3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{20672B28-1040-42D1-B5DB-27EE2D79B744}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{20672B28-1040-42D1-B5DB-27EE2D79B744}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{20672B28-1040-42D1-B5DB-27EE2D79B744}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{20672B28-1040-42D1-B5DB-27EE2D79B744}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -23,7 +23,7 @@ namespace HigLabo.DbSharp.Service
         public String DatabaseKey { get; set; }
         public String NamespaceName { get; set; }
         public List<Table> Tables { get; private set; }
-        public List<StoredProcedure> StoredProcedures { get; private set; }
+        public List<MetaData.StoredProcedure> StoredProcedures { get; private set; }
         public List<UserDefinedTableType> UserDefinedTableTypes { get; private set; }
 
         public GenerateSourceCodeCommand(String outputDirectoryPath, SchemaData schemaData)
@@ -36,7 +36,7 @@ namespace HigLabo.DbSharp.Service
             this.DatabaseKey = databaseKey;
             this.NamespaceName = namespaceName;
             this.Tables = new List<Table>();
-            this.StoredProcedures = new List<StoredProcedure>();
+            this.StoredProcedures = new List<MetaData.StoredProcedure>();
             this.UserDefinedTableTypes = new List<UserDefinedTableType>();
         }
 

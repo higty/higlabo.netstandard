@@ -23,7 +23,7 @@ namespace HigLabo.DbSharp.Service
             var names = this.Names;
             var totalCount = names.Count;
             var tt = new List<Table>();
-            var ss = new List<StoredProcedure>();
+            var ss = new List<MetaData.StoredProcedure>();
 
             for (int i = 0; i < totalCount; i++)
             {
@@ -55,9 +55,9 @@ namespace HigLabo.DbSharp.Service
             this.AddOrReplace(this.SchemaData.StoredProcedures, ss, (item, element) => item.Name == element.Name);
             this.SchemaData.LastExecuteTimeOfImportTable = DateTime.Now;
         }
-        public List<StoredProcedure> AddStoredProcedure(Table table)
+        public List<MetaData.StoredProcedure> AddStoredProcedure(Table table)
         {
-            var f = TableStoredProcedureFactory.Create(this.DatabaseSchemaReader);
+            var f = CreateTableStoredProcedureFactory(this.DatabaseSchemaReader);
             return f.CreateTableStoredProcedures(table);
         }
     }

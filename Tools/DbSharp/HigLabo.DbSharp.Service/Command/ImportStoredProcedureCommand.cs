@@ -45,7 +45,7 @@ namespace HigLabo.DbSharp.Service
             var r = this.DatabaseSchemaReader;
             var names = this.Names;
             var totalCount = names.Count;
-            var ss = new List<StoredProcedure>();
+            var ss = new List<MetaData.StoredProcedure>();
 
             for (int i = 0; i < totalCount; i++)
             {

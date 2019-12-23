@@ -97,7 +97,7 @@ namespace HigLabo.DbSharpApplication
         private void ImportTable(String connectionString, Int32 offsetHour)
         {
             var l = new List<DatabaseObject>();
-            DatabaseSchemaReader db = DatabaseSchemaReader.Create(AValue.SchemaData.DatabaseServer, connectionString);
+            var db = ImportSchemaCommand.CreateDatabaseSchemaReader(AValue.SchemaData.DatabaseServer, connectionString);
 
             foreach (var item in db.GetTables())
             {
@@ -121,7 +121,7 @@ namespace HigLabo.DbSharpApplication
         private void ImportStoredProcedure(String connectionString, Int32 offsetHour)
         {
             var l = new List<DatabaseObject>();
-            DatabaseSchemaReader db = DatabaseSchemaReader.Create(AValue.SchemaData.DatabaseServer, connectionString);
+            var db = ImportSchemaCommand.CreateDatabaseSchemaReader(AValue.SchemaData.DatabaseServer, connectionString);
             
             foreach (var item in db.GetStoredProcedures())
             {
@@ -145,7 +145,7 @@ namespace HigLabo.DbSharpApplication
         private void ImportUserDefinedTableType(String connectionString, Int32 offsetHour)
         {
             var l = new List<DatabaseObject>();
-            DatabaseSchemaReader db = DatabaseSchemaReader.Create(AValue.SchemaData.DatabaseServer, connectionString);
+            var db = ImportSchemaCommand.CreateDatabaseSchemaReader(AValue.SchemaData.DatabaseServer, connectionString);
 
             if (db.SupportUserDefinedTableType == false) { return; }
 

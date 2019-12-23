@@ -17,17 +17,6 @@ namespace HigLabo.DbSharp.MetaData
         public String ConnectionString { get; protected set; }
         public abstract Boolean SupportUserDefinedTableType { get; }
 
-        public static DatabaseSchemaReader Create(DatabaseServer databaseServer, String connectionString)
-        {
-            switch (databaseServer)
-            {
-                case DatabaseServer.SqlServer: return new SqlServerDatabaseSchemaReader(connectionString);
-                case DatabaseServer.Oracle: throw new NotImplementedException();
-                case DatabaseServer.MySql: return new MySqlDatabaseSchemaReader(connectionString);
-                case DatabaseServer.PostgreSql: throw new NotImplementedException();
-                default: throw new InvalidOperationException();
-            }
-        }
         public abstract Database CreateDatabase();
         public virtual List<DatabaseObject> GetTables()
         {
@@ -213,23 +202,7 @@ namespace HigLabo.DbSharp.MetaData
             return l;
         }
         public abstract void SetResultSetsList(StoredProcedure sp, Dictionary<String, Object> values);
-        protected T CreateTestSqlCommand<T>(StoredProcedure sp, Dictionary<String, Object> values)
-            where T : DbCommand, new()
-        {
-            T cm = new T();
-            cm.CommandText = sp.Name;
-            cm.CommandType = CommandType.StoredProcedure;
-            foreach (var item in sp.Parameters)
-            {
-                var p = item.CreateParameter();
-                if (values.ContainsKey(item.Name) == true)
-                {
-                    p.Value = values[item.Name];
-                }
-                cm.Parameters.Add(p);
-            }
-            return cm;
-        }
+
         public virtual List<DatabaseObject> GetUserDefinedTableTypes()
         {
             throw new NotSupportedException();
@@ -243,5 +216,25 @@ namespace HigLabo.DbSharp.MetaData
             throw new NotSupportedException();
         }
         protected abstract MetaData.DbType CreateDbType(Object value);
+
+        protected T CreateTestSqlCommand<T>(StoredProcedure sp, Dictionary<String, Object> values)
+            where T : DbCommand, new()
+        {
+            T cm = new T();
+            cm.CommandText = sp.Name;
+            cm.CommandType = CommandType.StoredProcedure;
+            foreach (var item in sp.Parameters)
+            {
+                var p = this.CreateParameter(item.Name, item);
+                if (values.ContainsKey(item.Name) == true)
+                {
+                    p.Value = values[item.Name];
+                }
+                cm.Parameters.Add(p);
+            }
+            return cm;
+        }
+        protected abstract IDbDataParameter CreateParameter(String name, DataType dataType);
+        protected abstract Object GetParameterValue(DataType dataType, Object dbType);
     }
 }

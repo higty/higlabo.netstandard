@@ -518,6 +518,41 @@ namespace HigLabo.DbSharpApplication
 
         }
 
+        private void ResultSetNameTextBox_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            var rs = this.ResultSetListBox.SelectedItem as StoredProcedureResultSetColumn;
+            if (rs == null) { return; }
+
+            var index = this.ResultSetListBox.SelectedIndex;
+            if (e.Key == Key.Up)
+            {
+                index = index - 1;
+            }
+            else if (e.Key == Key.Down)
+            {
+                index = index + 1;
+            }
+            else { return; }
+            if (index < 0 || index >= this.ResultSetListBox.Items.Count) { return; }
+
+            rs.Name = this.ResultSetNameTextBox.Text;
+            this.ResultSetListBox.SelectedIndex = index;
+        }
+        private void AllAllowNullCheckBox_Changed(object sender, RoutedEventArgs e)
+        {
+            if (this.AllAllowNullCheckBox.IsChecked.HasValue == false) { return; }
+            var sp = this.StoredProcedureListBox.SelectedItem as StoredProcedure;
+            if (sp == null) { return; }
+            var rs = this.ResultSetListBox.SelectedItem as StoredProcedureResultSetColumn;
+            if (rs == null) { return; }
+
+            var allowNull = this.AllAllowNullCheckBox.IsChecked.Value;
+            foreach (var item in rs.Columns)
+            {
+                item.AllowNull = allowNull;
+            }
+        }
+
         private void ColumnListBox_CellEditEnding(object sender, DataGridCellEditEndingEventArgs e)
         {
             if (e.Column.Header as String == "EnumName")
