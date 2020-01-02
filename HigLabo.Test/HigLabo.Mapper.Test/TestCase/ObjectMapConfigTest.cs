@@ -101,16 +101,40 @@ namespace HigLabo.Mapper.Test
         public void ObjectMapConfig_Map_Object_Object_SetNullablePropertyToNull()
         {
             var config = new ObjectMapConfig();
-            
+
             var u1 = new User();
             u1.DecimalNullable = null;
-            var u2 = config.Map(u1, new User() { DecimalNullable = 23.4m });
+            u1.ParentUser = null;
+            var u2 = new User();
+            u2.DecimalNullable = 23.4m;
+            u2.ParentUser = new User();
+            config.Map(u1, u2);
+
+            var u3 = new User();
+            u3.ParentUser = null;
+            config.Map(u1, u3);
 
             Assert.IsNull(u2.DecimalNullable);
+            Assert.IsNull(u2.ParentUser);
+            Assert.IsNull(u3.ParentUser);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_Inherit_New_List_Property()
+        {
+            var config = new ObjectMapConfig();
+
+            var s1 = new ScheduleRecord();
+            s1.Title = "s1";
+            s1.StartTime = new DateTimeOffset();
+            s1.EndTime = new DateTimeOffset();
+            var s2 = new ScheduleRecordChild();
+            config.Map(s1, s2);
+
+            Assert.AreEqual(s1.Title, s2.Title);
         }
 
         [TestMethod]
-        public void ObjectMapConfig_Map_NullProperty_None()
+        public void ObjectMapConfig_Map_ClassPropertyMapMode_NullProperty_None()
         {
             var config = new ObjectMapConfig();
             config.ClassPropertyMapMode = ClassPropertyMapMode.None;
@@ -125,7 +149,7 @@ namespace HigLabo.Mapper.Test
             Assert.IsNull(u2.ParentUser);
         }
         [TestMethod]
-        public void ObjectMapConfig_Map_NullProperty_NewObject()
+        public void ObjectMapConfig_Map_ClassPropertyMapMode_NullProperty_NewObject()
         {
             var config = new ObjectMapConfig();
             config.ClassPropertyMapMode = ClassPropertyMapMode.NewObject;
@@ -148,7 +172,7 @@ namespace HigLabo.Mapper.Test
             Assert.AreNotEqual("ParentUserChanged", u2.ParentUser.Name);
         }
         [TestMethod]
-        public void ObjectMapConfig_Map_NullProperty_DeepCopy()
+        public void ObjectMapConfig_Map_ClassPropertyMapMode_NullProperty_DeepCopy()
         {
             var config = new ObjectMapConfig();
             config.ClassPropertyMapMode = ClassPropertyMapMode.DeepCopy;
@@ -163,6 +187,128 @@ namespace HigLabo.Mapper.Test
             u1.ParentUser.Name = "ParentUserChanged";
             //Same object
             Assert.AreEqual("ParentUserChanged", u2.ParentUser.Name);
+        }
+
+        [TestMethod]
+        public void ObjectMapConfig_Map_CollectionElementMapMode_CollectionElement_None()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.None;
+
+            var u1 = new User();
+            for (int i = 0; i < 3; i++)
+            {
+                u1.Users.Add(new User("TestUser" + i.ToString()));
+            }
+            var u2 = config.Map(u1, new User());
+
+            config.AddPostAction<User, User>((source, target) =>
+            {
+                if (source == null) { return; }
+                target.Users.AddRange(source.Users);
+            });
+            var u3 = config.Map(u1, new User());
+
+            Assert.AreEqual(0, u2.Users.Count);
+            Assert.AreEqual(3, u3.Users.Count);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_CollectionElementMapMode_CollectionElement_NewObject()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.NewObject;
+
+            var u1 = new User();
+            for (int i = 0; i < 3; i++)
+            {
+                u1.Users.Add(new User("TestUser" + i.ToString()));
+            }
+            var u2 = config.Map(u1, new User());
+            u1.Users[0].Name = "Test20";
+
+            Assert.AreEqual(3, u2.Users.Count);
+            Assert.AreNotEqual("Test20", u2.Users[0].Name);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_CollectionElementMapMode_CollectionElement_NewObject_NoDefaultConstructor()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.NewObject;
+
+            var u1 = new List<User>();
+            for (int i = 0; i < 3; i++)
+            {
+                u1.Add(new User("TestUser" + i.ToString()));
+            }
+            var u2 = config.Map(u1, new List<UserNoDefaultConstructor>());
+
+            Assert.AreEqual(0, u2.Count);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_CollectionElementMapMode_CollectionElement_DeepCopy_SameClass()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.DeepCopy;
+
+            var u1 = new User();
+            for (int i = 0; i < 3; i++)
+            {
+                u1.Users.Add(new User("TestUser" + i.ToString()));
+            }
+            var u2 = config.Map(u1, new User());
+            u1.Users[0].Name = "Test20";
+
+            Assert.AreEqual(3, u2.Users.Count);
+            Assert.AreEqual("Test20", u2.Users[0].Name);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_CollectionElementMapMode_CollectionElement_DeepCopy_OtherClass()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.DeepCopy;
+
+            var u1 = new VipUserListInfo();
+            u1.GroupName = "Group1";
+            var u2 = new UserListInfo();
+            for (int i = 0; i < 3; i++)
+            {
+                u1.Users.Add(new VipUser("TestUser" + i.ToString()));
+            }
+            config.Map(u1, u2);
+            u1.Users[0].Name = "Test20";
+
+            Assert.AreEqual(3, u2.Users.Count);
+            Assert.AreEqual("Group1", u2.GroupName);
+            Assert.AreEqual("Test20", u2.Users[0].Name);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_CollectionElementMapMode_DeepCopy_Implement_Interface()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.DeepCopy;
+
+            var u1 = new UserListInfoWithInterface();
+            var u2 = new UserListInfoWithInterface_SubClass();
+            for (int i = 0; i < 3; i++)
+            {
+                u1.Users.Add(new VipUser("TestUser" + i.ToString()));
+            }
+            config.Map(u1, u2);
+            u1.Users[0].Name = "Test20";
+
+            Assert.AreEqual(3, u2.Users.Count);
+            Assert.AreEqual("Test20", u2.Users[0].Name);
+        }
+        [TestMethod]
+        public void ObjectMapConfig_Map_CollectionElementMapMode_InfiniteLoop()
+        {
+            var config = new ObjectMapConfig();
+            config.CollectionElementMapMode = CollectionElementMapMode.NewObject;
+
+            var n1 = new TreeNode();
+            n1.Nodes = new List<TreeNode>();
+            n1.Nodes.Add(n1);
+            var n2 = config.Map(n1, new TreeNode());
         }
 
         [TestMethod]
@@ -363,116 +509,6 @@ namespace HigLabo.Mapper.Test
             var l2 = config.Map(l1, new VectorList());
 
             Assert.AreEqual(1, l2.ReadonlyVectors[0].X);
-        }
-        [TestMethod]
-        public void ObjectMapConfig_Map_ListProperty()
-        {
-            var config = new ObjectMapConfig();
-            config.CollectionElementMapMode = CollectionElementMapMode.None;
-
-            var u1 = new User();
-            for (int i = 0; i < 3; i++)
-            {
-                u1.Users.Add(new User("TestUser" + i.ToString()));
-            }
-            var u2 = config.Map(u1, new User());
-
-            config.AddPostAction<User, User>((source, target) =>
-            {
-                if (source == null) { return; }
-                target.Users.AddRange(source.Users);
-            });
-            var u3 = config.Map(u1, new User());
-
-            Assert.AreEqual(0, u2.Users.Count);
-            Assert.AreEqual(3, u3.Users.Count);
-        }
-        [TestMethod]
-        public void ObjectMapConfig_Map_CollectionElement_NewObject()
-        {
-            var config = new ObjectMapConfig();
-            config.CollectionElementMapMode = CollectionElementMapMode.NewObject;
-
-            var u1 = new User();
-            for (int i = 0; i < 3; i++)
-            {
-                u1.Users.Add(new User("TestUser" + i.ToString()));
-            }
-            var u2 = config.Map(u1, new User());
-            u1.Users[0].Name = "Test20";
-
-            Assert.AreEqual(3, u2.Users.Count);
-            Assert.AreNotEqual("Test20", u2.Users[0].Name);
-        }
-        [TestMethod]
-        public void ObjectMapConfig_Map_CollectionElement_NewObject_NoDefaultConstructor()
-        {
-            var config = new ObjectMapConfig();
-            config.CollectionElementMapMode = CollectionElementMapMode.NewObject;
-
-            var u1 = new List<User>();
-            for (int i = 0; i < 3; i++)
-            {
-                u1.Add(new User("TestUser" + i.ToString()));
-            }
-            var u2 = config.Map(u1, new List<UserNoDefaultConstructor>());
-
-            Assert.AreEqual(0, u2.Count);
-        }
-        [TestMethod]
-        public void ObjectMapConfig_Map_CollectionElement_Reference()
-        {
-            var config = new ObjectMapConfig();
-            config.CollectionElementMapMode = CollectionElementMapMode.DeepCopy;
-
-            var u1 = new User();
-            for (int i = 0; i < 3; i++)
-            {
-                u1.Users.Add(new User("TestUser" + i.ToString()));
-            }
-            var u2 = config.Map(u1, new User());
-            u1.Users[0].Name = "Test20";
-
-            Assert.AreEqual(3, u2.Users.Count);
-            Assert.AreEqual("Test20", u2.Users[0].Name);
-        }
-        [TestMethod]
-        public void ObjectMapConfig_MapCollection_CollectionElement_DeepCopy()
-        {
-            var config = new ObjectMapConfig();
-            config.CollectionElementMapMode = CollectionElementMapMode.DeepCopy;
-
-            var u1 = new VipUserListInfo();
-            u1.GroupName = "Group1";
-            var u2 = new UserListInfo();
-            for (int i = 0; i < 3; i++)
-            {
-                u1.Users.Add(new VipUser("TestUser" + i.ToString()));
-            }
-            config.Map(u1, u2);
-            u1.Users[0].Name = "Test20";
-
-            Assert.AreEqual(3, u2.Users.Count);
-            Assert.AreEqual("Group1", u2.GroupName);
-            Assert.AreEqual("Test20", u2.Users[0].Name);
-        }
-        [TestMethod]
-        public void ObjectMapConfig_MapCollection_Implement_Interface()
-        {
-            var config = new ObjectMapConfig();
-            config.CollectionElementMapMode = CollectionElementMapMode.DeepCopy;
-
-            var u1 = new UserListInfoWithInterface();
-            var u2 = new UserListInfoWithInterface_SubClass();
-            for (int i = 0; i < 3; i++)
-            {
-                u1.Users.Add(new VipUser("TestUser" + i.ToString()));
-            }
-            config.Map(u1, u2);
-            u1.Users[0].Name = "Test20";
-
-            Assert.AreEqual(3, u2.Users.Count);
-            Assert.AreEqual("Test20", u2.Users[0].Name);
         }
         [TestMethod]
         public void ObjectMapConfig_Map_NullListProperty_NewObject()
@@ -821,17 +857,6 @@ namespace HigLabo.Mapper.Test
             Assert.AreEqual(8, u2.Int32Nullable);
         }
 
-        [TestMethod]
-        public void ObjectMapConfig_InfiniteLoop()
-        {
-            var config = new ObjectMapConfig();
-            config.CollectionElementMapMode = CollectionElementMapMode.NewObject;
-
-            var n1 = new TreeNode();
-            n1.Nodes = new List<TreeNode>();
-            n1.Nodes.Add(n1);
-            var n2 = config.Map(n1, new TreeNode());
-        }
 
         private MapPoint MapPointConverter(Object obj)
         {

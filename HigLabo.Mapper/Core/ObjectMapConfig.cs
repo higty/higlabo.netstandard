@@ -786,6 +786,7 @@ namespace HigLabo.Core
         }
         /// <summary>
         /// ***********************************************************************
+        /// MapProperty(source, target, MappingContext) {
         /// source.P1 --> target.P1;
         /// source.P1 --> target["P1"];
         /// source["P1"] --> target.P1;
@@ -812,10 +813,15 @@ namespace HigLabo.Core
         /// //Null property handling...
         /// if (target property is Class)
         /// {
-        ///     switch (context.NullPropertyMapMode)
+        ///     if (source.P1 == null) 
         ///     {
-        ///         case NullPropertyMapMode.NewObject: target.P1 = new XXX(); break;
-        ///         case NullPropertyMapMode.CopyReference: 
+        ///         target.P1 = null;
+        ///     }
+        ///     switch (context.ClassPropertyMapMode)
+        ///     {
+        ///         case ClassPropertyMapMode.None: break;
+        ///         case ClassPropertyMapMode.NewObject: target.P1 = new XXX(); break;
+        ///         case ClassPropertyMapMode.CopyReference: 
         ///         {
         ///             if (typeof(source) inherit from typeof(parent))
         ///             {
@@ -834,6 +840,8 @@ namespace HigLabo.Core
         ///     }
         /// }
         /// target.P1 = source.P1.Map(target.P1);
+        /// 
+        /// } //End of method
         /// </summary>
         /// <typeparam name="TSource"></typeparam>
         /// <typeparam name="TTarget"></typeparam>
@@ -1205,8 +1213,22 @@ namespace HigLabo.Core
                 else if (targetProperty_PropertyType.IsClass || targetProperty_PropertyType.IsInterface)
                 {
                     #region
-                    if (targetSetMethod != null)
+                    if (sourceProperty_PropertyType.IsClass && sourceProperty.IsIndexedProperty == false && targetSetMethod != null)
                     {
+                        il.Emit(OpCodes.Ldarg_1);
+                        il.Emit(OpCodes.Callvirt, sourceGetMethod);
+                        il.Emit(OpCodes.Ldnull);
+                        il.Emit(OpCodes.Ceq);
+                        var sourceIsNullLabel = il.DefineLabel();
+                        var sourceIsNotNullLabel = il.DefineLabel();
+                        il.Emit(OpCodes.Brfalse_S, sourceIsNotNullLabel);
+                        //Target.P1 = null;
+                        il.Emit(OpCodes.Ldarg_2);
+                        il.Emit(OpCodes.Ldnull);
+                        il.Emit(OpCodes.Callvirt, targetSetMethod);
+                        il.Emit(OpCodes.Br, sourceIsNullLabel);
+
+                        il.MarkLabel(sourceIsNotNullLabel);
                         switch (this.ClassPropertyMapMode)
                         {
                             case ClassPropertyMapMode.None: break;
@@ -1236,6 +1258,7 @@ namespace HigLabo.Core
                                 break;
                             default: throw new InvalidOperationException();
                         }
+                        il.MarkLabel(sourceIsNullLabel);
                     }
 
                     if (this.CollectionElementMapMode != CollectionElementMapMode.None &&
