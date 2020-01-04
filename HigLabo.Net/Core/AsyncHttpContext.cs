@@ -108,11 +108,11 @@ namespace HigLabo.Net
                 stm = req.EndGetRequestStream(result);
                 if (this.RequestBufferSize.HasValue == true)
                 {
-                    scx = new StreamWriteContext(stm, this.RequestBufferSize.Value);
+                    scx = new StreamWriteContext(stm, _Command.ContentLength, this.RequestBufferSize.Value);
                 }
                 else
                 {
-                    scx = new StreamWriteContext(stm);
+                    scx = new StreamWriteContext(stm, _Command.ContentLength);
                 }
                 scx.Uploading += (o, e) => this.OnUploading(e);
                 scx.Write(_Command.BodyStream);

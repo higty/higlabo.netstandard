@@ -13,17 +13,17 @@ namespace HigLabo.Net
         /// <summary>
         /// 
         /// </summary>
-        public Int32 Size { get; private set; }
+        public Int64 Size { get; private set; }
         /// <summary>
         /// 
         /// </summary>
-        public Int32 TotalSize { get; private set; }
+        public Int64 TotalSize { get; private set; }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="size"></param>
         /// <param name="totalSize"></param>
-        public HttpRequestUploadingEventArgs(Int32 size, Int32 totalSize)
+        public HttpRequestUploadingEventArgs(Int64 size, Int64 totalSize)
         {
             this.Size = size;
             this.TotalSize = totalSize;

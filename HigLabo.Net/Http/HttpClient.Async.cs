@@ -15,7 +15,22 @@ namespace HigLabo.Net
             var source = new TaskCompletionSource<TResult>();
             this.GetHttpWebResponse(command
                 , res => source.SetResult(func(res))
-                , e => source.SetException(e.Exception));
+                , e =>
+                {
+                    var ex = e.Exception as WebException;
+                    if (ex == null)
+                    {
+                        source.SetException(e.Exception);
+                        return;
+                    }
+                    var res = ex.Response as HttpWebResponse;
+                    if (res == null)
+                    {
+                        source.SetException(e.Exception);
+                        return;
+                    }
+                    source.SetResult(func(res));
+                });
             return source.Task;
         }
         

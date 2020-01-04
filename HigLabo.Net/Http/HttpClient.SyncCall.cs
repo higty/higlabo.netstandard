@@ -65,17 +65,17 @@ namespace HigLabo.Net
             {
                 //Request body
                 //req.ContentLength = command.BodyStream.Length;
-                if (command.BodyStream.Length > 0)
+                if (command.ContentLength > 0)
                 {
                     using (var stm = req.GetRequestStream())
                     {
                         if (this.RequestBufferSize.HasValue == true)
                         {
-                            scx = new StreamWriteContext(stm, this.RequestBufferSize.Value);
+                            scx = new StreamWriteContext(stm, command.ContentLength, this.RequestBufferSize.Value);
                         }
                         else
                         {
-                            scx = new StreamWriteContext(stm);
+                            scx = new StreamWriteContext(stm, command.ContentLength);
                         }
                         scx.Uploading += (o, e) => this.OnUploading(e);
                         scx.Write(command.BodyStream);

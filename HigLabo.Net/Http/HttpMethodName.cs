@@ -5,37 +5,45 @@
     /// </summary>
     public enum HttpMethodName
     {
-        /// <summary>
-        /// 
-        /// </summary>
-        Get, 
-        /// <summary>
-        /// 
-        /// </summary>
-        Post, 
-        /// <summary>
-        /// 
-        /// </summary>
-        Put, 
-        /// <summary>
-        /// 
-        /// </summary>
+        Get,
+        Post,
+        Put,
         Delete,
-        /// <summary>
-        /// 
-        /// </summary>
         Head,
-        /// <summary>
-        /// 
-        /// </summary>
         Move,
-        /// <summary>
-        /// 
-        /// </summary>
         Copy,
-        /// <summary>
-        /// 
-        /// </summary>
         Patch,
+        Trace,
+
+        Acl,
+        Baseline_Control,
+        Bind,
+        Checkin,
+        Checkout,
+        Connect,
+        Label,
+        Link,
+        Lock,
+        Merge,
+        MkActivity,
+        MkCalendar,
+        MkCol,
+        MkRedirectRef,
+        MkWorkspace,
+        Options,
+        OrderPatch,
+        Pri,
+        PropFind,
+        PropPatch,
+        Rebind,
+        Report,
+        Search,
+        Unbind,
+        UnCheckout,
+        UnLInk,
+        UnLock,
+        Update,
+        UpdateRedirectRef,
+        Version_Control,
     }
 }

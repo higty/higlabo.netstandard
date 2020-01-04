@@ -17,26 +17,29 @@ namespace HigLabo.Net
         /// </summary>
         public event EventHandler<HttpRequestUploadingEventArgs> Uploading;
         private Stream _TargetStream = null;
+        private Int64 _StreamLength = 0;
         private Int32? _BufferSize = null;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="targetStream"></param>
-        public StreamWriteContext(Stream targetStream)
+        public StreamWriteContext(Stream targetStream, Int64 streamLength)
         {
             if (targetStream == null) { throw new ArgumentNullException("targetStream must not be null"); }
             _TargetStream = targetStream;
+            _StreamLength = streamLength;
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="targetStream"></param>
         /// <param name="bufferSize"></param>
-        public StreamWriteContext(Stream targetStream, Int32 bufferSize)
+        public StreamWriteContext(Stream targetStream, Int64 streamLength, Int32 bufferSize)
         {
             if (targetStream == null) { throw new ArgumentNullException("targetStream must not be null"); }
             if (bufferSize <= 0) { throw new ArgumentException("bufferSize must be larger than zero"); }
             _TargetStream = targetStream;
+            _StreamLength = streamLength;
             _BufferSize = bufferSize;
         }
         /// <summary>
@@ -54,20 +57,19 @@ namespace HigLabo.Net
         /// <param name="sourceStream"></param>
         internal void Write(Stream sourceStream)
         {
-            if (sourceStream.Length > Int32.MaxValue) { throw new NotSupportedException("sourceStream length must be less than Int32.MaxValue."); }
-            Int32 length = (Int32)sourceStream.Length;
+            var length = _StreamLength;
             
             if (this._BufferSize.HasValue == true)
             {
                 Byte[] bb = null;
-                Int32 index = 0;
+                Int64 index = 0;
                 Int32 size = this._BufferSize.Value;
                 Boolean isBreak = false;
                 while (true)
                 {
-                    if (index + size >= length)
+                    if (size >= length - index)
                     {
-                        size = length - index;
+                        size = (Int32)(length - index);
                         isBreak = true;
                     }
                     bb = new Byte[size];
@@ -80,7 +82,7 @@ namespace HigLabo.Net
             }
             else
             {
-                sourceStream.CopyTo(_TargetStream);
+                sourceStream.CopyToAsync(_TargetStream).GetAwaiter().GetResult();
                 this.OnUploading(new HttpRequestUploadingEventArgs(length, length));
             }
         }
