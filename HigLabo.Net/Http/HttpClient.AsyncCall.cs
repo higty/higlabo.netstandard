@@ -7,9 +7,6 @@ using System.Net;
 
 namespace HigLabo.Net
 {
-    /// <summary>
-    /// HTTPでのリクエスト及びレスポンスデータの取得を行う機能を提供するクラスです。
-    /// </summary>
     public partial class HttpClient
     {
 #if SILVERLIGHT
@@ -22,51 +19,23 @@ namespace HigLabo.Net
             this.BeginInvoke = action => dispatcher.BeginInvoke(action);
         }
 #endif
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="context"></param>
         public void GetHttpWebResponse(String url, AsyncHttpContext context)
         {
             var req = this.CreateRequest(new HttpRequestCommand(url));
             context.BeginRequest(req);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="callback"></param>
         public void GetHttpWebResponse(String url, Action<HttpWebResponse> callback)
         {
             this.GetHttpWebResponse(new HttpRequestCommand(url), callback);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <param name="callback"></param>
         public void GetHttpWebResponse(String url, HttpBodyFormUrlEncodedData data, Action<HttpWebResponse> callback)
         {
             this.GetHttpWebResponse(new HttpRequestCommand(url, data), callback);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <param name="callback"></param>
         public void GetHttpWebResponse(String url, Byte[] data, Action<HttpWebResponse> callback)
         {
             this.GetHttpWebResponse(new HttpRequestCommand(url, data), callback);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="stream"></param>
-        /// <param name="callback"></param>
         public void GetHttpWebResponse(String url, Stream stream, Action<HttpWebResponse> callback)
         {
             var cm = new HttpRequestCommand(url, stream);
@@ -80,11 +49,6 @@ namespace HigLabo.Net
             cx.Error += (o, e) => this.OnError(e);
             cx.BeginRequest(req);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="callback"></param>
         public void GetHttpWebResponse(HttpRequestCommand command, Action<HttpWebResponse> callback)
         {
             var req = this.CreateRequest(command);
@@ -93,12 +57,6 @@ namespace HigLabo.Net
             cx.Error += (o, e) => this.OnError(e);
             cx.BeginRequest(req);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="callback"></param>
-        /// <param name="errorCallback"></param>
         public void GetHttpWebResponse(HttpRequestCommand command, Action<HttpWebResponse> callback, Action<AsyncHttpCallErrorEventArgs> errorCallback)
         {
             var req = this.CreateRequest(command);
@@ -107,12 +65,6 @@ namespace HigLabo.Net
             cx.Error += (o, e) => errorCallback(e);
             cx.BeginRequest(req);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="callback"></param>
-        /// <returns></returns>
         protected AsyncHttpContext CreateAsyncHttpContext(HttpRequestCommand command, Action<HttpWebResponse> callback)
         {
             AsyncHttpContext cx = new AsyncHttpContext(command, this.AsyncHttpContextCallback(callback));
@@ -122,11 +74,6 @@ namespace HigLabo.Net
             }
             return cx;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="callback"></param>
-        /// <returns></returns>
         private Action<T> AsyncHttpContextCallback<T>(Action<T> callback)
         {
             Action<T> f = res =>
@@ -146,50 +93,22 @@ namespace HigLabo.Net
             };
             return f;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="callback"></param>
         public void GetResponse(String url, Action<HttpResponse> callback)
         {
             this.GetResponse(new HttpRequestCommand(url), callback);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <param name="callback"></param>
         public void GetResponse(String url, HttpBodyFormUrlEncodedData data, Action<HttpResponse> callback)
         {
             this.GetResponse(new HttpRequestCommand(url, data), callback);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <param name="callback"></param>
         public void GetResponse(String url, Byte[] data, Action<HttpResponse> callback)
         {
             this.GetHttpWebResponse(new HttpRequestCommand(url, data), res => this.GetResponseCallback(res, callback));
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="stream"></param>
-        /// <param name="callback"></param>
         public void GetResponse(String url, Stream stream, Action<HttpResponse> callback)
         {
             this.GetHttpWebResponse(new HttpRequestCommand(url, stream), res => this.GetResponseCallback(res, callback));
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="callback"></param>
         public void GetResponse(HttpRequestCommand command, Action<HttpResponse> callback)
         {
             var req = this.CreateRequest(command);
@@ -198,11 +117,6 @@ namespace HigLabo.Net
             cx.Error += (o, e) => this.GetResponseErrorCallback(e, callback);
             cx.BeginRequest(req);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="response"></param>
-        /// <param name="callback"></param>
         protected void GetResponseCallback(HttpWebResponse response, Action<HttpResponse> callback)
         {
             var res = response;
@@ -225,50 +139,22 @@ namespace HigLabo.Net
             }
             this.GetResponseCallback(res, callback);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="callback"></param>
         public void GetBodyText(String url, Action<String> callback)
         {
             this.GetBodyText(new HttpRequestCommand(url), callback);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <param name="callback"></param>
         public void GetBodyText(String url, HttpBodyFormUrlEncodedData data, Action<String> callback)
         {
             this.GetBodyText(new HttpRequestCommand(url, data), text => callback(text));
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="data"></param>
-        /// <param name="callback"></param>
         public void GetBodyText(String url, Byte[] data, Action<String> callback)
         {
             this.GetHttpWebResponse(new HttpRequestCommand(url, data), res => this.GetBodyTextCallback(res, callback));
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="stream"></param>
-        /// <param name="callback"></param>
         public void GetBodyText(String url, Stream stream, Action<String> callback)
         {
             this.GetHttpWebResponse(new HttpRequestCommand(url, stream), res => this.GetBodyTextCallback(res, callback));
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="callback"></param>
         public void GetBodyText(HttpRequestCommand command, Action<String> callback)
         {
             this.GetHttpWebResponse(command, res => this.GetBodyTextCallback(res, callback));
@@ -284,10 +170,7 @@ namespace HigLabo.Net
             var text = sr.ReadToEnd();
             callback(text);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
+
         protected void OnError(AsyncHttpCallErrorEventArgs e)
         {
             var eh = this.Error;

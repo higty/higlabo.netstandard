@@ -7,62 +7,32 @@ using System.IO;
 
 namespace HigLabo.Net
 {
-    /// <summary>
-    /// 
-    /// </summary>
 #if !SILVERLIGHT && !NETFX_CORE && !Pcl
     [Serializable]
 #endif
     public class AsyncHttpContext
     {
-        /// <summary>
-        /// 
-        /// </summary>
         public event EventHandler<HttpRequestUploadingEventArgs> Uploading;
-        /// <summary>
-        /// 
-        /// </summary>
         public event EventHandler<AsyncHttpCallErrorEventArgs> Error;
         private HttpRequestCommand _Command = null;
         private Action<HttpWebResponse> _Callback = null;
-        /// <summary>
-        /// 
-        /// </summary>
         public Int32? RequestBufferSize { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
         public Action<HttpWebResponse> Callback
         {
             get { return _Callback; }
             set { _Callback = value; }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="callback"></param>
         public AsyncHttpContext(HttpRequestCommand command, Action<HttpWebResponse> callback)
         {
             _Command = command;
             _Callback = callback;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="requestBufferSize"></param>
-        /// <param name="callback"></param>
         public AsyncHttpContext(HttpRequestCommand command, Int32 requestBufferSize, Action<HttpWebResponse> callback)
         {
             _Command = command;
             this.RequestBufferSize = requestBufferSize;
             _Callback = callback;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="request"></param>
         public void BeginRequest(HttpWebRequest request)
         {
             var cx = this;
@@ -106,14 +76,7 @@ namespace HigLabo.Net
             {
                 var req = result.AsyncState as HttpWebRequest;
                 stm = req.EndGetRequestStream(result);
-                if (this.RequestBufferSize.HasValue == true)
-                {
-                    scx = new StreamWriteContext(stm, _Command.ContentLength, this.RequestBufferSize.Value);
-                }
-                else
-                {
-                    scx = new StreamWriteContext(stm, _Command.ContentLength);
-                }
+                scx = new StreamWriteContext(stm, this.RequestBufferSize);
                 scx.Uploading += (o, e) => this.OnUploading(e);
                 scx.Write(_Command.BodyStream);
                 stm.Dispose();
@@ -146,10 +109,6 @@ namespace HigLabo.Net
                 this.OnError(ex);
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="e"></param>
         protected void OnUploading(HttpRequestUploadingEventArgs e)
         {
             var eh = this.Uploading;
@@ -158,10 +117,6 @@ namespace HigLabo.Net
                 eh(this, e);
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="response"></param>
         protected void OnCallback(HttpWebResponse response)
         {
             var eh = this.Callback;
@@ -170,10 +125,6 @@ namespace HigLabo.Net
                 eh(response);
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="exception"></param>
         protected void OnError(Exception exception)
         {
             var eh = this.Error;
