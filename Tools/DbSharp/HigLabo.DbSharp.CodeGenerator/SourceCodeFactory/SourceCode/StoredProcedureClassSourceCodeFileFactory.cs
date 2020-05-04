@@ -398,7 +398,7 @@ namespace HigLabo.DbSharp.CodeGenerator
             }
             yield return cb;
 
-            cb = new CodeBlock(SourceCodeLanguage.CSharp, "catch (InvalidCastException ex)");
+            cb = new CodeBlock(SourceCodeLanguage.CSharp, "catch (Exception ex)");
             cb.CurlyBracket = true;
             cb.CodeBlocks.Add(new CodeBlock(SourceCodeLanguage.CSharp, "throw new StoredProcedureSchemaMismatchedException(this, index, ex);"));
             yield return cb;

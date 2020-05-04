@@ -22,9 +22,10 @@ namespace HigLabo.Bot.Line.Webhook
             {
                 foreach (var item in dd["events"] as JArray)
                 {
-                    var tp = item["type"].ToString().ToEnum<EventType>().Value;
+                    var tp = item["type"].ToString().ToEnum<EventType>();
+                    if (tp.HasValue == false) { continue; }
                     var json = item.ToString();
-                    switch (tp)
+                    switch (tp.Value)
                     {
                         case EventType.Message:
                             mg.Events.Add(JsonConvert.DeserializeObject<MessageEvent>(json));

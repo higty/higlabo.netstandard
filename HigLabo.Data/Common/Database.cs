@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Linq;
+using System.Threading;
 
 namespace HigLabo.Data
 {
@@ -12,24 +13,14 @@ namespace HigLabo.Data
         public static event EventHandler<CommandExecutedEventArgs> CommandExecuted;
         public static event EventHandler<CommandErrorEventArgs> CommandError;
 
-        /// <summary>
-        /// 
-        /// </summary>
         public event EventHandler<ConnectionCreatedEventArgs> ConnectionCreated;
-        /// <summary>
-        /// 
-        /// </summary>
         public event EventHandler<CommandCreatedEventArgs> CommandCreated;
+
+        public static readonly DatabaseDefaultSettings Default = new DatabaseDefaultSettings();
 
         protected DbConnection Connection { get; set; }
         protected DbTransaction Transaction { get; set; }
-        /// <summary>
-        /// 接続文字列を取得または設定します。
-        /// </summary>
         public String ConnectionString { get; set; }
-        /// <summary>
-        /// 
-        /// </summary>
         public ConnectionState ConnectionState
         {
             get
@@ -39,17 +30,29 @@ namespace HigLabo.Data
                 return this.Connection.State;
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public Boolean OnTransaction
         {
             get { return this.Transaction != null; }
         }
-        /// <summary>
-        /// 
-        /// </summary>
+        public List<Int32> RetryIntervalMillisecondList { get; private set; } = new List<int>();
+
+        public Database()
+        {
+            this.RetryIntervalMillisecondList.AddRange(Default.RetryIntervalMillisecondList);
+        }
+
         public void Open()
+        {
+            if (this.RetryIntervalMillisecondList.Count == 0)
+            {
+                this.OpenConnection();
+            }
+            else
+            {
+                this.Open(this.RetryIntervalMillisecondList);
+            }
+        }
+        private void OpenConnection()
         {
             if (this.Connection == null)
             {
@@ -64,9 +67,34 @@ namespace HigLabo.Data
                 }
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
+        public void Open(Int32 retryCount, Int32 intervalmilliseconds)
+        {
+            var l = new List<Int32>();
+            for (int i = 0; i < retryCount; i++)
+            {
+                l.Add(intervalmilliseconds);
+            }
+            this.Open(l);
+        }
+        public void Open(List<Int32> retryIntervalMillisecondsList)
+        {
+            for (int i = 0; i < retryIntervalMillisecondsList.Count; i++)
+            {
+                try
+                {
+                    this.OpenConnection();
+                    return;
+                }
+                catch
+                {
+                    if (i == retryIntervalMillisecondsList.Count - 1)
+                    {
+                        throw;
+                    }
+                    Thread.Sleep(retryIntervalMillisecondsList[i]);
+                }
+            }
+        }
         public void Close()
         {
             this.Transaction = null;
@@ -80,10 +108,6 @@ namespace HigLabo.Data
                 this.Connection = null;
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public Boolean CanOpen()
         {
             try
@@ -100,37 +124,23 @@ namespace HigLabo.Data
             }
             return true;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="isolationLevel"></param>
         public void BeginTransaction(IsolationLevel isolationLevel)
         {
             this.Open();
             this.Transaction = this.Connection.BeginTransaction(isolationLevel);
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public void CommitTransaction()
         {
             if (this.Transaction == null) throw new InvalidOperationException("Transaction does not begin.Please call BeginTransaction method before calling CommitTransaction method.");
             this.Transaction.Commit();
             this.Close();
         }
-        /// <summary>
-        /// 
-        /// </summary>
         public void RollBackTransaction()
         {
             if (this.Transaction == null) throw new InvalidOperationException("Transaction does not begin.Please call BeginTransaction method before calling RollBackTransaction method.");
             this.Transaction.Rollback();
             this.Close();
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public DbConnection CreateConnection()
         {
             var cn = this.CreateDbConnection();
@@ -159,22 +169,12 @@ namespace HigLabo.Data
         }
         public abstract DbParameter CreateParameter(string parameterName, Enum dbType, byte? precision, byte? scale);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
         public DataSet GetDataSet(String query)
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return GetDataSet(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         public DataSet GetDataSet(DbCommand command)
         {
             var ds = new DataSet();
@@ -215,22 +215,12 @@ namespace HigLabo.Data
             }
             return ds;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
         public DataTable GetDataTable(String query)
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return GetDataTable(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         public DataTable GetDataTable(DbCommand command)
         {
             var dt = new DataTable();
@@ -271,42 +261,20 @@ namespace HigLabo.Data
             }
             return dt;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
         public DbDataReader ExecuteReader(String query)
         {
             return ExecuteReader(query, CommandBehavior.Default);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <param name="commandBehavior"></param>
-        /// <returns></returns>
         public DbDataReader ExecuteReader(String query, CommandBehavior commandBehavior)
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return ExecuteReader(cm, commandBehavior);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         public DbDataReader ExecuteReader(DbCommand command)
         {
             return this.ExecuteReader(command, CommandBehavior.Default);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="commandBehavior"></param>
-        /// <returns></returns>
         public DbDataReader ExecuteReader(DbCommand command, CommandBehavior commandBehavior)
         {
             DbDataReader dr = null;
@@ -340,22 +308,12 @@ namespace HigLabo.Data
             }
             return dr;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <returns></returns>
         public Object ExecuteScalar(String query)
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return this.ExecuteScalar(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
         public Object ExecuteScalar(DbCommand command)
         {
             Object o = null;
@@ -396,24 +354,12 @@ namespace HigLabo.Data
             }
             return o;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="query"></param>
-        /// <param name="connectionAutoClose"></param>
-        /// <returns></returns>
         public Int32 ExecuteCommand(String query)
         {
             var cm = this.CreateCommand(query);
             cm.CommandType = CommandType.Text;
             return ExecuteCommand(cm);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
-        /// <param name="connectionAutoClose"></param>
-        /// <returns></returns>
         public Int32 ExecuteCommand(DbCommand command)
         {
             var affectRecordNumber = Int32.MinValue;
@@ -454,13 +400,6 @@ namespace HigLabo.Data
             }
             return affectRecordNumber;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="isolationLevel"></param>
-        /// <param name="connectionAutoClose"></param>
-        /// <param name="commands"></param>
-        /// <returns></returns>
         public Int32[] ExecuteCommand(IsolationLevel isolationLevel, params String[] commands)
         {
             var l = new List<DbCommand>();
@@ -471,13 +410,6 @@ namespace HigLabo.Data
             }
             return ExecuteCommand(isolationLevel, l.ToArray());
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="isolationLevel"></param>
-        /// <param name="connectionAutoClose"></param>
-        /// <param name="commands"></param>
-        /// <returns></returns>
         public Int32[] ExecuteCommand(IsolationLevel isolationLevel, params DbCommand[] commands)
         {
             var affectRecordNumber = new Int32[commands.Length];
@@ -524,12 +456,6 @@ namespace HigLabo.Data
             }
             return affectRecordNumber;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="dataAdapter"></param>
-        /// <param name="dataTable"></param>
-        /// <returns></returns>
         public Int32 Save(DbDataAdapter dataAdapter, DataTable dataTable)
         {
             var previousState = ConnectionState;
@@ -639,10 +565,6 @@ namespace HigLabo.Data
             }
             return e;
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="connection"></param>
         protected void OnConnectionCreated(ConnectionCreatedEventArgs e)
         {
             var eh = this.ConnectionCreated;
@@ -651,10 +573,6 @@ namespace HigLabo.Data
                 eh(this, e);
             }
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="command"></param>
         protected void OnCommandCreated(CommandCreatedEventArgs e)
         {
             var eh = this.CommandCreated;
@@ -665,18 +583,11 @@ namespace HigLabo.Data
         }
 
         #region Dispose
-        /// <summary>
-        /// 
-        /// </summary>
         public void Dispose()
         {
             GC.SuppressFinalize(this);
             this.Dispose(true);
         }
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="disposing"></param>
         protected void Dispose(Boolean disposing)
         {
             if (disposing)
@@ -689,9 +600,6 @@ namespace HigLabo.Data
             this.Transaction = null;
             this.Connection = null;
         }
-        /// <summary>
-        /// 
-        /// </summary>
         ~Database()
         {
             this.Dispose(false);

@@ -4,7 +4,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Linq;
 
-namespace App.Core
+namespace HigLabo.Core
 {
     public class ParalellExecutionContext
     {
@@ -13,6 +13,13 @@ namespace App.Core
         public Exception Execute()
         {
             var tt = this.TaskList;
+            foreach (var item in tt)
+            {
+                if (item.Status == TaskStatus.Created)
+                {
+                    item.Start();
+                }
+            }
             var allTask = Task.WhenAll(tt);
             try
             {
