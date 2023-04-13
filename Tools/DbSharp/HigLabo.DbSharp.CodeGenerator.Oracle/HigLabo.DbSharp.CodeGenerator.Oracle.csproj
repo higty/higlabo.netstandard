@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Oracle.ManagedDataAccess" Version="19.5.0" />
+    <PackageReference Include="Oracle.ManagedDataAccess" Version="21.9.0" />
   </ItemGroup>
 
   <ItemGroup>
