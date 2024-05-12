@@ -126,7 +126,7 @@ namespace HigLabo.Net
             this.Cookies = res.Cookies;
 #if !SILVERLIGHT && !NETFX_CORE && !Pcl
             this.CharacterSet = res.CharacterSet;
-            this.IsMutuallyAuthenticated = res.IsMutuallyAuthenticated;
+            //this.IsMutuallyAuthenticated = res.IsMutuallyAuthenticated;
             this.LastModified = res.LastModified;
             this.ProtocolVersion = res.ProtocolVersion;
             this.Server = res.Server;

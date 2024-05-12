@@ -50,6 +50,10 @@ namespace HigLabo.Rss
 		protected new void Parse(XElement element)
         {
             Author = element.CastElementToString("author");
+            if (string.IsNullOrWhiteSpace(Author))
+            {
+                Author = element.CastElementToString("[author](dc:creator)");
+            }
             Comments = element.CastElementToString("comments");
 
             var guid = element.ElementByNamespace("guid");

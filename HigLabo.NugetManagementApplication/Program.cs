@@ -65,12 +65,13 @@ namespace HigLabo.NugetManagementApplication
             foreach (var path in pathList)
             {
                 var di = new DirectoryInfo(path);
-                sb.AppendFormat("nuget push {0} -Source https://api.nuget.org/v3/index.json -ApiKey {1}", path, ApiKey);
+                sb.AppendFormat("nuget push {0} -s https://api.nuget.org/v3/index.json -k {1}", path, ApiKey);
                 sb.AppendLine();
             }
             sb.AppendLine("pause");
             var text = sb.ToString();
             var fileName = String.Format("UploadPackage{0}.cmd", DateTime.Now.ToString("yyyyMMdd_HHmmss"));
+            Console.WriteLine(fileName);
             File.WriteAllText(Path.Combine(NugetPackageFolderPath, fileName), text);
         }
     }

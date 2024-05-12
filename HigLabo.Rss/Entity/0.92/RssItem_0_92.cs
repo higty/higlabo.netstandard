@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Xml.Linq;
 using HigLabo.Core;
 
@@ -15,7 +16,7 @@ namespace HigLabo.Rss
         /// <summary>
         /// 
         /// </summary>
-		public RssCategory Category { get; set; }
+		public List<RssCategory> CategoryList { get; set; }
 		/// <summary>
 		/// 
 		/// </summary>
@@ -58,10 +59,10 @@ namespace HigLabo.Rss
 				Source = new RssSource(source);
 			}
 
-			var category = element.ElementByNamespace("category");
-			if (category != null)
+			foreach (var item in element.ElementsByNamespace("category"))
 			{
-				Category = new RssCategory(category);
+				var r = new RssCategory(item);
+				this.CategoryList.Add(r);
 			}
 		}
         /// <summary>
@@ -70,7 +71,7 @@ namespace HigLabo.Rss
         /// <returns></returns>
         public override string ToString()
         {
-            return string.Format("{0}, Enclosure: {1}, Category: {2}, Source: {3}", base.ToString(), Enclosure, Category, Source);
+            return string.Format("{0}, Enclosure: {1}, Source: {2}", base.ToString(), Enclosure, Source);
         }
 	}
 }
